@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>AzureDevOpsPolicyConfigurator</id>
+    <title>AzureDevOpsPolicyConfigurator</title>
+    <version>0.0.0</version>
+    <authors>BBT Software AG and contributors</authors>
+    <owners>bbtsoftware</owners>
+    <summary>Azure DevOps policy configurator</summary>
+    <description>
+This tool gets the current policies for projects, repositories and branches, or applies policy settings over a team project collection based on a YAML configuration file.
+    </description>
+    <licenseUrl>https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator/blob/develop/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright © BBT Software AG and contributors</copyright>
+    <tags>bbt bbtsoftware policy devops azure</tags>
+  </metadata>
+  <files>
+    <file src="..\..\src\tools\**" target="tools" />
+    <file src="..\..\BuildArtifacts\bin\**" target="tools\bin" />
+  </files>
+</package>
