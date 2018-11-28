@@ -1,0 +1,74 @@
+{
+  "allowDeletion":  false,
+  "ignoreTypes": [
+    "Status"
+  ],
+  "applyTo": {
+    "projects": [ "Test Project 2" ],
+    "repositories": []
+  },
+  "policies": [
+    {
+      "type": "Minimum number of reviewers",
+
+      "project": "",
+      "branch": "",
+      "repository": "",
+
+      "isBlocking": true,
+
+      "settings": {
+        "minimumApproverCount": 2,
+        "creatorVoteCounts": false,
+        "allowDownvotes": false,
+        "resetOnSourcePush": false
+      }
+    },
+    {
+      "type": "Minimum number of reviewers",
+
+      "project": "",
+      "branch": "master",
+      "matchKind": "exact",
+      "repository": "",
+
+      "isBlocking": true,
+
+      "settings": {
+        "minimumApproverCount": 2,
+        "creatorVoteCounts": false,
+        "allowDownvotes": false,
+        "resetOnSourcePush": false
+      }
+    },
+    {
+      "type": "Require a merge strategy",
+
+      "project": "",
+      "branch": "release",
+      "matchKind": "prefix",
+      "repository": "",
+
+      "isBlocking": true,
+
+      "settings": {
+        "useSquashMerge": false
+      }
+    },
+    {
+      "type": "Required reviewers",
+      "branch": "release*",
+
+      "isBlocking": true,
+
+      "settings": {
+        "filenamePatterns": [
+          "*"
+        ],
+        "requiredReviewerIds": [
+          "60c79a9a-6014-4747-812a-a7dbdb68e9e6"
+        ]
+      }
+    }
+  ]
+}
