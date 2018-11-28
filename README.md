@@ -30,7 +30,7 @@ See runtime catalog [here](https://docs.microsoft.com/en-us/dotnet/core/rid-cata
 #### Installation
 
 ```ps
-choco install AzureDevOpsConfigurator
+choco install AzureDevOpsPolicyConfigurator
 ```
 
 #### Generation to other targets
@@ -55,7 +55,7 @@ dotnet publish -c Release -r osx.10.12-x64
 
 ### Generate current structure
 
- `AzureDevOpsConfigurator` generate command generates JSON files from the current policy
+ `AzureDevOpsPolicyConfigurator generate` command generates JSON files from the current policy
  structure. The tool iterates through every Team Project, gets every policy set groups them by
  repository and saves in the `policies.json` file. In the main directory, every project is saved
  to the `projects.json` file, and the tool also gets every type available in the current Team
@@ -64,7 +64,7 @@ dotnet publish -c Release -r osx.10.12-x64
 #### Generation example
 
 ```cmd
-AzureDevOpsConfigurator generate --auth ntlm --collectionurl https://tfs.yourserver.ch/DefaultCollection
+AzureDevOpsPolicyConfigurator generate --auth ntlm --collectionurl https://tfs.yourserver.ch/DefaultCollection
 ```
 
 #### Command arguments for generation
@@ -79,19 +79,19 @@ AzureDevOpsConfigurator generate --auth ntlm --collectionurl https://tfs.yourser
 
 ### Simulate and execute changes
 
- `AzureDevOpsConfigurator whatif` and `AzureDevOpsConfigurator execute` command executes
+ `AzureDevOpsPolicyConfigurator whatif` and `AzureDevOpsPolicyConfigurator execute` command executes
  a strategy stored in an input JSON file
 
 #### Simulation example
 
 ```cmd
-AzureDevOpsConfigurator whatif -a ntlm -c https://tfs.yourserver.ch/DefaultCollection -i Sample\\testfile.json
+AzureDevOpsPolicyConfigurator whatif -a ntlm -c https://tfs.yourserver.ch/DefaultCollection -i Sample\\testfile.json
 ```
 
 #### Execution example
 
 ```cmd
-AzureDevOpsConfigurator execute -a ntlm -c https://tfs.yourserver.ch/DefaultCollection -i Sample\\testfile.json
+AzureDevOpsPolicyConfigurator execute -a ntlm -c https://tfs.yourserver.ch/DefaultCollection -i Sample\\testfile.json
 ```
 
 #### Command arguments for execution
