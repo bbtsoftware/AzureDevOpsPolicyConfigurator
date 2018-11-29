@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using AzureDevOpsPolicyConfigurator.Data;
+using log4net;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.Policy.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
@@ -16,7 +18,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <summary>
         /// Logger
         /// </summary>
-        protected static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly IFileReader reader;
         private readonly IConnectionProvider connectionProvider;
