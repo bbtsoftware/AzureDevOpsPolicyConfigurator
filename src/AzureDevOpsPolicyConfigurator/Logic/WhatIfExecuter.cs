@@ -39,7 +39,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             BranchPolicies currentPolicy,
             Policy policy)
         {
-            Log.Info($"Policy not found in Azure, will be created. (Branch: {currentPolicy.Branch}, Repository: {repository.Name}, Type: {policy.Type})");
+            Log.Info($"Policy not found in Azure, would be created. (Branch: {currentPolicy.Branch}, Repository: {repository.Name}, Type: {policy.Type})");
             Log.Debug($"Settings is: {policy.SettingsWithScope(repository.Id)}");
         }
 
@@ -62,7 +62,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             Policy policy,
             PolicyConfiguration serverPolicy)
         {
-            Log.Info($"Policy found, will be updated in Azure. (Branch: {currentPolicy.Branch}, Repository: {repository.Name}, Type: {serverPolicy.Type.DisplayName}, Branch: {serverPolicy.GetBranch()})");
+            Log.Info($"Policy found, would be updated in Azure. (Branch: {currentPolicy.Branch}, Repository: {repository.Name}, Type: {serverPolicy.Type.DisplayName}, Branch: {serverPolicy.GetBranch()})");
             Log.Debug($"Settings is: {policy.SettingsWithScope(repository.Id)}");
         }
 
@@ -74,7 +74,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="policy">Policy</param>
         protected override void DeletePolicy(PolicyHttpClient policyClient, Guid projectId, PolicyConfiguration policy)
         {
-            Log.Warn($"Policy not in the definition, will be removed from Azure. (Repository: {policy.GetRepositoryId()}, Type: {policy.Type.DisplayName}, Branch: {policy.GetBranch()})");
+            Log.Warn($"Policy not in the definition, would be removed from Azure. (Repository: {policy.GetRepositoryId()}, Type: {policy.Type.DisplayName}, Branch: {policy.GetBranch()})");
         }
     }
 }
