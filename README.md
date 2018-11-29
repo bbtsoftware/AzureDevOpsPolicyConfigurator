@@ -75,6 +75,7 @@ AzureDevOpsPolicyConfigurator generate --auth ntlm --collectionurl https://tfs.y
 | `--auth` or `-a`             | The authentication method, option values: `ntlm`, `oauth`, `basic`, `azureactivedirectory`
 | `--user` or `-u`             | The user for authentication (optional for PAT authentication, or for `ntlm` authentication with current user)
 | `--password` or `-p`         | The password, PAT or token for the authentication (optional for `ntlm` authentication with current user)
+| `--verbosity` or `-v`        | Sets the log4net root level, option values: `info`, `debug`, `warn`, `error` (optional, default is `info`)
 | `--destination` or `-d`      | optional, default value is `.\Project`
 
 ### Simulate and execute changes
@@ -102,6 +103,7 @@ AzureDevOpsPolicyConfigurator execute -a ntlm -c https://tfs.yourserver.ch/Defau
 | `--auth` or `-a`             | The authentication method, option values: `ntlm`, `oauth`, `basic`, `azureactivedirectory`
 | `--user` or `-u`             | The user for authentication (optional for PAT authentication, or for `ntlm` authentication with current user)
 | `--password` or `-p`         | The password or PAT for the authentication (optional for `ntlm` authentication with current user)
+| `--verbosity` or `-v`        | Sets the log4net root level, option values: `info`, `debug`, `warn`, `error` (optional, default is `info`)
 | `--in` or `-i`               | the input JSON settings file
 
 ### Input file
