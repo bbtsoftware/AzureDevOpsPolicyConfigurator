@@ -85,6 +85,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                             continue;
                         }
 
+                        Log.Info($"Starting repository: {repository.Name}");
+
                         var relevantPolicies = this.GetPoliciesForRepository(policyDefinition.Policies, project, repository);
                         var serverPolicy = grouppedRepositories.FirstOrDefault(x => x.Key == repository.Id.ToString());
 
@@ -191,7 +193,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                             if (policy.PolicyEquals(serverPolicy))
                             {
-                                Log.Info($"Policy is uptodate. (Branch: {currentPolicy.Branch}, Type: {policy.Type})");
+                                Log.Info($"Policy is up to date. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.Type})");
                             }
                             else
                             {
@@ -220,7 +222,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                 {
                     if (!allowDeletion)
                     {
-                        Log.Info($"Policy would be removed (Repository: {removeable.GetRepositoryId()}, Type: {removeable.Type.DisplayName}, Branch: {removeable.GetBranch()})");
+                        Log.Info($"Existing policy not defined. Skipping removal due to allowDeletion Flag. (Repository: {removeable.GetRepositoryId()}, Branch: {removeable.GetBranch()}, Type: {removeable.Type.DisplayName})");
                         continue;
                     }
 

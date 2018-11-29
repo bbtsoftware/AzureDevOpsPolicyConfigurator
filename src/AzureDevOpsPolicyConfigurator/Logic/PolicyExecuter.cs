@@ -44,7 +44,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             var async = policyClient.CreatePolicyConfigurationAsync(policyConfiguration, projectId);
 
             Log.Debug(this.Serializer.Serialize(async.Result));
-            Log.Info($"Policy has been created. (Branch: {currentPolicy.Branch}, Repository: {repository.Name}, Type: {policy.Type})");
+            Log.Info($"Policy created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.Type})");
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             var async = policyClient.UpdatePolicyConfigurationAsync(this.GetPolicyConfiguration(types, repository, policy), projectId, serverPolicy.Id);
 
             Log.Debug(this.Serializer.Serialize(async.Result));
-            Log.Info($"Policy updated. (Branch: {currentPolicy.Branch}, Repository: {repository.Name}, Type: {serverPolicy.Type.DisplayName}, Branch: {serverPolicy.GetBranch()})");
+            Log.Info($"Policy updated. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.Type})");
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             var async = policyClient.DeletePolicyConfigurationAsync(projectId, policy.Id);
             async.Wait();
 
-            Log.Warn($"Policy removed. (Repository: {policy.GetRepositoryId()}, Type: {policy.Type.DisplayName}, Branch: {policy.GetBranch()})");
+            Log.Warn($"Policy removed. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranch()}, Type: {policy.Type.DisplayName})");
         }
 
         private PolicyConfiguration GetPolicyConfiguration(IEnumerable<PolicyType> types, GitRepository repository, Policy policy)
