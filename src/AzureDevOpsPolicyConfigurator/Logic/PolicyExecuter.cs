@@ -23,7 +23,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         }
 
         /// <summary>
-        /// Creates a policy in Azure.
+        /// Creates a policy in Azure DevOps.
         /// </summary>
         /// <param name="policyClient">Policy client</param>
         /// <param name="types">Types</param>
@@ -48,7 +48,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         }
 
         /// <summary>
-        /// Updates a policy in Azure.
+        /// Updates a policy in Azure DevOps.
         /// </summary>
         /// <param name="policyClient">Policy client</param>
         /// <param name="types">Types</param>
@@ -73,7 +73,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         }
 
         /// <summary>
-        /// Deletes a policy in Azure.
+        /// Deletes a policy in Azure DevOps.
         /// </summary>
         /// <param name="policyClient">Policy client</param>
         /// <param name="projectId">Team project id</param>
