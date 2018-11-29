@@ -11,7 +11,7 @@ namespace AzureDevOpsPolicyConfigurator
         /// <summary>
         /// Gets or sets the input directory.
         /// </summary>
-        [CommandOption("-i|--in <IN>")]
+        [CommandOption("-i|--in <INPUT>")]
         [Description("Json input file")]
         public string Input { get; set; }
     }

@@ -19,7 +19,7 @@ namespace AzureDevOpsPolicyConfigurator
         /// <summary>
         /// Gets or sets the out directory.
         /// </summary>
-        [CommandOption("-d|--destination <OUT>")]
+        [CommandOption("-d|--destination <DESTINATION>")]
         [Description("Destination directory")]
         public string Destination { get; set; }
     }
