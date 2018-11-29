@@ -14,8 +14,8 @@ namespace AzureDevOpsPolicyConfigurator
         /// <summary>
         /// Gets the connection.
         /// </summary>
-        /// <param name="arguments">Main arguments</param>
-        /// <returns>Returns Credential</returns>
+        /// <param name="arguments">Command line arguments.</param>
+        /// <returns>Returns connection.</returns>
         public VssConnection GetConnection(BaseSettings arguments)
         {
             var uri = new Uri(arguments.CollectionUrl);

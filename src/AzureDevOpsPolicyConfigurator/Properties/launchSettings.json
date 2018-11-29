@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AzureDevOpsPolicyConfigurator": {
+      "commandName": "Project",
+      "commandLineArgs": "execute --auth ntlm --collectionurl https://tfs.bbtlocal.ch/BBTPolicyTest --in Sample\\testfile.json"
+    }
+  }
+}

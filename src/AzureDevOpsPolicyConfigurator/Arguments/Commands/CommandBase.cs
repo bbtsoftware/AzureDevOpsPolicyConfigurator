@@ -3,6 +3,8 @@ using System.Reflection;
 using log4net;
 using log4net.Config;
 using log4net.Core;
+using log4net.Repository;
+using log4net.Repository.Hierarchy;
 using Spectre.Cli;
 
 namespace AzureDevOpsPolicyConfigurator
@@ -14,18 +16,20 @@ namespace AzureDevOpsPolicyConfigurator
     internal abstract class CommandBase<TSettings> : Command<TSettings>
         where TSettings : BaseSettings
     {
+        private const string Log4netFileName = "log4net.config";
+
         /// <summary>
         /// Validate base method.
         /// </summary>
         /// <param name="context">Context</param>
         /// <param name="settings">Settings</param>
-        /// <returns>int</returns>
+        /// <returns>ValidationResult</returns>
         public override ValidationResult Validate(CommandContext context, TSettings settings)
         {
             var executingAssembly = Assembly.GetExecutingAssembly();
             var logRepository = LogManager.GetRepository(executingAssembly);
 
-            var fileInfo = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "log4net.config");
+            var fileInfo = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Log4netFileName);
 
             XmlConfigurator.ConfigureAndWatch(logRepository, new FileInfo(fileInfo));
 
@@ -34,21 +38,21 @@ namespace AzureDevOpsPolicyConfigurator
             return base.Validate(context, settings);
         }
 
-        private static void SetVerbosityLevel(TSettings settings, log4net.Repository.ILoggerRepository logRepository)
+        private static void SetVerbosityLevel(TSettings settings, ILoggerRepository logRepository)
         {
             switch (settings.Verbosity)
             {
                 case LogLevel.Info:
-                    ((log4net.Repository.Hierarchy.Hierarchy)logRepository).Root.Level = Level.Info;
+                    ((Hierarchy)logRepository).Root.Level = Level.Info;
                     break;
                 case LogLevel.Debug:
-                    ((log4net.Repository.Hierarchy.Hierarchy)logRepository).Root.Level = Level.Debug;
+                    ((Hierarchy)logRepository).Root.Level = Level.Debug;
                     break;
                 case LogLevel.Warn:
-                    ((log4net.Repository.Hierarchy.Hierarchy)logRepository).Root.Level = Level.Warn;
+                    ((Hierarchy)logRepository).Root.Level = Level.Warn;
                     break;
                 case LogLevel.Error:
-                    ((log4net.Repository.Hierarchy.Hierarchy)logRepository).Root.Level = Level.Error;
+                    ((Hierarchy)logRepository).Root.Level = Level.Error;
                     break;
             }
         }
