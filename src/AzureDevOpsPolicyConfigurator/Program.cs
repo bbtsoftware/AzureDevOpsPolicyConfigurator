@@ -17,12 +17,6 @@ namespace AzureDevOpsPolicyConfigurator
         /// <param name="args">Main arguments</param>
         public static void Main(string[] args)
         {
-            var executingAssembly = Assembly.GetExecutingAssembly();
-            var logRepository = LogManager.GetRepository(executingAssembly);
-            var fileInfo = Path.Combine(Path.GetDirectoryName(executingAssembly.Location), "log4net.config");
-
-            XmlConfigurator.ConfigureAndWatch(logRepository, new FileInfo(fileInfo));
-
             var app = new CommandApp();
 
             app.Configure(config =>
@@ -31,6 +25,9 @@ namespace AzureDevOpsPolicyConfigurator
                 config.AddCommand<WhatIfCommand>("whatif");
                 config.AddCommand<ExecuteCommand>("execute");
             });
+
+            var executingAssembly = Assembly.GetExecutingAssembly();
+            var logRepository = LogManager.GetRepository(executingAssembly);
 
             app.Run(args);
         }

@@ -33,9 +33,9 @@ namespace AzureDevOpsPolicyConfigurator
                 case AuthMethod.Ntlm:
                     return new VssCredentials(new WindowsCredential());
                 case AuthMethod.OAuth:
-                    return new VssCredentials(new VssOAuthAccessTokenCredential(arguments.Password));
+                    return new VssOAuthAccessTokenCredential(arguments.Password);
                 case AuthMethod.AzureActiveDirectory:
-                    return new VssCredentials(new VssAadCredential(arguments.User ?? string.Empty, arguments.Password));
+                    return new VssAadCredential(arguments.User ?? string.Empty, arguments.Password);
                 default:
                     throw new ArgumentException("Not supported authentication method");
             }

@@ -8,7 +8,7 @@ namespace AzureDevOpsPolicyConfigurator
     /// GenerateCommand class.
     /// </summary>
     [Description("Generates the current policy structure.")]
-    internal sealed class GenerateCommand : Command<GeneratorSettings>
+    internal sealed class GenerateCommand : CommandBase<GeneratorSettings>
     {
         /// <summary>
         /// Executes the StructureGenerator.
