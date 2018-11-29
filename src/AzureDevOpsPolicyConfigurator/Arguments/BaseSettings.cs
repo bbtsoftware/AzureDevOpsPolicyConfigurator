@@ -11,7 +11,7 @@ namespace AzureDevOpsPolicyConfigurator
         /// <summary>
         /// Gets or sets the collection url.
         /// </summary>
-        [CommandOption("-c|--collectionUrl <COLLECTIONURL>")]
+        [CommandOption("-c|--collectionurl <COLLECTIONURL>")]
         [Description("Team Collection URL")]
         public string CollectionUrl { get; set; }
 
