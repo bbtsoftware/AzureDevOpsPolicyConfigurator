@@ -191,7 +191,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                             hasMatch = true;
                             handledServerPolicies.Add(serverPolicy.Id);
 
-                            if (policy.PolicyEquals(serverPolicy))
+                            if (serverPolicy.IsEnabled && !serverPolicy.IsDeleted && policy.PolicyEquals(serverPolicy))
                             {
                                 Log.Info($"Policy is up to date. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.Type})");
                             }
