@@ -111,8 +111,8 @@ AzureDevOpsPolicyConfigurator execute -a ntlm -c https://tfs.yourserver.ch/Defau
 Policy definitions are stored in the input file, which can be defined globally, global for a project,
 global for a repository, global for specific branches, global for specific branches in a project,
 and for specific branches in a repository.
-There are auto-generated policies, which can be defined to be ignored during simulation or
-execution in the `ignoreTypes` section. (For instance Status change rules.)
+It is possible to ignore policies during the simulation or execution run, if some of them are set
+or handled manually on the UI. Use the `ignoreTypes` section for that.
 For project, repository and type definitions, both ids and entity names can be used to ease the
 setting of the rules.
 
@@ -128,12 +128,22 @@ deletes it, if it's not defined int the JSON file!
 > Do not define the `isEnabled` and `isDeleted` flags, these will be automatically set by the tool,
 > and would lead to endless updates due to permanent difference!
 
+There are types which can be used more then once on a repository (like `Status`), and defers only in
+some sort of subtype. There is a possibility to specify these subtypes with the `subTypePropertyName`
+and `subTypePropertyValue` properties in the definition, besides this, these policy definitions
+can also be set hierarchically.
+
+> Note:
+> At creation or the scope property in the definition, if defined will be removed and set by the tool,
+> also, if the subType feature is used, this property will be overriden by the tool. For comparison
+> these properties are ignored.
+
 The tool has been built defensive, meaning, deletion is not allowed by default. If you want to
 enable this functionality, set the `allowDeletion` property to `true`. (The property is optional,
 default is `false`)
 
 If the tool should only touch specific project(s) or repository(ies), the restriction should be
-added to the `applyTo` section of the yaml file. (The section and its properties is optional, can 
+added to the `applyTo` section of the yaml file. (The section and its properties is optional, can
 be removed, if not needed.)
 
 #### Input file example
@@ -318,6 +328,36 @@ be removed, if not needed.)
 
     "settings": {
         "useSquashMerge":  false
+    }
+}
+```
+
+#### Subtype definition
+
+```json
+{
+    "type": "Status",
+    "subTypePropertyName": "statusName",
+    "subTypePropertyValue": "work-in-progress",
+    "isBlocking": true,
+    "settings": {
+        "statusGenre": "MyGenre",
+        "authorId": "88148664-b0c6-4fab-bbd8-aae5d3e7d233",
+        "invalidateOnSourceUpdate": false,
+        "filenamePatterns": []
+    }
+},
+{
+    "type": "Status",
+    "subTypePropertyName": "statusName",
+    "subTypePropertyValue": "pullrequest-title",
+    "isBlocking": true,
+    "settings": {
+        "statusName": "pullrequest-title",
+        "statusGenre": "MyGenre",
+        "authorId": "88148664-b0c6-4fab-bbd8-aae5d3e7d233",
+        "invalidateOnSourceUpdate": false,
+        "filenamePatterns": []
     }
 }
 ```

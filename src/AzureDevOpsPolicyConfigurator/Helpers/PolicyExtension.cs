@@ -4,7 +4,7 @@ using System.Linq;
 using AzureDevOpsPolicyConfigurator.Data;
 using Microsoft.TeamFoundation.Policy.WebApi;
 
-namespace AzureDevOpsPolicyConfigurator.Logic
+namespace AzureDevOpsPolicyConfigurator
 {
     /// <summary>
     /// Extension class.
@@ -16,10 +16,10 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// </summary>
         /// /// <param name="typeIdOrName">type id or name</param>
         /// <param name="types">type array</param>
-        /// <returns>nullable guid</returns>
-        public static Guid? GetPolicyTypeId(this string typeIdOrName, IEnumerable<PolicyType> types)
+        /// <returns>PolicyType</returns>
+        public static PolicyType GetPolicyType(this string typeIdOrName, IEnumerable<PolicyType> types)
         {
-            return GetType(typeIdOrName, types)?.Id;
+            return GetType(typeIdOrName, types);
         }
 
         /// <summary>
@@ -62,6 +62,22 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         public static string GetBranch(this PolicyConfiguration configuration)
         {
             return GetValueFromScopeElement(configuration, "refName")?.Replace("refs/heads/", string.Empty);
+        }
+
+        /// <summary>
+        /// Returns the repository id from the settings.
+        /// </summary>
+        /// <param name="configuration">Policy configuration</param>
+        /// <param name="policy">Policy</param>
+        /// <returns>bool</returns>
+        public static bool DoesSubTypeMatch(this PolicyConfiguration configuration, Policy policy)
+        {
+            if (!policy.HasSubType)
+            {
+                return true;
+            }
+
+            return configuration.Settings.Value<string>(policy.SubTypePropertyName) == policy.SubTypePropertyValue;
         }
 
         /// <summary>

@@ -172,9 +172,9 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             {
                 bool hasMatch = false;
 
-                var typeId = policy.Type.GetPolicyTypeId(types);
+                policy.PreparePolicyType(types);
 
-                if (typeId == null)
+                if (policy.PolicyType == null)
                 {
                     Log.Warn($"Type not found. (Branch: {currentPolicy.Branch}, Type: {policy.Type})");
                 }
@@ -183,17 +183,16 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                 {
                     foreach (var serverPolicy in serverPolicies)
                     {
-                        if (typeId == serverPolicy.Type.Id &&
-                                ((string.IsNullOrEmpty(serverPolicy.GetBranch()) && string.IsNullOrEmpty(policy.Branch)) ||
-                                (!string.IsNullOrEmpty(serverPolicy.GetBranch()) && !string.IsNullOrEmpty(policy.Branch) &&
-                                    serverPolicy.GetBranch() == policy.Branch && serverPolicy.GetMatchKind() == policy.MatchKind)))
+                        if (policy.PolicyType.Id == serverPolicy.Type.Id && serverPolicy.DoesSubTypeMatch(policy) &&
+                                (string.IsNullOrEmpty(policy.Branch) ||
+                                (!string.IsNullOrEmpty(policy.Branch) && serverPolicy.GetBranch() == policy.Branch && serverPolicy.GetMatchKind() == policy.MatchKind)))
                         {
                             hasMatch = true;
                             handledServerPolicies.Add(serverPolicy.Id);
 
                             if (serverPolicy.IsEnabled && !serverPolicy.IsDeleted && policy.PolicyEquals(serverPolicy))
                             {
-                                Log.Info($"Policy is up to date. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.Type})");
+                                Log.Info($"Policy is up to date. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
                             }
                             else
                             {
@@ -243,7 +242,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                         (x.Repository.ToLower() == repository.Name.ToLower() || x.Repository.ToLower() == repository.Id.ToString().ToLower())) // repository
                 .GroupBy(
                     x => x.Branch,
-                    (e, ee) => new BranchPolicies(e, ee.GroupBy(x => x.Type, (te, tee) => tee.OrderBy(x => x, new PolicyPriorityComparer()).First())));
+                    (e, ee) => new BranchPolicies(e, ee.GroupBy(x => x.UniquenessDefinition, (te, tee) => tee.OrderBy(x => x, new PolicyPriorityComparer()).First())));
         }
 
         /// <summary>
