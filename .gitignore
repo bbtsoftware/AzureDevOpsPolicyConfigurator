@@ -1,3 +1,7 @@
+## testfile.json and launchSettings.json
+src/AzureDevOpsPolicyConfigurator/Properties/launchSettings.json
+src/AzureDevOpsPolicyConfigurator/Sample
+
 
 # Created by https://www.gitignore.io/api/cake,windows,visualstudio,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=cake,windows,visualstudio,visualstudiocode
