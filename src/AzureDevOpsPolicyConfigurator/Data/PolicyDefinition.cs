@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AzureDevOpsPolicyConfigurator.Logic;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.Policy.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
@@ -46,7 +45,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
                 return false;
             }
 
-            return this.IgnoreTypes.Any(t => guid == t.GetPolicyTypeId(policyTypes));
+            return this.IgnoreTypes.Any(t => guid == t.GetPolicyType(policyTypes).Id);
         }
 
         /// <summary>

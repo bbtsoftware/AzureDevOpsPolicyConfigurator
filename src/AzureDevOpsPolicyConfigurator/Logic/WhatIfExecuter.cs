@@ -39,8 +39,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             BranchPolicies currentPolicy,
             Policy policy)
         {
-            Log.Info($"Policy not found in Azure DevOps, would be created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.Type})");
-            Log.Debug($"Settings is: {policy.SettingsWithScope(repository.Id)}");
+            Log.Info($"Policy not found in Azure DevOps, would be created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
+            Log.Debug($"Settings is: {policy.PrepareSettingsWithScopeAndSubType(repository.Id, policy)}");
         }
 
         /// <summary>
@@ -62,8 +62,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             Policy policy,
             PolicyConfiguration serverPolicy)
         {
-            Log.Info($"Policy found, would be updated in Azure DevOps. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {serverPolicy.Type.DisplayName})");
-            Log.Debug($"Settings is: {policy.SettingsWithScope(repository.Id)}");
+            Log.Info($"Policy found, would be updated in Azure DevOps. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
+            Log.Debug($"Settings is: {policy.PrepareSettingsWithScopeAndSubType(repository.Id, policy)}");
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="policy">Policy</param>
         protected override void DeletePolicy(PolicyHttpClient policyClient, Guid projectId, PolicyConfiguration policy)
         {
-            Log.Warn($"Policy not in the definition, would be removed from Azure DevOps. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranch()}, Type: {policy.Type.DisplayName})");
+            Log.Info($"Policy not in the definition, would be removed from Azure DevOps. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranch()}, Type: {policy.Type.DisplayName})");
         }
     }
 }

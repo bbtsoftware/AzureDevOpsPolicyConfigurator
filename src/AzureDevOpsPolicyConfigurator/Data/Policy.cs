@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.TeamFoundation.Policy.WebApi;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace AzureDevOpsPolicyConfigurator.Data
@@ -11,12 +10,43 @@ namespace AzureDevOpsPolicyConfigurator.Data
     /// </summary>
     internal class Policy
     {
+        private static readonly List<string> RepositorySpecificTypes = new List<string>() { "Git repository settings" };
         private string branch;
 
         /// <summary>
         /// Gets or sets the policy name or id.
         /// </summary>
         public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the policy type.
+        /// </summary>
+        public PolicyType PolicyType { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the policy has SubType defined.
+        /// </summary>
+        public bool HasSubType => !string.IsNullOrEmpty(this.SubTypePropertyName);
+
+        /// <summary>
+        /// Gets or sets the policy subtype property name.
+        /// </summary>
+        public string SubTypePropertyName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the policy subtype property value.
+        /// </summary>
+        public string SubTypePropertyValue { get; set; }
+
+        /// <summary>
+        /// Gets the UniquenessDefinition for the policy.
+        /// </summary>
+        public string UniquenessDefinition => $"{this.Type}{(this.SubTypePropertyValue != null ? "_" + this.SubTypePropertyValue : string.Empty)}";
+
+        /// <summary>
+        /// Gets the TypeString for the policy.
+        /// </summary>
+        public string TypeString => $"{this.PolicyType?.DisplayName ?? this.Type}{(this.SubTypePropertyValue != null ? "_" + this.SubTypePropertyValue : string.Empty)}";
 
         /// <summary>
         /// Gets or sets the policy project name or project id.
@@ -61,36 +91,26 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// </summary>
         public JObject Settings { get; set; }
 
+        private bool IsRepositorySpecific => RepositorySpecificTypes.Contains(this.PolicyType.DisplayName);
+
         /// <summary>
         /// Returns the Settings property and adds scope
         /// </summary>
         /// <param name="repositoryId">Repository id</param>
-        /// <returns>JObject</returns>
-        public JObject SettingsWithScope(Guid repositoryId)
+        /// <param name="policy">Policy</param>
+        /// <returns>Settings JObject</returns>
+        public JObject PrepareSettingsWithScopeAndSubType(Guid repositoryId, Policy policy)
         {
             var settings = (JObject)this.Settings.DeepClone();
-            settings.Add(this.CreateScope(repositoryId));
-            return settings;
-        }
+            settings.Add(this.IsRepositorySpecific ? this.CreateRepositorySpecificScope(repositoryId) : this.CreateScope(repositoryId));
 
-        /// <summary>
-        /// Creates the scope section of the Settings property.
-        /// </summary>
-        /// <param name="repositoryId">Repository id</param>
-        /// <returns>JProperty</returns>
-        public JProperty CreateScope(Guid repositoryId)
-        {
-            var scopeObject = new JObject(
-                    new JProperty("refName", string.IsNullOrEmpty(this.Branch) ? string.Empty : "refs/heads/" + this.Branch),
-                    new JProperty("repositoryId", repositoryId),
-                    new JProperty("matchKind", this.MatchKind.ToString()));
-
-            var scope = new JArray
+            if (policy.HasSubType)
             {
-                scopeObject
-            };
+                settings.Remove(policy.SubTypePropertyName);
+                settings.Add(new JProperty(policy.SubTypePropertyName, policy.SubTypePropertyValue));
+            }
 
-            return new JProperty("scope", scope);
+            return settings;
         }
 
         /// <summary>
@@ -108,22 +128,63 @@ namespace AzureDevOpsPolicyConfigurator.Data
                 return false;
             }
 
-            return this.JsonEquals(this.Settings, serverConfiguration.Settings);
+            return this.JsonEquals(serverConfiguration.Settings);
+        }
+
+        /// <summary>
+        /// Prepares the PolicyType
+        /// </summary>
+        /// <param name="types">Types</param>
+        public void PreparePolicyType(IEnumerable<PolicyType> types)
+        {
+            this.PolicyType = this.Type.GetPolicyType(types);
+        }
+
+        private JProperty CreateRepositorySpecificScope(Guid repositoryId)
+        {
+            var scopeObject = new JObject(new JProperty("repositoryId", repositoryId));
+
+            var scope = new JArray
+            {
+                scopeObject
+            };
+
+            return new JProperty("scope", scope);
+        }
+
+        private JProperty CreateScope(Guid repositoryId)
+        {
+            var scopeObject = new JObject(
+                    new JProperty("refName", string.IsNullOrEmpty(this.Branch) ? string.Empty : "refs/heads/" + this.Branch),
+                    new JProperty("repositoryId", repositoryId),
+                    new JProperty("matchKind", this.MatchKind.ToString()));
+
+            var scope = new JArray
+            {
+                scopeObject
+            };
+
+            return new JProperty("scope", scope);
         }
 
         /// <summary>
         /// Deepcompares the 2 JObject, and ignores scope property.
         /// </summary>
-        /// <param name="a">Object a</param>
-        /// <param name="b">Object b</param>
+        /// <param name="serverSettings">Server settings</param>
         /// <returns>Boolean</returns>
-        private bool JsonEquals(JObject a, JObject b)
+        private bool JsonEquals(JObject serverSettings)
         {
-            var clonedA = a.DeepClone();
-            var clonedB = b.DeepClone();
+            var clonedA = this.Settings.DeepClone();
+            var clonedB = serverSettings.DeepClone();
 
             clonedA["scope"]?.Parent.Remove();
             clonedB["scope"]?.Parent.Remove();
+
+            if (this.HasSubType)
+            {
+                clonedA[this.SubTypePropertyName]?.Parent.Remove();
+                clonedB[this.SubTypePropertyName]?.Parent.Remove();
+            }
 
             return JToken.DeepEquals(clonedA, clonedB);
         }

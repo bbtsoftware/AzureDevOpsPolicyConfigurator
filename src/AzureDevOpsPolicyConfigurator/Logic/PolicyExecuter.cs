@@ -44,7 +44,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             var async = policyClient.CreatePolicyConfigurationAsync(policyConfiguration, projectId);
 
             Log.Debug(this.Serializer.Serialize(async.Result));
-            Log.Info($"Policy created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.Type})");
+            Log.Info($"Policy created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             var async = policyClient.UpdatePolicyConfigurationAsync(this.GetPolicyConfiguration(types, repository, policy), projectId, serverPolicy.Id);
 
             Log.Debug(this.Serializer.Serialize(async.Result));
-            Log.Info($"Policy updated. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.Type})");
+            Log.Info($"Policy updated. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             var async = policyClient.DeletePolicyConfigurationAsync(projectId, policy.Id);
             async.Wait();
 
-            Log.Warn($"Policy removed. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranch()}, Type: {policy.Type.DisplayName})");
+            Log.Info($"Policy removed. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranch()}, Type: {policy.Type.DisplayName})");
         }
 
         private PolicyConfiguration GetPolicyConfiguration(IEnumerable<PolicyType> types, GitRepository repository, Policy policy)
@@ -94,7 +94,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                 IsEnabled = true,
                 IsBlocking = policy.IsBlocking,
                 IsDeleted = false,
-                Settings = policy.SettingsWithScope(repository.Id)
+                Settings = policy.PrepareSettingsWithScopeAndSubType(repository.Id, policy)
             };
         }
     }
