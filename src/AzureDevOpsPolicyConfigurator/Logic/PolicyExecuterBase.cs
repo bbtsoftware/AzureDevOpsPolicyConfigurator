@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using AzureDevOpsPolicyConfigurator.Data;
-using log4net;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.Policy.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
@@ -15,11 +13,6 @@ namespace AzureDevOpsPolicyConfigurator.Logic
     /// </summary>
     internal abstract class PolicyExecuterBase : ILogicExecuter<ExecuterSettings>
     {
-        /// <summary>
-        /// Logger
-        /// </summary>
-        protected static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private readonly IFileReader reader;
         private readonly IConnectionProvider connectionProvider;
 
@@ -29,17 +22,24 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="serializer">JsonSerialzer</param>
         /// <param name="reader">FileReader</param>
         /// <param name="connectionProvider">Connection provider</param>
-        public PolicyExecuterBase(IJsonSerializer serializer, IFileReader reader, IConnectionProvider connectionProvider)
+        /// <param name="logger">Logger</param>
+        public PolicyExecuterBase(IJsonSerializer serializer, IFileReader reader, IConnectionProvider connectionProvider, ILogger logger)
         {
             this.Serializer = serializer;
             this.reader = reader;
             this.connectionProvider = connectionProvider;
+            this.Logger = logger;
         }
 
         /// <summary>
         /// Gets serializer
         /// </summary>
         protected IJsonSerializer Serializer { get; }
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        protected ILogger Logger { get; }
 
         /// <summary>
         /// Executer
@@ -61,11 +61,11 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                 {
                     if (!policyDefinition.IsProjectAllowed(project))
                     {
-                        Log.Debug($"Skipping project \"{project.Name}\", because it's not listed in the allowed projects list");
+                        this.Logger.Debug($"Skipping project \"{project.Name}\", because it's not listed in the allowed projects list");
                         continue;
                     }
 
-                    Log.Info($"Starting project: {project.Name}");
+                    this.Logger.Info($"Starting project: {project.Name}");
 
                     var types = policyClient.GetPolicyTypesAsync(project.Id).Result;
 
@@ -81,11 +81,11 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                     {
                         if (!policyDefinition.IsRepositoryAllowed(repository))
                         {
-                            Log.Debug($"Skipping repository \"{repository.Name}\", because it's not listed in the allowed repositories list");
+                            this.Logger.Debug($"Skipping repository \"{repository.Name}\", because it's not listed in the allowed repositories list");
                             continue;
                         }
 
-                        Log.Info($"Starting repository: {repository.Name}");
+                        this.Logger.Info($"Starting repository: {repository.Name}");
 
                         var relevantPolicies = this.GetPoliciesForRepository(policyDefinition.Policies, project, repository);
                         var serverPolicy = grouppedRepositories.FirstOrDefault(x => x.Key == repository.Id.ToString());
@@ -176,7 +176,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                 if (policy.PolicyType == null)
                 {
-                    Log.Warn($"Type not found. (Branch: {currentPolicy.Branch}, Type: {policy.Type})");
+                    this.Logger.Warn($"Type not found. (Branch: {currentPolicy.Branch}, Type: {policy.Type})");
                 }
 
                 if (serverPolicies != null)
@@ -192,7 +192,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                             if (serverPolicy.IsEnabled && !serverPolicy.IsDeleted && policy.PolicyEquals(serverPolicy))
                             {
-                                Log.Info($"Policy is up to date. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
+                                this.Logger.Info($"Policy is up to date. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
                             }
                             else
                             {
@@ -221,7 +221,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                 {
                     if (!allowDeletion)
                     {
-                        Log.Info($"Existing policy not defined. Skipping removal due to allowDeletion Flag. (Repository: {removeable.GetRepositoryId()}, Branch: {removeable.GetBranch()}, Type: {removeable.Type.DisplayName})");
+                        this.Logger.Info($"Existing policy not defined. Skipping removal due to allowDeletion Flag. (Repository: {removeable.GetRepositoryId()}, Branch: {removeable.GetBranch()}, Type: {removeable.Type.DisplayName})");
                         continue;
                     }
 
