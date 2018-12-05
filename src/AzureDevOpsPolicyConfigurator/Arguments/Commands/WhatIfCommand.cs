@@ -8,7 +8,7 @@ namespace AzureDevOpsPolicyConfigurator
     /// WhatIfCommand class.
     /// </summary>
     [Description("Simulates the execution of the policy changes")]
-    internal sealed class WhatIfCommand : CommandBase<ExecuterSettings>
+    internal sealed class WhatIfCommand : ExecuterCommandBase
     {
         /// <summary>
         /// Executes the WhatIfExecuter.
