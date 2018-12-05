@@ -9,9 +9,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
     /// </summary>
     public class GenerationTest
     {
-#pragma warning disable xUnit1004 // Test methods should not be skipped
-        [Fact(DisplayName = "Generating structure and checking", Skip = "Can only be executed locally!")]
-#pragma warning restore xUnit1004 // Test methods should not be skipped
+        [Fact(DisplayName = "Generating structure and checking", Skip = SkippingInformation.SkippingReason)]
         private void GenerateStructureAndTestFileExistence()
         {
             new StructureGenerator(new JsonFileWriter(), new ConnectionProvider()).Execute(new GeneratorSettings()
