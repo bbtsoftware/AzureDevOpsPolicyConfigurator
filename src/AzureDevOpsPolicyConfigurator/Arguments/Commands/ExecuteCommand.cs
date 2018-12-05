@@ -18,7 +18,7 @@ namespace AzureDevOpsPolicyConfigurator
         /// <returns>int</returns>
         public override int Execute(CommandContext context, ExecuterSettings settings)
         {
-            new PolicyExecuter(new JsonSerializer(), new FileReader(), new ConnectionProvider()).Execute(settings);
+            new PolicyExecuter(new JsonSerializer(), new FileReader(), new ConnectionProvider(), new Logger()).Execute(settings);
             return 0;
         }
     }

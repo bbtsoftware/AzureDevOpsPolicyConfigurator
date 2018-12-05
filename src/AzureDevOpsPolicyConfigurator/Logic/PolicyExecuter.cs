@@ -17,8 +17,9 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="serializer">Json serializer</param>
         /// <param name="reader">File reader</param>
         /// <param name="connectionProvider">Connection provider</param>
-        public PolicyExecuter(IJsonSerializer serializer, IFileReader reader, IConnectionProvider connectionProvider)
-            : base(serializer, reader, connectionProvider)
+        /// <param name="logger">Logger</param>
+        public PolicyExecuter(IJsonSerializer serializer, IFileReader reader, IConnectionProvider connectionProvider, ILogger logger)
+            : base(serializer, reader, connectionProvider, logger)
         {
         }
 
@@ -43,8 +44,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
             var async = policyClient.CreatePolicyConfigurationAsync(policyConfiguration, projectId);
 
-            Log.Debug(this.Serializer.Serialize(async.Result));
-            Log.Info($"Policy created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
+            this.Logger.Debug(this.Serializer.Serialize(async.Result));
+            this.Logger.Info($"Policy created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
         }
 
         /// <summary>
@@ -68,8 +69,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         {
             var async = policyClient.UpdatePolicyConfigurationAsync(this.GetPolicyConfiguration(types, repository, policy), projectId, serverPolicy.Id);
 
-            Log.Debug(this.Serializer.Serialize(async.Result));
-            Log.Info($"Policy updated. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
+            this.Logger.Debug(this.Serializer.Serialize(async.Result));
+            this.Logger.Info($"Policy updated. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
         }
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             var async = policyClient.DeletePolicyConfigurationAsync(projectId, policy.Id);
             async.Wait();
 
-            Log.Info($"Policy removed. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranch()}, Type: {policy.Type.DisplayName})");
+            this.Logger.Info($"Policy removed. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranch()}, Type: {policy.Type.DisplayName})");
         }
 
         private PolicyConfiguration GetPolicyConfiguration(IEnumerable<PolicyType> types, GitRepository repository, Policy policy)
