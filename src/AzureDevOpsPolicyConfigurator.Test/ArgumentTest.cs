@@ -130,12 +130,12 @@ namespace AzureDevOpsPolicyConfigurator.Test
             Assert.NotNull(ex);
             Assert.IsType<UriFormatException>(ex);
 
-            args = new string[7] { "whatif", "-c", "url", "-a", "ntlm", "-i", ".\\file.json" };
+            args = new string[9] { "whatif", "-c", "url", "-a", "ntlm", "-i", ".\\file.json", "-v", "info" };
             ex = Record.Exception(() => new Program().Run(args, true));
             Assert.NotNull(ex);
             Assert.IsType<FileNotFoundException>(ex);
 
-            args = new string[7] { "execute", "-c", "url", "-a", "ntlm", "--in", ".\\file.json" };
+            args = new string[9] { "execute", "-c", "url", "-a", "ntlm", "--in", ".\\file.json", "--verbosity", "info" };
             ex = Record.Exception(() => new Program().Run(args, true));
             Assert.NotNull(ex);
             Assert.IsType<FileNotFoundException>(ex);
