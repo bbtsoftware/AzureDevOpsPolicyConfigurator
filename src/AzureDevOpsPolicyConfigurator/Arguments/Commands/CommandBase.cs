@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
+using AzureDevOpsPolicyConfigurator.Exceptions;
 using log4net;
 using log4net.Config;
 using log4net.Core;
@@ -33,12 +35,45 @@ namespace AzureDevOpsPolicyConfigurator
 
             XmlConfigurator.ConfigureAndWatch(logRepository, new FileInfo(fileInfo));
 
-            SetVerbosityLevel(settings, logRepository);
+            this.SetVerbosityLevel(settings, logRepository);
+
+            this.ValidateSettings(settings);
 
             return base.Validate(context, settings);
         }
 
-        private static void SetVerbosityLevel(TSettings settings, ILoggerRepository logRepository)
+        private void ValidateSettings(TSettings settings)
+        {
+            if (string.IsNullOrEmpty(settings.CollectionUrl))
+            {
+                throw new ArgumentValidationException("Argument \"connectionurl\" is missing!");
+            }
+
+            if (settings.Auth == null)
+            {
+                throw new ArgumentValidationException("Argument \"auth\" is missing!");
+            }
+
+            if (settings.Auth == AuthMethod.Basic || settings.Auth == AuthMethod.OAuth)
+            {
+                if (string.IsNullOrEmpty(settings.User))
+                {
+                    throw new ArgumentValidationException("Argument \"user\" must be provided if \"auth\" is set to Basic or OAuth!");
+                }
+
+                if (string.IsNullOrEmpty(settings.Password))
+                {
+                    throw new ArgumentValidationException("Argument \"password\" must be provided if \"auth\" is set to Basic or OAuth!");
+                }
+            }
+
+            if (settings is ExecuterSettings eSettings && string.IsNullOrEmpty(eSettings.Input))
+            {
+                throw new ArgumentValidationException("Argument \"in\" must be provided!");
+            }
+        }
+
+        private void SetVerbosityLevel(TSettings settings, ILoggerRepository logRepository)
         {
             switch (settings.Verbosity)
             {

@@ -20,7 +20,7 @@ namespace AzureDevOpsPolicyConfigurator
         /// </summary>
         [CommandOption("-a|--auth <AUTH>")]
         [Description("Authentication mode")]
-        public AuthMethod Auth { get; set; }
+        public AuthMethod? Auth { get; set; }
 
         /// <summary>
         /// Gets or sets the password.
