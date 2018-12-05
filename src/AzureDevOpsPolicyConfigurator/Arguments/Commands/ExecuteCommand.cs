@@ -8,7 +8,7 @@ namespace AzureDevOpsPolicyConfigurator
     /// ExecuteCommand class.
     /// </summary>
     [Description("Executes the policy changes")]
-    internal sealed class ExecuteCommand : CommandBase<ExecuterSettings>
+    internal sealed class ExecuteCommand : ExecuterCommandBase
     {
         /// <summary>
         /// Executes the PolicyExecuter.

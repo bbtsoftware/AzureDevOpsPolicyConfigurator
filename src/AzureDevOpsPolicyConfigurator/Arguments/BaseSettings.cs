@@ -35,12 +35,5 @@ namespace AzureDevOpsPolicyConfigurator
         [CommandOption("-u|--user <USER>")]
         [Description("User for authentication")]
         public string User { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the output should be verbose.
-        /// </summary>
-        [CommandOption("-v|--verbosity <VERBOSITY>")]
-        [Description("Sets the log4net log level")]
-        public LogLevel Verbosity { get; set; }
     }
 }
