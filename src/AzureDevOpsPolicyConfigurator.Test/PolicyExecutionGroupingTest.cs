@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Xunit;
+﻿using Xunit;
 
 namespace AzureDevOpsPolicyConfigurator.Test
 {
@@ -8,8 +7,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
     /// </summary>
     public class PolicyExecutionGroupingTest
     {
-        [Fact(DisplayName = "Check startings, apply to and disallow deletion", Skip = SkippingInformation.SkippingReason)]
-        private void CheckStartingAndSkippings()
+        [Fact(DisplayName = "Check project wide over", Skip = SkippingInformation.SkippingReason)]
+        private void CheckProjectWideOverGlobal()
         {
             var result = new PolicyTester().RunTest(new TestData(@"
             {
@@ -30,41 +29,23 @@ namespace AzureDevOpsPolicyConfigurator.Test
                   ""isBlocking"": true,
 
                   ""settings"": {
-                    ""minimumApproverCount"": 2,
+                    ""minimumApproverCount"": 3,
                     ""creatorVoteCounts"": false,
                     ""allowDownvotes"": false,
                     ""resetOnSourcePush"": false
                   }
-                }
-              ]
-            }"));
-
-            Assert.NotEmpty(result);
-            Assert.NotEmpty(result[LogLevel.Debug]);
-            Assert.NotEmpty(result[LogLevel.Info]);
-
-            Assert.Contains(result[LogLevel.Info], x => x == "Starting project: Framework");
-            Assert.Contains(result[LogLevel.Info], x => x == "Starting repository: doc.framework");
-            Assert.Contains(result[LogLevel.Info], x => x.StartsWith("Existing policy not defined. Skipping removal due to allowDeletion Flag."));
-
-            Assert.Contains(result[LogLevel.Debug], x => x.StartsWith("Skipping repository"));
-            Assert.Contains(result[LogLevel.Debug], x => x.StartsWith("Skipping project"));
-
-            result = new PolicyTester().RunTest(new TestData(@"
-            {
-              ""allowDeletion"":  true,
-              ""policies"": [
+                },
                 {
                   ""type"": ""Minimum number of reviewers"",
 
-                  ""project"": """",
+                  ""project"": ""Framework"",
                   ""branch"": """",
                   ""repository"": """",
 
                   ""isBlocking"": true,
 
                   ""settings"": {
-                    ""minimumApproverCount"": 2,
+                    ""minimumApproverCount"": 4,
                     ""creatorVoteCounts"": false,
                     ""allowDownvotes"": false,
                     ""resetOnSourcePush"": false
@@ -73,21 +54,17 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ]
             }"));
 
-            Assert.True(result[LogLevel.Info].Count(x => x.StartsWith("Starting project")) > 1);
-            Assert.True(result[LogLevel.Info].Count(x => x.StartsWith("Starting repository")) > 1);
-            Assert.DoesNotContain(result[LogLevel.Info], x => x.StartsWith("Existing policy not defined. Skipping removal due to allowDeletion Flag."));
-
-            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("Skipping repository"));
-            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("Skipping project"));
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
         }
 
-        [Fact(DisplayName = "Check Ignoring Types", Skip = SkippingInformation.SkippingReason)]
-        private void CheckIgnoreTypes()
+        [Fact(DisplayName = "Check repository over global and project wide", Skip = SkippingInformation.SkippingReason)]
+        private void CheckRepoOverGlobalAndProjectWide()
         {
             var result = new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
-              ""ignoreTypes"": [ ""Status"" ],
+              ""ignoreTypes"": [],
               ""applyTo"": {
                 ""projects"": [ ""Framework"" ],
                 ""repositories"": [""doc.framework""]
@@ -103,7 +80,39 @@ namespace AzureDevOpsPolicyConfigurator.Test
                   ""isBlocking"": true,
 
                   ""settings"": {
-                    ""minimumApproverCount"": 2,
+                    ""minimumApproverCount"": 3,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": ""Framework"",
+                  ""branch"": """",
+                  ""repository"": """",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 4,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": """",
+                  ""repository"": ""doc.framework"",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 5,
                     ""creatorVoteCounts"": false,
                     ""allowDownvotes"": false,
                     ""resetOnSourcePush"": false
@@ -112,11 +121,18 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ]
             }"));
 
-            Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("Type: Status"));
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 5"));
+        }
 
-            result = new PolicyTester().RunTest(new TestData(@"
+        [Fact(DisplayName = "Check repository over global and project wide with branch", Skip = SkippingInformation.SkippingReason)]
+        private void CheckRepoOverGlobalAndProjectWideWithBranch()
+        {
+            var result = new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
+              ""ignoreTypes"": [],
               ""applyTo"": {
                 ""projects"": [ ""Framework"" ],
                 ""repositories"": [""doc.framework""]
@@ -132,7 +148,55 @@ namespace AzureDevOpsPolicyConfigurator.Test
                   ""isBlocking"": true,
 
                   ""settings"": {
-                    ""minimumApproverCount"": 2,
+                    ""minimumApproverCount"": 3,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": ""Framework"",
+                  ""branch"": """",
+                  ""repository"": """",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 4,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": """",
+                  ""repository"": ""doc.framework"",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 5,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": ""master"",
+                  ""repository"": """",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 6,
                     ""creatorVoteCounts"": false,
                     ""allowDownvotes"": false,
                     ""resetOnSourcePush"": false
@@ -141,7 +205,267 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ]
             }"));
 
-            Assert.Contains(result[LogLevel.Info], x => x.Contains("Type: Status"));
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 5"));
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 6"));
+        }
+
+        [Fact(DisplayName = "Check repository over global and project wide with project specific branch over global branch", Skip = SkippingInformation.SkippingReason)]
+        private void CheckRepoOverGlobalAndProjectWideWithProjectSpecificBranchOverGlobalBranch()
+        {
+            var result = new PolicyTester().RunTest(new TestData(@"
+            {
+              ""allowDeletion"":  false,
+              ""ignoreTypes"": [],
+              ""applyTo"": {
+                ""projects"": [ ""Framework"" ],
+                ""repositories"": [""doc.framework""]
+              },
+              ""policies"": [
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": """",
+                  ""repository"": """",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 3,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": ""Framework"",
+                  ""branch"": """",
+                  ""repository"": """",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 4,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": """",
+                  ""repository"": ""doc.framework"",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 5,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": ""master"",
+                  ""repository"": """",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 6,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": ""Framework"",
+                  ""branch"": ""master"",
+                  ""repository"": """",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 7,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                }
+              ]
+            }"));
+
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 5"));
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 6"));
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 7"));
+        }
+
+        [Fact(DisplayName = "Check repository over global and project wide with repository specific branch over global and project specific branch", Skip = SkippingInformation.SkippingReason)]
+        private void CheckRepoOverGlobalAndProjectWideWithRepoSpecificBranchOverGlobalAndProjectSpecificBranch()
+        {
+            var result = new PolicyTester().RunTest(new TestData(@"
+            {
+              ""allowDeletion"":  false,
+              ""ignoreTypes"": [],
+              ""applyTo"": {
+                ""projects"": [ ""Framework"" ],
+                ""repositories"": [""doc.framework""]
+              },
+              ""policies"": [
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": """",
+                  ""repository"": """",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 3,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": ""Framework"",
+                  ""branch"": """",
+                  ""repository"": """",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 4,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": """",
+                  ""repository"": ""doc.framework"",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 5,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": ""master"",
+                  ""repository"": """",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 6,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": ""Framework"",
+                  ""branch"": ""master"",
+                  ""repository"": """",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 7,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": ""master"",
+                  ""repository"": ""doc.framework"",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 8,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                }
+              ]
+            }"));
+
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 5"));
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 6"));
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 7"));
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 8"));
+        }
+
+        [Fact(DisplayName = "Check star translation to prefox", Skip = SkippingInformation.SkippingReason)]
+        private void CheckStarTranslationToPrefix()
+        {
+            var result = new PolicyTester().RunTest(new TestData(@"
+            {
+              ""allowDeletion"":  false,
+              ""ignoreTypes"": [],
+              ""applyTo"": {
+                ""projects"": [ ""Framework"" ],
+                ""repositories"": [""doc.framework""]
+              },
+              ""policies"": [
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": ""release/*"",
+                  ""repository"": ""doc.framework"",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 3,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                }
+              ]
+            }"));
+
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("heads/release"));
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("Prefix"));
         }
     }
 }

@@ -5,3 +5,4 @@
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1004:Test methods should not be skipped", Justification = "We need those skipped on github", Scope = "member", Target = "~M:AzureDevOpsPolicyConfigurator.Test.PolicyExecutionSettingsTest.CheckStartingAndSkippings")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1004:Test methods should not be skipped", Justification = "We need those skipped on github", Scope = "member", Target = "~M:AzureDevOpsPolicyConfigurator.Test.GenerationTest.GenerateStructureAndTestFileExistence")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "xUnit1004:Test methods should not be skipped", Justification = "We need those skipped on github", Scope = "member", Target = "~M:AzureDevOpsPolicyConfigurator.Test.PolicyExecutionGroupingTest.CheckProjectWideOverGlobal")]
