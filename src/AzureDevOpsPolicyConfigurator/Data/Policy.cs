@@ -123,7 +123,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// <returns>boolean</returns>
         public bool PolicyEquals(PolicyConfiguration serverConfiguration)
         {
-            if (!serverConfiguration.IsEnabled && serverConfiguration.IsDeleted && serverConfiguration.IsBlocking != this.IsBlocking)
+            if (!serverConfiguration.IsEnabled || serverConfiguration.IsDeleted || serverConfiguration.IsBlocking != this.IsBlocking)
             {
                 return false;
             }
