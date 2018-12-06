@@ -102,6 +102,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
         public JObject PrepareSettingsWithScopeAndSubType(Guid repositoryId, Policy policy)
         {
             var settings = (JObject)this.Settings.DeepClone();
+            settings.Remove("scope");
             settings.Add(this.IsRepositorySpecific ? this.CreateRepositorySpecificScope(repositoryId) : this.CreateScope(repositoryId));
 
             if (policy.HasSubType)
