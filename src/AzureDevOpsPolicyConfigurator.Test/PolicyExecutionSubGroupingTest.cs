@@ -22,7 +22,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Status"",
                   
-                  ""SubTypePropertyName"": ""pr-statusName"",
+                  ""SubTypePropertyName"": ""statusName"",
                   ""SubTypePropertyValue"": ""pr-title"",
 
                   ""project"": """",
@@ -40,7 +40,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Status"",
                   
-                  ""SubTypePropertyName"": ""pr-statusName"",
+                  ""SubTypePropertyName"": ""statusName"",
                   ""SubTypePropertyValue"": ""pr-title"",
 
                   ""project"": ""Framework"",
@@ -77,7 +77,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                {
                   ""type"": ""Status"",
                   
-                  ""SubTypePropertyName"": ""pr-statusName"",
+                  ""SubTypePropertyName"": ""statusName"",
                   ""SubTypePropertyValue"": ""pr-title"",
 
                   ""project"": """",
@@ -95,7 +95,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Status"",
                   
-                  ""SubTypePropertyName"": ""pr-statusName"",
+                  ""SubTypePropertyName"": ""statusName"",
                   ""SubTypePropertyValue"": ""pr-title"",
 
                   ""project"": ""Framework"",
@@ -113,7 +113,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Status"",
                   
-                  ""SubTypePropertyName"": ""pr-statusName"",
+                  ""SubTypePropertyName"": ""statusName"",
                   ""SubTypePropertyValue"": ""pr-title"",
 
                   ""project"": ""Framework"",
@@ -166,7 +166,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Status"",
                   
-                  ""SubTypePropertyName"": ""pr-statusName"",
+                  ""SubTypePropertyName"": ""statusName"",
                   ""SubTypePropertyValue"": ""pr-title"",
 
                   ""project"": ""Framework"",
@@ -184,7 +184,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Status"",
                   
-                  ""SubTypePropertyName"": ""pr-statusName"",
+                  ""SubTypePropertyName"": ""statusName"",
                   ""SubTypePropertyValue"": ""pr-title2"",
 
                   ""project"": ""Framework"",
