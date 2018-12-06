@@ -3,7 +3,7 @@
 namespace AzureDevOpsPolicyConfigurator.Test
 {
     /// <summary>
-    /// Policy execution test.
+    /// Policy execution sub grouping test.
     /// </summary>
     public class PolicyExecutionSubGroupingTest
     {

@@ -4,7 +4,7 @@ using Xunit;
 namespace AzureDevOpsPolicyConfigurator.Test
 {
     /// <summary>
-    /// Policy execution test.
+    /// Policy execution settings test.
     /// </summary>
     public class PolicyExecutionSettingsTest
     {
