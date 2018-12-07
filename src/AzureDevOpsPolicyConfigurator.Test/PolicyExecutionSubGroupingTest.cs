@@ -15,8 +15,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -43,7 +43,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                   ""SubTypePropertyName"": ""statusName"",
                   ""SubTypePropertyValue"": ""pr-title"",
 
-                  ""project"": ""Framework"",
+                  ""project"": ""##Project##"",
                   ""branch"": """",
                   ""repository"": """",
 
@@ -70,8 +70,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                {
@@ -98,7 +98,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                   ""SubTypePropertyName"": ""statusName"",
                   ""SubTypePropertyValue"": ""pr-title"",
 
-                  ""project"": ""Framework"",
+                  ""project"": ""##Project##"",
                   ""branch"": """",
                   ""repository"": """",
 
@@ -116,9 +116,9 @@ namespace AzureDevOpsPolicyConfigurator.Test
                   ""SubTypePropertyName"": ""statusName"",
                   ""SubTypePropertyValue"": ""pr-title"",
 
-                  ""project"": ""Framework"",
+                  ""project"": ""##Project##"",
                   ""branch"": """",
-                  ""repository"": ""doc.framework"",
+                  ""repository"": ""##Repository##"",
 
                   ""isBlocking"": true,
 
@@ -144,8 +144,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                {
@@ -169,7 +169,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                   ""SubTypePropertyName"": ""statusName"",
                   ""SubTypePropertyValue"": ""pr-title"",
 
-                  ""project"": ""Framework"",
+                  ""project"": ""##Project##"",
                   ""branch"": """",
                   ""repository"": """",
 
@@ -187,9 +187,9 @@ namespace AzureDevOpsPolicyConfigurator.Test
                   ""SubTypePropertyName"": ""statusName"",
                   ""SubTypePropertyValue"": ""pr-title2"",
 
-                  ""project"": ""Framework"",
+                  ""project"": ""##Project##"",
                   ""branch"": """",
-                  ""repository"": ""doc.framework"",
+                  ""repository"": ""##Repository##"",
 
                   ""isBlocking"": true,
 

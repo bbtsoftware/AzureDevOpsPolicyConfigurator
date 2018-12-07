@@ -16,8 +16,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -89,8 +89,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [ ""Status"" ],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -118,8 +118,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
             {
               ""allowDeletion"":  false,
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {

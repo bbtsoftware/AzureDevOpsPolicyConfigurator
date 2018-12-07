@@ -15,8 +15,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -51,8 +51,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -87,8 +87,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -120,8 +120,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -153,8 +153,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -196,8 +196,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {

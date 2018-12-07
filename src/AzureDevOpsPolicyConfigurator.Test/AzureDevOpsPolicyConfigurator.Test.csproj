@@ -9,6 +9,7 @@
     <TargetLatestRuntimePatch>false</TargetLatestRuntimePatch>
   </PropertyGroup>
 
+
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.10.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" />

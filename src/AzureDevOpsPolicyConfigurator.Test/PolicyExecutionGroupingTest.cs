@@ -15,8 +15,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -38,7 +38,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Minimum number of reviewers"",
 
-                  ""project"": ""Framework"",
+                  ""project"": ""##Project##"",
                   ""branch"": """",
                   ""repository"": """",
 
@@ -66,8 +66,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -89,7 +89,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Minimum number of reviewers"",
 
-                  ""project"": ""Framework"",
+                  ""project"": ""##Project##"",
                   ""branch"": """",
                   ""repository"": """",
 
@@ -107,7 +107,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
 
                   ""project"": """",
                   ""branch"": """",
-                  ""repository"": ""doc.framework"",
+                  ""repository"": ""##Repository##"",
 
                   ""isBlocking"": true,
 
@@ -134,8 +134,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -157,7 +157,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Minimum number of reviewers"",
 
-                  ""project"": ""Framework"",
+                  ""project"": ""##Project##"",
                   ""branch"": """",
                   ""repository"": """",
 
@@ -175,7 +175,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
 
                   ""project"": """",
                   ""branch"": """",
-                  ""repository"": ""doc.framework"",
+                  ""repository"": ""##Repository##"",
 
                   ""isBlocking"": true,
 
@@ -219,8 +219,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -242,7 +242,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Minimum number of reviewers"",
 
-                  ""project"": ""Framework"",
+                  ""project"": ""##Project##"",
                   ""branch"": """",
                   ""repository"": """",
 
@@ -260,7 +260,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
 
                   ""project"": """",
                   ""branch"": """",
-                  ""repository"": ""doc.framework"",
+                  ""repository"": ""##Repository##"",
 
                   ""isBlocking"": true,
 
@@ -290,7 +290,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Minimum number of reviewers"",
 
-                  ""project"": ""Framework"",
+                  ""project"": ""##Project##"",
                   ""branch"": ""master"",
                   ""repository"": """",
 
@@ -321,8 +321,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -344,7 +344,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Minimum number of reviewers"",
 
-                  ""project"": ""Framework"",
+                  ""project"": ""##Project##"",
                   ""branch"": """",
                   ""repository"": """",
 
@@ -362,7 +362,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
 
                   ""project"": """",
                   ""branch"": """",
-                  ""repository"": ""doc.framework"",
+                  ""repository"": ""##Repository##"",
 
                   ""isBlocking"": true,
 
@@ -392,7 +392,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                 {
                   ""type"": ""Minimum number of reviewers"",
 
-                  ""project"": ""Framework"",
+                  ""project"": ""##Project##"",
                   ""branch"": ""master"",
                   ""repository"": """",
 
@@ -410,7 +410,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
 
                   ""project"": """",
                   ""branch"": ""master"",
-                  ""repository"": ""doc.framework"",
+                  ""repository"": ""##Repository##"",
 
                   ""isBlocking"": true,
 
@@ -440,8 +440,8 @@ namespace AzureDevOpsPolicyConfigurator.Test
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
               ""applyTo"": {
-                ""projects"": [ ""Framework"" ],
-                ""repositories"": [""doc.framework""]
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
               },
               ""policies"": [
                 {
@@ -449,7 +449,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
 
                   ""project"": """",
                   ""branch"": ""release/*"",
-                  ""repository"": ""doc.framework"",
+                  ""repository"": ""##Repository##"",
 
                   ""isBlocking"": true,
 

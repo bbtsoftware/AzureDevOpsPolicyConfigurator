@@ -31,14 +31,21 @@ namespace AzureDevOpsPolicyConfigurator.Test
             loggerMock.Setup(x => x.Info(It.IsAny<string>())).Callback((string x) => result[LogLevel.Info].Add(x));
             loggerMock.Setup(x => x.Warn(It.IsAny<string>())).Callback((string x) => result[LogLevel.Warn].Add(x));
 
-            fileReaderMock.Setup(x => x.GetFileContent("input.json")).Returns(testData.FileContent);
+            var testConfiguration = TestConfiguration.CurrentConfiguration;
+
+            string fileContent =
+                testData.FileContent
+                .Replace("##Project##", testConfiguration.Project)
+                .Replace("##Repository##", testConfiguration.Repository);
+
+            fileReaderMock.Setup(x => x.GetFileContent("input.json")).Returns(fileContent);
 
             var whatIfExecuter = new WhatIfExecuter(new JsonSerializer(), fileReaderMock.Object, new ConnectionProvider(), loggerMock.Object);
 
             whatIfExecuter.Execute(new ExecuterSettings()
             {
                 Auth = AuthMethod.Ntlm,
-                CollectionUrl = "https://tfs.bbtlocal.ch/BBT",
+                CollectionUrl = testConfiguration.CollectionUrl,
                 Input = "input.json",
                 Verbosity = LogLevel.Debug
             });

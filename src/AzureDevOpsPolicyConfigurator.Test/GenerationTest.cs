@@ -14,7 +14,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
         {
             new StructureGenerator(new JsonFileWriter(), new ConnectionProvider()).Execute(new GeneratorSettings()
             {
-                CollectionUrl = "https://tfs.bbtlocal.ch/BBT",
+                CollectionUrl = TestConfiguration.CurrentConfiguration.CollectionUrl,
                 Auth = AuthMethod.Ntlm,
                 Destination = "Project"
             });
