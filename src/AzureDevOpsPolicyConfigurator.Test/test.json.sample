@@ -1,0 +1,5 @@
+{
+  "collectionUrl": "[Azure DevOps Collection Url]",
+  "project": "[Project to test with]",
+  "repository": "[Repository to test with]"
+}
