@@ -182,6 +182,9 @@ namespace AzureDevOpsPolicyConfigurator.Test
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("update"));
+            Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("wrong"));
+            Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("NotExact"));
+            Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("notguid"));
             Assert.Contains(result[LogLevel.Info], x => x.StartsWith("Policy is up to date"));
         }
 
@@ -201,7 +204,7 @@ namespace AzureDevOpsPolicyConfigurator.Test
                   ""type"": ""Status"",
 
                   ""SubTypePropertyName"": ""statusName"",
-                  ""SubTypePropertyValue"": ""pr-title"",
+                  ""SubTypePropertyValue"": ""Framework_docframework_CI_RunBuildChain"",
 
 
                   ""project"": """",
@@ -212,10 +215,10 @@ namespace AzureDevOpsPolicyConfigurator.Test
 
                   ""settings"": {
                     ""filenamePatterns"": [],
-                    ""statusGenre"": ""BBT.TfsWebhooks"",
+                    ""statusGenre"": ""TeamCity"",
                     ""authorId"": ""ecba3d80-fec6-4826-9f11-f4dc6cbd4d17"",
-                    ""invalidateOnSourceUpdate"": false,
-                    ""statusName"": ""not-pr-title"",
+                    ""invalidateOnSourceUpdate"": true,
+                    ""statusName"": ""not-Framework_docframework_CI_RunBuildChain"",
                     ""scope"": [
                         {
                             ""refName"": ""wrong"",
@@ -230,6 +233,10 @@ namespace AzureDevOpsPolicyConfigurator.Test
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("update"));
+            Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("wrong"));
+            Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("NotExact"));
+            Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("notguid"));
+            Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("not-Framework_docframework_CI_RunBuildChain"));
             Assert.Contains(result[LogLevel.Info], x => x.StartsWith("Policy is up to date"));
         }
     }
