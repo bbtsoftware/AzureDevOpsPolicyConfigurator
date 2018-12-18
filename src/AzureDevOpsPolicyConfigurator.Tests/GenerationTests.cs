@@ -2,12 +2,12 @@
 using AzureDevOpsPolicyConfigurator.Logic;
 using Xunit;
 
-namespace AzureDevOpsPolicyConfigurator.Test
+namespace AzureDevOpsPolicyConfigurator.Tests
 {
     /// <summary>
-    /// Generation test.
+    /// Generation tests.
     /// </summary>
-    public class GenerationTest
+    public class GenerationTests
     {
         [Fact(DisplayName = "Generating structure and checking", Skip = SkippingInformation.SkippingReason)]
         private void GenerateStructureAndTestFileExistence()
