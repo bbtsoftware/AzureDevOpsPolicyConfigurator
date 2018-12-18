@@ -1,4 +1,6 @@
-﻿namespace AzureDevOpsPolicyConfigurator
+﻿using System.Collections.Generic;
+
+namespace AzureDevOpsPolicyConfigurator
 {
     /// <summary>
     /// JsonSerializer interface.
@@ -9,9 +11,17 @@
         /// Deserializes an object.
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
-        /// <param name="str">String to deserialize</param>
+        /// <param name="contents">String contents to merge and deserialize</param>
         /// <returns>A deserialized object</returns>
-        T Deserialize<T>(string str);
+        T Deserialize<T>(IEnumerable<string> contents);
+
+        /// <summary>
+        /// Deserializes an object.
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="content">String content to deserialize</param>
+        /// <returns>A deserialized object</returns>
+        T Deserialize<T>(string content);
 
         /// <summary>
         /// Serializes an object.

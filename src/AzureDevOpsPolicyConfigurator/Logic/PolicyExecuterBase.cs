@@ -47,8 +47,9 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="arguments">Arguments</param>
         public void Execute(ExecuterSettings arguments)
         {
-            var content = this.reader.GetFileContent(arguments.Input);
-            var policyDefinition = this.Serializer.Deserialize<PolicyDefinition>(content);
+            var contents = arguments.Input.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(x => this.reader.GetFileContent(x.Trim()));
+
+            var policyDefinition = this.Serializer.Deserialize<PolicyDefinition>(contents);
 
             using (var connection = this.connectionProvider.GetConnection(arguments))
             using (var projectClient = connection.GetClient<ProjectHttpClient>())
