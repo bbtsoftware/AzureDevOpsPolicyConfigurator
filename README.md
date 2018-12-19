@@ -104,7 +104,7 @@ AzureDevOpsPolicyConfigurator execute -a ntlm -c https://tfs.yourserver.ch/Defau
 | `--user` or `-u`             | The user for authentication (optional for PAT authentication, or for `ntlm` authentication with current user)
 | `--password` or `-p`         | The password or PAT for the authentication (optional for `ntlm` authentication with current user)
 | `--verbosity` or `-v`        | Sets the log4net root level, option values: `info`, `debug`, `warn`, `error` (optional, default is `info`)
-| `--in` or `-i`               | the input JSON settings file
+| `--in` or `-i`               | the input JSON settings file (Multiple files can be specified with the delimiter: `;`. These files will be merged.)
 
 ### Input file
 
