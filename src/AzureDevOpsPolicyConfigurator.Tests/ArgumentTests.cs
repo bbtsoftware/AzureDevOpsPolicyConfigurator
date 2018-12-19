@@ -3,12 +3,12 @@ using System.IO;
 using AzureDevOpsPolicyConfigurator.Exceptions;
 using Xunit;
 
-namespace AzureDevOpsPolicyConfigurator.Test
+namespace AzureDevOpsPolicyConfigurator.Tests
 {
     /// <summary>
     /// Argument tester
     /// </summary>
-    public class ArgumentTest
+    public class ArgumentTests
     {
         [Fact(DisplayName = "Test null arguments")]
         private void TestRunWithNullArgument()

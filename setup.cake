@@ -33,4 +33,4 @@ Task("Publish-Application")
 
 BuildParameters.Tasks.CreateChocolateyPackagesTask.IsDependentOn("Publish-Application");
 
-Build.Run();
+Build.RunDotNetCore();

@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using Xunit;
 
-namespace AzureDevOpsPolicyConfigurator.Test
+namespace AzureDevOpsPolicyConfigurator.Tests
 {
     /// <summary>
-    /// Policy execution settings test.
+    /// Policy execution settings tests.
     /// </summary>
-    public class PolicyExecutionSettingsTest
+    public class PolicyExecutionSettingsTests
     {
         [Fact(DisplayName = "Check startings, apply to and disallow deletion", Skip = SkippingInformation.SkippingReason)]
         private void CheckStartingAndSkippings()

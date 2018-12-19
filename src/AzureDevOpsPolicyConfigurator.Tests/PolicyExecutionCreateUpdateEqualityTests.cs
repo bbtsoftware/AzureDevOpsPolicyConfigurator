@@ -1,11 +1,11 @@
 ﻿using Xunit;
 
-namespace AzureDevOpsPolicyConfigurator.Test
+namespace AzureDevOpsPolicyConfigurator.Tests
 {
     /// <summary>
-    /// Policy execution equality test.
+    /// Policy execution equality tests.
     /// </summary>
-    public class PolicyExecutionCreateUpdateEqualityTest
+    public class PolicyExecutionCreateUpdateEqualityTests
     {
         [Fact(DisplayName = "Check create", Skip = SkippingInformation.SkippingReason)]
         private void CheckCreate()

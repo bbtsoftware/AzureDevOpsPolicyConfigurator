@@ -2,7 +2,7 @@
 using AzureDevOpsPolicyConfigurator.Logic;
 using Moq;
 
-namespace AzureDevOpsPolicyConfigurator.Test
+namespace AzureDevOpsPolicyConfigurator.Tests
 {
     /// <summary>
     /// Policy tester class.

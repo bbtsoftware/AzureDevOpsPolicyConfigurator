@@ -1,4 +1,4 @@
-﻿namespace AzureDevOpsPolicyConfigurator.Test
+﻿namespace AzureDevOpsPolicyConfigurator.Tests
 {
     /// <summary>
     /// Test file representation.

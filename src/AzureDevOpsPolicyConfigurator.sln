@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		AzureDevOpsPolicyConfigurator.global.ruleset = AzureDevOpsPolicyConfigurator.global.ruleset
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureDevOpsPolicyConfigurator.Test", "AzureDevOpsPolicyConfigurator.Test\AzureDevOpsPolicyConfigurator.Test.csproj", "{AC0CAA5F-CCCF-4EDB-B82E-44B438F58D18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureDevOpsPolicyConfigurator.Tests", "AzureDevOpsPolicyConfigurator.Tests\AzureDevOpsPolicyConfigurator.Tests.csproj", "{AC0CAA5F-CCCF-4EDB-B82E-44B438F58D18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

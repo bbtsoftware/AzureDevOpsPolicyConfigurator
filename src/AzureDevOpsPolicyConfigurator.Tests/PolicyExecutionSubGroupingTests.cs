@@ -1,11 +1,11 @@
 ﻿using Xunit;
 
-namespace AzureDevOpsPolicyConfigurator.Test
+namespace AzureDevOpsPolicyConfigurator.Tests
 {
     /// <summary>
-    /// Policy execution sub grouping test.
+    /// Policy execution sub grouping tests.
     /// </summary>
-    public class PolicyExecutionSubGroupingTest
+    public class PolicyExecutionSubGroupingTests
     {
         [Fact(DisplayName = "Check project wide over for subgrouping", Skip = SkippingInformation.SkippingReason)]
         private void CheckProjectWideOverGlobal()

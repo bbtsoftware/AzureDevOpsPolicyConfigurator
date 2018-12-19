@@ -1,11 +1,11 @@
 ﻿using Xunit;
 
-namespace AzureDevOpsPolicyConfigurator.Test
+namespace AzureDevOpsPolicyConfigurator.Tests
 {
     /// <summary>
-    /// Policy execution special test.
+    /// Policy execution special tests.
     /// </summary>
-    public class PolicyExecutionSpecialTest
+    public class PolicyExecutionSpecialTests
     {
         [Fact(DisplayName = "Check scope and subtype property creation", Skip = SkippingInformation.SkippingReason)]
         private void CheckScopeAndSubTypePropertyCreation()
