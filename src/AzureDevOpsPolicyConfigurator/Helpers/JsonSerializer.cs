@@ -44,5 +44,11 @@ namespace AzureDevOpsPolicyConfigurator
 
             return JsonConvert.SerializeObject(obj, settings);
         }
+
+        /// <inheritdoc/>
+        public T Clone<T>(T obj)
+        {
+            return this.Deserialize<T>(this.Serialize(obj));
+        }
     }
 }

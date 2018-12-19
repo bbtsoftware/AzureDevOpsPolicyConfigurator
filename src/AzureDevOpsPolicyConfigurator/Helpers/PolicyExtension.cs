@@ -81,6 +81,38 @@ namespace AzureDevOpsPolicyConfigurator
         }
 
         /// <summary>
+        /// Flattens the policies by branches.
+        /// </summary>
+        /// <param name="policies">Policies</param>
+        /// <param name="serializer">Json serializer</param>
+        /// <returns>Flattened policies</returns>
+        public static IEnumerable<Policy> FlattenBranches(this IEnumerable<Policy> policies, IJsonSerializer serializer)
+        {
+            var policiesToFlatten = policies.Where(x => x.Branches != null && x.Branches.Count > 0).ToList();
+            var newPolicies = new List<Policy>();
+
+            foreach (var policy in policies)
+            {
+                if (policy.Branches != null && policy.Branches.Count > 0)
+                {
+                    foreach (var branch in policy.Branches)
+                    {
+                        var newPolicy = serializer.Clone(policy);
+                        newPolicy.Branch = branch;
+                        newPolicy.Branches = null;
+                        newPolicies.Add(newPolicy);
+                    }
+
+                    continue;
+                }
+
+                newPolicies.Add(policy);
+            }
+
+            return newPolicies;
+        }
+
+        /// <summary>
         /// Returns the branch from the settings.
         /// </summary>
         /// <param name="configuration">Policy configuration</param>

@@ -314,6 +314,25 @@ be removed, if not needed.)
 }
 ```
 
+#### Global, for every "master" and "release" branch
+
+```json
+{
+    "type": "Require a merge strategy",
+
+    "project": "",
+    "branches": ["master", "release/*"],
+    "matchKind": "exact",
+    "repository": "",
+
+    "isBlocking": true,
+
+    "settings": {
+        "useSquashMerge":  false
+    }
+}
+```
+
 #### For every feature branch under the "MyRepository" repository in the "MyProject" project
 
 ```json
