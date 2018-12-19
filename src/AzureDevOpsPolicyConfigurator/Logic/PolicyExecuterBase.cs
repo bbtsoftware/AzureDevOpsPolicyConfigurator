@@ -238,9 +238,9 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         {
             return policies.FlattenBranches(this.Serializer)
                 .Where(x =>
-                        string.IsNullOrEmpty(x.Project) || // global or branch specific
-                        (x.Project.ToLower() == project.Name.ToLower() || x.Project.ToLower() == project.Id.ToString().ToLower()) || // project or project branch specific
-                        (x.Repository.ToLower() == repository.Name.ToLower() || x.Repository.ToLower() == repository.Id.ToString().ToLower())) // repository
+                        (string.IsNullOrEmpty(x.Project) || // global or branch specific
+                        (x.Project.ToLower() == project.Name.ToLower() || x.Project.ToLower() == project.Id.ToString().ToLower())) && // project or project branch specific
+                        (string.IsNullOrEmpty(x.Repository) || x.Repository.ToLower() == repository.Name.ToLower() || x.Repository.ToLower() == repository.Id.ToString().ToLower())) // repository
                 .GroupBy(
                     x => x.Branch,
                     (e, ee) => new BranchPolicies(e, ee.GroupBy(x => x.UniquenessDefinition, (te, tee) => tee.OrderBy(x => x, new PolicyPriorityComparer()).First())));
