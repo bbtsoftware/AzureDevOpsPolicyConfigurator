@@ -15,6 +15,12 @@ BuildParameters.SetParameters(
 
 BuildParameters.PrintParameters(Context);
 
+ToolSettings.SetToolSettings(
+    context: Context,
+    testCoverageFilter: "+[AzureDevOpsPolicyConfigurator]*",
+    testCoverageExcludeByAttribute: "*.ExcludeFromCodeCoverage*",
+    testCoverageExcludeByFile: "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs");
+
 Task("Publish-Application")
     .IsDependentOn("Build")
     .Does(() =>
