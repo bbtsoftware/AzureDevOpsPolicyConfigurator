@@ -61,7 +61,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
             get => this.branch;
             set
             {
-                if (value.EndsWith("*"))
+                if (value != null && value.EndsWith("*"))
                 {
                     this.MatchKind = MatchKind.Prefix;
                     value = value.Substring(0, value.Length - 1);
@@ -75,6 +75,11 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// Gets or sets the match kind of a branch.
         /// </summary>
         public MatchKind MatchKind { get; set; }
+
+        /// <summary>
+        /// Gets or sets the branches.
+        /// </summary>
+        public List<string> Branches { get; set; }
 
         /// <summary>
         /// Gets or sets the policy repository name or repository id.

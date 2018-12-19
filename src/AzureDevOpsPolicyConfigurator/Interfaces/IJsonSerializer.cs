@@ -30,5 +30,13 @@ namespace AzureDevOpsPolicyConfigurator
         /// <param name="obj">Object to serialize</param>
         /// <returns>Serialized string</returns>
         string Serialize<T>(T obj);
+
+        /// <summary>
+        /// Clones an object.
+        /// </summary>
+        /// <typeparam name="T">Type of object</typeparam>
+        /// <param name="obj">Object to clone</param>
+        /// <returns>Cloned object</returns>
+        T Clone<T>(T obj);
     }
 }
