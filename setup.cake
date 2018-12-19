@@ -22,7 +22,7 @@ ToolSettings.SetToolSettings(
     testCoverageExcludeByFile: "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs");
 
 Task("Publish-Application")
-    .IsDependentOn("Build")
+    .IsDependentOn("DotNetCore-Build")
     .Does(() =>
 {
     Information(BuildParameters.SolutionFilePath.FullPath);
