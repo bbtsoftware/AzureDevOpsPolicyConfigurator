@@ -467,5 +467,56 @@ namespace AzureDevOpsPolicyConfigurator.Tests
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("heads/release"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("Prefix"));
         }
+
+        [Fact(DisplayName = "Check other repository not included", Skip = SkippingInformation.SkippingReason)]
+        private void CheckOtherRepositoryNotIncluded()
+        {
+            var result = new PolicyTester().RunTest(new TestData(@"
+            {
+              ""allowDeletion"":  false,
+              ""ignoreTypes"": [],
+              ""applyTo"": {
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
+              },
+              ""policies"": [
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": """",
+                  ""repository"": """",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 6,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                },
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": ""master"",
+                  ""repository"": ""myrepo"",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 7,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                }
+              ]
+            }"));
+
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 7"));
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 6"));
+        }
     }
 }
