@@ -59,7 +59,11 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// </summary>
         public string Branch
         {
-            get => this.branch;
+            get
+            {
+                return this.branch ?? string.Empty;
+            }
+
             set
             {
                 if (value != null && value.EndsWith("*"))
