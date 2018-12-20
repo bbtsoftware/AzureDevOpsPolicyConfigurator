@@ -192,7 +192,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                     foreach (var serverPolicy in serverPolicies)
                     {
                         if (policy.PolicyType.Id == serverPolicy.Type.Id && serverPolicy.DoesSubTypeMatch(policy) &&
-                                (!string.IsNullOrEmpty(policy.Branch) && serverPolicy.GetBranch() == policy.Branch && serverPolicy.GetMatchKind() == policy.MatchKind))
+                                (serverPolicy.GetBranch() == policy.Branch && serverPolicy.GetMatchKind() == policy.MatchKind))
                         {
                             hasMatch = true;
                             handledServerPolicies.Add(serverPolicy.Id);
