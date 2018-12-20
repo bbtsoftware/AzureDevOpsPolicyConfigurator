@@ -12,6 +12,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
     {
         private static readonly List<string> RepositorySpecificTypes = new List<string>() { "Git repository settings" };
         private string branch;
+        private MatchKind matchKind;
 
         /// <summary>
         /// Gets or sets the policy name or id.
@@ -64,7 +65,6 @@ namespace AzureDevOpsPolicyConfigurator.Data
                 if (value != null && value.EndsWith("*"))
                 {
                     this.MatchKind = MatchKind.Prefix;
-                    value = value.Substring(0, value.Length - 1);
                 }
 
                 this.branch = value;
@@ -74,7 +74,19 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// <summary>
         /// Gets or sets the match kind of a branch.
         /// </summary>
-        public MatchKind MatchKind { get; set; }
+        public MatchKind MatchKind
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this.Branch))
+                {
+                    this.matchKind = MatchKind.Prefix;
+                }
+
+                return this.matchKind;
+            }
+            set => this.matchKind = value;
+        }
 
         /// <summary>
         /// Gets or sets the branches.
@@ -97,6 +109,8 @@ namespace AzureDevOpsPolicyConfigurator.Data
         public JObject Settings { get; set; }
 
         private bool IsRepositorySpecific => RepositorySpecificTypes.Contains(this.PolicyType.DisplayName);
+
+        private string ScopeBranch => "refs/heads/" + (this.Branch ?? string.Empty);
 
         /// <summary>
         /// Returns the Settings property and adds scope
@@ -161,7 +175,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
         private JProperty CreateScope(Guid repositoryId)
         {
             var scopeObject = new JObject(
-                    new JProperty("refName", string.IsNullOrEmpty(this.Branch) ? string.Empty : "refs/heads/" + this.Branch),
+                    new JProperty("refName", this.ScopeBranch),
                     new JProperty("repositoryId", repositoryId),
                     new JProperty("matchKind", this.MatchKind.ToString()));
 

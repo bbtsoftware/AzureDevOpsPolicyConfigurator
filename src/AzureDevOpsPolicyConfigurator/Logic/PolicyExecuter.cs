@@ -67,7 +67,9 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             Policy policy,
             PolicyConfiguration serverPolicy)
         {
-            var async = policyClient.UpdatePolicyConfigurationAsync(this.GetPolicyConfiguration(types, repository, policy), projectId, serverPolicy.Id);
+            var policyConfiguration = this.GetPolicyConfiguration(types, repository, policy);
+
+            var async = policyClient.UpdatePolicyConfigurationAsync(policyConfiguration, projectId, serverPolicy.Id);
 
             this.Logger.Debug(this.Serializer.Serialize(async.Result));
             this.Logger.Info($"Policy updated. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
