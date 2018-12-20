@@ -13,7 +13,7 @@ namespace AzureDevOpsPolicyConfigurator
         /// </summary>
         public GeneratorSettings()
         {
-            this.Destination = @".\Projecť";
+            this.Destination = @".\Project";
         }
 
         /// <summary>
