@@ -432,7 +432,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 8"));
         }
 
-        [Fact(DisplayName = "Check star translation to prefox", Skip = SkippingInformation.SkippingReason)]
+        [Fact(DisplayName = "Check star translation to prefix", Skip = SkippingInformation.SkippingReason)]
         private void CheckStarTranslationToPrefix()
         {
             var result = new PolicyTester().RunTest(new TestData(@"
@@ -464,7 +464,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
             }"));
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
-            Assert.Contains(result[LogLevel.Debug], x => x.Contains("heads/release"));
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("heads/release/*"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("Prefix"));
         }
 
@@ -517,6 +517,40 @@ namespace AzureDevOpsPolicyConfigurator.Tests
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 7"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 6"));
+        }
+
+        [Fact(DisplayName = "Check branch policy ignored", Skip = SkippingInformation.SkippingReason)]
+        private void CheckBranchPolicyIgnored()
+        {
+            var result = new PolicyTester().RunTest(new TestData(@"
+            {
+              ""allowDeletion"":  false,
+              ""ignoreTypes"": [],
+              ""applyTo"": {
+                ""projects"": [ ""##Project##"" ],
+                ""repositories"": [""##Repository##""]
+              },
+              ""policies"": [
+                {
+                  ""type"": ""Minimum number of reviewers"",
+
+                  ""project"": """",
+                  ""branch"": ""blablabla"",
+                  ""repository"": ""##Repository##"",
+
+                  ""isBlocking"": true,
+
+                  ""settings"": {
+                    ""minimumApproverCount"": 3,
+                    ""creatorVoteCounts"": false,
+                    ""allowDownvotes"": false,
+                    ""resetOnSourcePush"": false
+                  }
+                }
+              ]
+            }"));
+
+            Assert.Contains(result[LogLevel.Debug], x => x.Contains("Policy branch ignored, because branch does not exist on the current repository."));
         }
     }
 }

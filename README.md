@@ -258,26 +258,7 @@ be removed, if not needed.)
 }
 ```
 
-#### Global, for every branch starting with the phrase "release"
-
-```json
-{
-    "type": "Require a merge strategy",
-
-    "project": "",
-    "branch": "release",
-    "matchKind": "prefix",
-    "repository": "",
-
-    "isBlocking": true,
-
-    "settings": {
-        "useSquashMerge":  false
-    }
-}
-```
-
-#### BranchKind: "prefix" can be substituted with a star in the branch definition
+#### Global, for every branch prefixed with the phrase "release/"
 
 ```json
 {

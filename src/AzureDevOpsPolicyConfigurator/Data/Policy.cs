@@ -12,7 +12,6 @@ namespace AzureDevOpsPolicyConfigurator.Data
     {
         private static readonly List<string> RepositorySpecificTypes = new List<string>() { "Git repository settings" };
         private string branch;
-        private MatchKind matchKind;
 
         /// <summary>
         /// Gets or sets the policy name or id.
@@ -63,33 +62,23 @@ namespace AzureDevOpsPolicyConfigurator.Data
             {
                 return this.branch ?? string.Empty;
             }
-
-            set
-            {
-                if (value != null && value.EndsWith("*"))
-                {
-                    this.MatchKind = MatchKind.Prefix;
-                }
-
-                this.branch = value;
-            }
+            set => this.branch = value;
         }
 
         /// <summary>
-        /// Gets or sets the match kind of a branch.
+        /// Gets the match kind of a branch.
         /// </summary>
         public MatchKind MatchKind
         {
             get
             {
-                if (string.IsNullOrEmpty(this.Branch))
+                if (string.IsNullOrEmpty(this.Branch) || this.Branch.EndsWith("*"))
                 {
-                    this.matchKind = MatchKind.Prefix;
+                    return MatchKind.Prefix;
                 }
 
-                return this.matchKind;
+                return MatchKind.Exact;
             }
-            set => this.matchKind = value;
         }
 
         /// <summary>
