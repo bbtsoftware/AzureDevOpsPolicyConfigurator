@@ -151,13 +151,19 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             IEnumerable<PolicyType> types)
         {
             List<int> handledServerPolicies = new List<int>();
+            List<Action> resultList = new List<Action>();
 
             foreach (var currentPolicy in relevantPolicies)
             {
-                this.HandleBranchChanges(policyClient, projectId, repository, serverPolicy, types, handledServerPolicies, currentPolicy);
+                this.HandleBranchChanges(policyClient, projectId, repository, serverPolicy, types, handledServerPolicies, currentPolicy, resultList);
             }
 
             this.RemoveNoMatchServerPolicies(allowDeletion, policyClient, projectId, serverPolicy, handledServerPolicies);
+
+            foreach (var element in resultList)
+            {
+                element.Invoke();
+            }
         }
 
         private void HandleBranchChanges(
@@ -167,7 +173,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             IEnumerable<PolicyConfiguration> serverPolicies,
             IEnumerable<PolicyType> types,
             List<int> handledServerPolicies,
-            BranchPolicies currentPolicy)
+            BranchPolicies currentPolicy,
+            List<Action> resultList)
         {
             foreach (var policy in currentPolicy.Policies)
             {
@@ -185,8 +192,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                     foreach (var serverPolicy in serverPolicies)
                     {
                         if (policy.PolicyType.Id == serverPolicy.Type.Id && serverPolicy.DoesSubTypeMatch(policy) &&
-                                (string.IsNullOrEmpty(policy.Branch) ||
-                                (!string.IsNullOrEmpty(policy.Branch) && serverPolicy.GetBranch() == policy.Branch && serverPolicy.GetMatchKind() == policy.MatchKind)))
+                                (!string.IsNullOrEmpty(policy.Branch) && serverPolicy.GetBranch() == policy.Branch && serverPolicy.GetMatchKind() == policy.MatchKind))
                         {
                             hasMatch = true;
                             handledServerPolicies.Add(serverPolicy.Id);
@@ -197,7 +203,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                             }
                             else
                             {
-                                this.UpdatePolicy(policyClient, types, projectId, repository, currentPolicy, policy, serverPolicy);
+                                resultList.Add(() => this.UpdatePolicy(policyClient, types, projectId, repository, currentPolicy, policy, serverPolicy));
                             }
 
                             break;
@@ -207,7 +213,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                 if (!hasMatch)
                 {
-                    this.CreatePolicy(policyClient, types, projectId, repository, currentPolicy, policy);
+                    resultList.Add(() => this.CreatePolicy(policyClient, types, projectId, repository, currentPolicy, policy));
                 }
             }
         }
