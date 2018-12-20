@@ -62,7 +62,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   ""SubTypePropertyValue"": ""pr-title"",
 
                   ""project"": """",
-                  ""branch"": """",
+                  ""branch"": ""master"",
                   ""repository"": """",
 
                   ""isBlocking"": true,
@@ -107,9 +107,8 @@ namespace AzureDevOpsPolicyConfigurator.Tests
               ]
             }"));
 
-            Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
+            Assert.Contains(result[LogLevel.Info], x => x.Contains("create"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("update"));
-            Assert.Contains(result[LogLevel.Info], x => x.StartsWith("Policy is up to date"));
         }
 
         [Fact(DisplayName = "Check is not equal with different IsBlocking", Skip = SkippingInformation.SkippingReason)]
@@ -127,8 +126,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                 {
                   ""type"": ""Comment requirements"",
 
+                  ""branch"": ""master"",
+
                   ""project"": """",
-                  ""branch"": """",
                   ""repository"": """",
 
                   ""isBlocking"": false,
@@ -161,7 +161,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   ""type"": ""Comment requirements"",
 
                   ""project"": """",
-                  ""branch"": """",
+                  ""branch"": ""master"",
                   ""repository"": """",
 
                   ""isBlocking"": true,
@@ -208,7 +208,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
 
 
                   ""project"": """",
-                  ""branch"": """",
+                  ""branch"": ""master"",
                   ""repository"": """",
 
                   ""isBlocking"": true,
