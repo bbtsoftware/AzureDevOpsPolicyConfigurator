@@ -10,7 +10,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
     /// </summary>
     internal class Policy
     {
-        private static readonly List<string> RepositorySpecificTypes = new List<string>() { "Git repository settings" };
+        private static readonly List<string> RepositorySpecificTypes = new List<string>() { "Git repository settings", "File size restriction" };
         private string branch;
 
         /// <summary>
