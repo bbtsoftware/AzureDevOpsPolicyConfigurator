@@ -80,6 +80,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                     foreach (var repository in repositories.Result)
                     {
+                        var branches = gitRepositoryClient.GetBranchesAsync(repository.Id);
+
                         if (!policyDefinition.IsRepositoryAllowed(repository))
                         {
                             this.Logger.Debug($"Skipping repository \"{repository.Name}\", because it's not listed in the allowed repositories list");
@@ -91,7 +93,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                         var relevantPolicies = this.GetPoliciesForRepository(policyDefinition.Policies, project, repository);
                         var serverPolicy = grouppedRepositories.FirstOrDefault(x => x.Key == repository.Id.ToString());
 
-                        this.HandleChanges(policyDefinition.AllowDeletion, policyClient, project.Id, repository, relevantPolicies, serverPolicy, types);
+                        this.HandleChanges(policyDefinition.AllowDeletion, policyClient, project.Id, repository, branches.Result, relevantPolicies, serverPolicy, types);
                     }
                 }
             }
@@ -146,6 +148,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             PolicyHttpClient policyClient,
             Guid projectId,
             GitRepository repository,
+            List<GitBranchStats> branches,
             IEnumerable<BranchPolicies> relevantPolicies,
             IEnumerable<PolicyConfiguration> serverPolicy,
             IEnumerable<PolicyType> types)
@@ -155,7 +158,17 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
             foreach (var currentPolicy in relevantPolicies)
             {
-                this.HandleBranchChanges(policyClient, projectId, repository, serverPolicy, types, handledServerPolicies, currentPolicy, resultList);
+                // Ignore exact branches not found on the repository
+                if (string.IsNullOrEmpty(currentPolicy.Branch) ||
+                    currentPolicy.Branch.Contains("*") ||
+                    branches.Any(x => x.Name == currentPolicy.Branch))
+                {
+                    this.HandleBranchChanges(policyClient, projectId, repository, serverPolicy, types, handledServerPolicies, currentPolicy, resultList);
+                }
+                else
+                {
+                    this.Logger.Debug($"Policy branch ignored, because branch does not exist on the current repository. (Repository: {repository.Name}, Branch: {currentPolicy.Branch})");
+                }
             }
 
             this.RemoveNoMatchServerPolicies(allowDeletion, policyClient, projectId, serverPolicy, handledServerPolicies);
