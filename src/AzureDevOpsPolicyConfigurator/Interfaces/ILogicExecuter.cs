@@ -1,4 +1,5 @@
-﻿using Spectre.Cli;
+﻿using System.Threading.Tasks;
+using Spectre.Cli;
 
 namespace AzureDevOpsPolicyConfigurator
 {
@@ -13,6 +14,7 @@ namespace AzureDevOpsPolicyConfigurator
         /// Execute Logic.
         /// </summary>
         /// <param name="arguments">Arguments</param>
-        void Execute(T arguments);
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task Execute(T arguments);
     }
 }

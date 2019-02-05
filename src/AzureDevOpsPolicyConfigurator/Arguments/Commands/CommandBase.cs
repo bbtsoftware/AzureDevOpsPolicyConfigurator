@@ -7,7 +7,7 @@ namespace AzureDevOpsPolicyConfigurator
     /// CommandBase class.
     /// </summary>
     /// <typeparam name="TSettings">Settings type</typeparam>
-    internal abstract class CommandBase<TSettings> : Command<TSettings>
+    internal abstract class CommandBase<TSettings> : AsyncCommand<TSettings>
         where TSettings : BaseSettings
     {
         /// <summary>

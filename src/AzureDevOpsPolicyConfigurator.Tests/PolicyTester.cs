@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Logic;
 using Moq;
 
@@ -14,7 +15,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         /// </summary>
         /// <param name="testData">Test data</param>
         /// <returns>A dictionary of logs grouped by LogLevel.</returns>
-        public Dictionary<LogLevel, List<string>> RunTest(TestData testData)
+        public async Task<Dictionary<LogLevel, List<string>>> RunTest(TestData testData)
         {
             Dictionary<LogLevel, List<string>> result = new Dictionary<LogLevel, List<string>>()
             {
@@ -42,13 +43,13 @@ namespace AzureDevOpsPolicyConfigurator.Tests
 
             var whatIfExecuter = new WhatIfExecuter(new JsonSerializer(), fileReaderMock.Object, new ConnectionProvider(), loggerMock.Object);
 
-            whatIfExecuter.Execute(new ExecuterSettings()
+            await whatIfExecuter.Execute(new ExecuterSettings()
             {
                 Auth = AuthMethod.Ntlm,
                 CollectionUrl = testConfiguration.CollectionUrl,
                 Input = "input.json",
                 Verbosity = LogLevel.Debug
-            });
+            }).ConfigureAwait(false);
 
             return result;
         }

@@ -8,9 +8,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class PolicyExecutionSpecialTests
     {
         [Fact(DisplayName = "Check scope and subtype property creation", Skip = SkippingInformation.SkippingReason)]
-        private void CheckScopeAndSubTypePropertyCreation()
+        private async void CheckScopeAndSubTypePropertyCreation()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -36,15 +36,15 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"scope\": ["));
         }
 
         [Fact(DisplayName = "Check scope and subtype property removal", Skip = SkippingInformation.SkippingReason)]
-        private void CheckScopeAndSubTypePropertyRemoval()
+        private async void CheckScopeAndSubTypePropertyRemoval()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -76,7 +76,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("create-new"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("myrefname"));
@@ -84,9 +84,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check repository specific scope creation", Skip = SkippingInformation.SkippingReason)]
-        private void CheckRepositorySpecificScopeCreation()
+        private async void CheckRepositorySpecificScopeCreation()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -119,7 +119,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("scope"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("refName"));

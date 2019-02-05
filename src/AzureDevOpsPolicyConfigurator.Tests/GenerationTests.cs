@@ -10,14 +10,14 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class GenerationTests
     {
         [Fact(DisplayName = "Generating structure and checking", Skip = SkippingInformation.SkippingReason)]
-        private void GenerateStructureAndTestFileExistence()
+        private async void GenerateStructureAndTestFileExistence()
         {
-            new StructureGenerator(new JsonFileWriter(), new ConnectionProvider()).Execute(new GeneratorSettings()
+            await new StructureGenerator(new JsonFileWriter(), new ConnectionProvider()).Execute(new GeneratorSettings()
             {
                 CollectionUrl = TestConfiguration.CurrentConfiguration.CollectionUrl,
                 Auth = AuthMethod.Ntlm,
                 Destination = "Project"
-            });
+            }).ConfigureAwait(false);
 
             Assert.True(Directory.Exists("Project"));
             Assert.True(File.Exists("Project\\projects.json"));

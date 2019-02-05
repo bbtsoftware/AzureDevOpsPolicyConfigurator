@@ -8,9 +8,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class PolicyExecutionCreateUpdateEqualityTests
     {
         [Fact(DisplayName = "Check create", Skip = SkippingInformation.SkippingReason)]
-        private void CheckCreate()
+        private async void CheckCreate()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -36,7 +36,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("update"));
             Assert.Contains(result[LogLevel.Info], x => x.Contains("create"));
@@ -44,9 +44,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check update", Skip = SkippingInformation.SkippingReason)]
-        private void CheckUpdate()
+        private async void CheckUpdate()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -72,7 +72,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
             Assert.Contains(result[LogLevel.Info], x => x.Contains("update"));
@@ -80,9 +80,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check equals", Skip = SkippingInformation.SkippingReason)]
-        private void CheckIsEqual()
+        private async void CheckIsEqual()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -105,16 +105,16 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.Contains(result[LogLevel.Info], x => x.Contains("create"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("update"));
         }
 
         [Fact(DisplayName = "Check is not equal with different IsBlocking", Skip = SkippingInformation.SkippingReason)]
-        private void CheckIsNotEqualWithDifferentIsBlocking()
+        private async void CheckIsNotEqualWithDifferentIsBlocking()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -138,7 +138,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
             Assert.Contains(result[LogLevel.Info], x => x.Contains("update"));
@@ -146,9 +146,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check equals and ignore scope", Skip = SkippingInformation.SkippingReason)]
-        private void CheckIsEqualAndIgnoreScope()
+        private async void CheckIsEqualAndIgnoreScope()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -178,7 +178,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("update"));
@@ -189,9 +189,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check equals and ignore scope and sub type", Skip = SkippingInformation.SkippingReason)]
-        private void CheckIsEqualAndIgnoreScopeAndSubType()
+        private async void CheckIsEqualAndIgnoreScopeAndSubType()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -229,7 +229,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("update"));

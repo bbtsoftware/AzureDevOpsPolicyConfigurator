@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Threading.Tasks;
 using log4net;
 using Spectre.Cli;
 
@@ -13,9 +14,10 @@ namespace AzureDevOpsPolicyConfigurator
         /// Main entrypoint
         /// </summary>
         /// <param name="args">Main arguments</param>
-        public static void Main(string[] args)
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public static async Task Main(string[] args)
         {
-            new Program().Run(args, false);
+            await new Program().Run(args, false).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -24,7 +26,7 @@ namespace AzureDevOpsPolicyConfigurator
         /// <param name="args">arguments</param>
         /// <param name="propagateException">Propagate exception</param>
         /// <returns>int</returns>
-        internal int Run(string[] args, bool propagateException)
+        internal async Task<int> Run(string[] args, bool propagateException)
         {
             if (args == null)
             {
@@ -48,7 +50,7 @@ namespace AzureDevOpsPolicyConfigurator
             var executingAssembly = Assembly.GetExecutingAssembly();
             var logRepository = LogManager.GetRepository(executingAssembly);
 
-            return app.Run(args);
+            return await app.RunAsync(args).ConfigureAwait(false);
         }
     }
 }
