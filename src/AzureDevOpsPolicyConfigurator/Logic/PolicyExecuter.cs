@@ -32,7 +32,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="repository">Git repository</param>
         /// <param name="currentPolicy">Branch policy</param>
         /// <param name="policy">Policy</param>
-        protected override void CreatePolicy(
+        protected override async void CreatePolicy(
             PolicyHttpClient policyClient,
             IEnumerable<PolicyType> types,
             Guid projectId,
@@ -41,10 +41,9 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             Policy policy)
         {
             var policyConfiguration = this.GetPolicyConfiguration(types, repository, policy);
+            var result = await policyClient.CreatePolicyConfigurationAsync(policyConfiguration, projectId).ConfigureAwait(false);
 
-            var async = policyClient.CreatePolicyConfigurationAsync(policyConfiguration, projectId);
-
-            this.Logger.Debug(this.Serializer.Serialize(async.Result));
+            this.Logger.Debug(this.Serializer.Serialize(result));
             this.Logger.Info($"Policy created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
         }
 
@@ -58,7 +57,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="currentPolicy">Branch policy</param>
         /// <param name="policy">Policy</param>
         /// <param name="serverPolicy">Azure DevOps policy</param>
-        protected override void UpdatePolicy(
+        protected override async void UpdatePolicy(
             PolicyHttpClient policyClient,
             IEnumerable<PolicyType> types,
             Guid projectId,
@@ -68,10 +67,9 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             PolicyConfiguration serverPolicy)
         {
             var policyConfiguration = this.GetPolicyConfiguration(types, repository, policy);
+            var update = await policyClient.UpdatePolicyConfigurationAsync(policyConfiguration, projectId, serverPolicy.Id).ConfigureAwait(false);
 
-            var async = policyClient.UpdatePolicyConfigurationAsync(policyConfiguration, projectId, serverPolicy.Id);
-
-            this.Logger.Debug(this.Serializer.Serialize(async.Result));
+            this.Logger.Debug(this.Serializer.Serialize(update));
             this.Logger.Info($"Policy updated. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
         }
 
@@ -81,10 +79,9 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="policyClient">Policy client</param>
         /// <param name="projectId">Team project id</param>
         /// <param name="policy">Policy</param>
-        protected override void DeletePolicy(PolicyHttpClient policyClient, Guid projectId, PolicyConfiguration policy)
+        protected override async void DeletePolicy(PolicyHttpClient policyClient, Guid projectId, PolicyConfiguration policy)
         {
-            var async = policyClient.DeletePolicyConfigurationAsync(projectId, policy.Id);
-            async.Wait();
+            await policyClient.DeletePolicyConfigurationAsync(projectId, policy.Id).ConfigureAwait(false);
 
             this.Logger.Info($"Policy removed. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranch()}, Type: {policy.Type.DisplayName})");
         }

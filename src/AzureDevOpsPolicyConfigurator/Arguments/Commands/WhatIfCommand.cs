@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Logic;
 using Spectre.Cli;
 
@@ -15,10 +16,10 @@ namespace AzureDevOpsPolicyConfigurator
         /// </summary>
         /// <param name="context">Context</param>
         /// <param name="settings">Settings</param>
-        /// <returns>int</returns>
-        public override int Execute(CommandContext context, ExecuterSettings settings)
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public override async Task<int> Execute(CommandContext context, ExecuterSettings settings)
         {
-            new WhatIfExecuter(new JsonSerializer(), new FileReader(), new ConnectionProvider(), new Logger()).Execute(settings);
+            await new WhatIfExecuter(new JsonSerializer(), new FileReader(), new ConnectionProvider(), new Logger()).Execute(settings).ConfigureAwait(false);
             return 0;
         }
     }

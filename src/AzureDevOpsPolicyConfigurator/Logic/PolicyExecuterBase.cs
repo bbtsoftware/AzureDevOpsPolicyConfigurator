@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Data;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.Policy.WebApi;
@@ -45,7 +46,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// Executer
         /// </summary>
         /// <param name="arguments">Arguments</param>
-        public void Execute(ExecuterSettings arguments)
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public async Task Execute(ExecuterSettings arguments)
         {
             var contents = arguments.Input.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(x => this.reader.GetFileContent(x.Trim()));
 
@@ -56,10 +58,14 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             using (var policyClient = connection.GetClient<PolicyHttpClient>())
             using (var gitRepositoryClient = connection.GetClient<GitHttpClient>())
             {
-                var projects = projectClient.GetProjects();
+                var projects = await projectClient.GetProjects().ConfigureAwait(false);
 
-                foreach (var project in projects.Result)
+                foreach (var project in projects)
                 {
+                    var getPolicyConfigurationsTask = policyClient.GetPolicyConfigurationsAsync(project.Id);
+                    var getPolicyTypesTask = policyClient.GetPolicyTypesAsync(project.Id);
+                    var getRepositoriesTask = gitRepositoryClient.GetRepositoriesAsync(project.Id);
+
                     if (!policyDefinition.IsProjectAllowed(project))
                     {
                         this.Logger.Debug($"Skipping project \"{project.Name}\", because it's not listed in the allowed projects list");
@@ -68,19 +74,15 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                     this.Logger.Info($"Starting project: {project.Name}");
 
-                    var types = policyClient.GetPolicyTypesAsync(project.Id).Result;
-
-                    var policyConfigurations = policyClient.GetPolicyConfigurationsAsync(project.Id);
+                    var types = await getPolicyTypesTask.ConfigureAwait(false);
                     var grouppedRepositories =
-                        policyConfigurations.Result
+                        (await getPolicyConfigurationsTask.ConfigureAwait(false))
                             .Where(x => !policyDefinition.IgnoreType(x.Type.Id, types))
                             .GroupBy(x => x.GetRepositoryId());
 
-                    var repositories = gitRepositoryClient.GetRepositoriesAsync(project.Id);
-
-                    foreach (var repository in repositories.Result)
+                    foreach (var repository in await getRepositoriesTask.ConfigureAwait(false))
                     {
-                        var branches = gitRepositoryClient.GetBranchesAsync(repository.Id);
+                        var branches = await gitRepositoryClient.GetBranchesAsync(repository.Id).ConfigureAwait(false);
 
                         if (!policyDefinition.IsRepositoryAllowed(repository))
                         {
@@ -93,7 +95,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                         var relevantPolicies = this.GetPoliciesForRepository(policyDefinition.Policies, project, repository);
                         var serverPolicy = grouppedRepositories.FirstOrDefault(x => x.Key == repository.Id.ToString());
 
-                        this.HandleChanges(policyDefinition.AllowDeletion, policyClient, project.Id, repository, branches.Result, relevantPolicies, serverPolicy, types);
+                        this.HandleChanges(policyDefinition.AllowDeletion, policyClient, project.Id, repository, branches, relevantPolicies, serverPolicy, types);
                     }
                 }
             }
