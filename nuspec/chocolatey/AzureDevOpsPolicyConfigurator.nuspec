@@ -28,7 +28,8 @@ Azure DevOps policy configurator allows to apply policy settings on an Azure Dev
     <tags>bbt bbtsoftware policy devops azure</tags>
   </metadata>
   <files>
-    <file src="..\..\src\tools\**" target="tools" />
+    <file src="..\..\LICENSE*" target="tools" />
+    <file src="..\..\src\Chocolatey\tools\**" target="tools" />
     <file src="..\..\BuildArtifacts\bin\**" target="tools\bin" />
   </files>
 </package>
