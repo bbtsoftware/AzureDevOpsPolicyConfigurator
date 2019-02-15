@@ -39,6 +39,15 @@ Task("Publish-Application")
         });
 });
 
-BuildParameters.Tasks.CreateChocolateyPackagesTask.IsDependentOn("Publish-Application");
+Task("Prepare-Chocolatey-Packages")
+    .Does(() =>
+{
+    EnsureDirectoryExists(BuildParameters.Paths.Directories.Build + "/temp/_Packages");
+    CopyFile("./LICENSE", BuildParameters.Paths.Directories.Build + "/temp/_Packages/LICENSE.txt");
+});
+
+BuildParameters.Tasks.CreateChocolateyPackagesTask
+    .IsDependentOn("Publish-Application")
+    .IsDependentOn("Prepare-Chocolatey-Packages");
 
 Build.RunDotNetCore();
