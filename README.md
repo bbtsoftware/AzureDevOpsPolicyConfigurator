@@ -1,6 +1,6 @@
 # Azure DevOps policy configurator
 
-This tool gets the current policies for projects, repositories and branches, or applies policy settings over a team project collection based on a YAML configuration file.
+This tool gets the current policies for projects, repositories and branches, or applies policy settings over a team project collection based on a JSON configuration file.
 
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator/blob/develop/LICENSE)
 
@@ -9,7 +9,7 @@ This tool gets the current policies for projects, repositories and branches, or 
 | | Stable | Pre-release |
 |:--:|:--:|:--:|
 |GitHub Release|-|[![GitHub release](https://img.shields.io/github/release/bbtsoftware/AzureDevOpsPolicyConfigurator.svg)](https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator/releases/latest)|
-|Chocolatey|[![Chocolatey](https://img.shields.io/chocolatey/v/AzureDevOpsPolicyConfigurator.svg)](https://www.chocolatey.org/packages/AzureDevOpsPolicyConfigurator)|[![Chocolatey](https://img.shields.io/chocolatey/vpre/AzureDevOpsPolicyConfigurator.svg)](https://www.chocolatey.org/packages/AzureDevOpsPolicyConfigurator)|
+|Chocolatey|[![Chocolatey](https://img.shields.io/chocolatey/v/azure-devops-policy-configurator.svg)](https://www.chocolatey.org/packages/azure-devops-policy-configurator)|[![Chocolatey](https://img.shields.io/chocolatey/vpre/azure-devops-policy-configurator.svg)](https://www.chocolatey.org/packages/azure-devops-policy-configurator)|
 
 ## Build Status
 
@@ -22,7 +22,7 @@ This tool gets the current policies for projects, repositories and branches, or 
 ### General
 
 The tool is targeted to .Net Core 2.0 / .Net Standard 2.0, meaning, it can be used besides windows
-machines also on linux, macs, etc. The tool is wrapped in a chocolatey package, so it can be easily
+machines also on linux, macs, etc. The tool is wrapped in a Chocolatey package, so it can be easily
 installed onto a windows 10 machine, where the package builds an executable itself, and installs
 it to the client machine. Nevertheless, the tool can be targeted onto any runtime.
 See runtime catalog [here](https://docs.microsoft.com/en-us/dotnet/core/rid-catalog)
@@ -30,7 +30,7 @@ See runtime catalog [here](https://docs.microsoft.com/en-us/dotnet/core/rid-cata
 #### Installation
 
 ```ps
-choco install AzureDevOpsPolicyConfigurator
+choco install azure-devops-policy-configurator
 ```
 
 #### Generation to other targets
