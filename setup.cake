@@ -25,10 +25,12 @@ Task("Publish-Application")
     .IsDependentOn("DotNetCore-Build")
     .Does(() =>
 {
-    Information(BuildParameters.SolutionFilePath.FullPath);
-    Information(BuildParameters.Configuration);
+    var projectPath = "./src/AzureDevOpsPolicyConfigurator/AzureDevOpsPolicyConfigurator.csproj";
+
+    Information("Publishing {0}", projectPath);
+
     DotNetCorePublish(
-        BuildParameters.SolutionFilePath.FullPath,
+        projectPath,
         new DotNetCorePublishSettings
         {
             Runtime = "win10-x64",
