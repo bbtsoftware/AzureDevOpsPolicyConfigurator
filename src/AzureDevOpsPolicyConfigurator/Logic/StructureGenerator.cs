@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.Policy.WebApi;
 
@@ -29,7 +30,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// Generates the policy structure in the given folder.
         /// </summary>
         /// <param name="arguments">Main arguments</param>
-        public void Execute(GeneratorSettings arguments)
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public async Task Execute(GeneratorSettings arguments)
         {
             var mainFolder = arguments.Destination;
 
@@ -45,21 +47,21 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                 Directory.CreateDirectory(mainFolder);
 
-                var projects = projectClient.GetProjects();
+                var projects = await projectClient.GetProjects().ConfigureAwait(false);
 
-                this.jsonFileWriter.SerializeAndWrite(projects.Result, $@"{mainFolder}\projects.json");
+                this.jsonFileWriter.SerializeAndWrite(projects, $@"{mainFolder}\projects.json");
 
-                foreach (var project in projects.Result)
+                foreach (var project in projects)
                 {
+                    var types = await policyClient.GetPolicyTypesAsync(project.Id).ConfigureAwait(false);
+                    var policyConfigurations = await policyClient.GetPolicyConfigurationsAsync(project.Id).ConfigureAwait(false);
+
                     string currentProjectFolder = $@"{mainFolder}\{project.Name}";
                     Directory.CreateDirectory(currentProjectFolder);
 
-                    var types = policyClient.GetPolicyTypesAsync(project.Id);
-                    this.jsonFileWriter.SerializeAndWrite(types.Result, $@"{mainFolder}\{project.Name}\types.json");
+                    this.jsonFileWriter.SerializeAndWrite(types, $@"{mainFolder}\{project.Name}\types.json");
 
-                    var policyConfigurations = policyClient.GetPolicyConfigurationsAsync(project.Id);
-
-                    var grouppedRepositories = policyConfigurations.Result.GroupBy(
+                    var grouppedRepositories = policyConfigurations.GroupBy(
                         x => x.Settings["scope"].First.Value<string>("repositoryId"));
 
                     foreach (var group in grouppedRepositories)
@@ -67,9 +69,10 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                         string repository;
                         try
                         {
-                            repository = gitRepositoryClient.GetRepositoryAsync(new Guid(group.Key)).Result.Name;
+                            var repositoryObject = await gitRepositoryClient.GetRepositoryAsync(new Guid(group.Key)).ConfigureAwait(false);
+                            repository = repositoryObject.Name;
                         }
-                        catch (AggregateException)
+                        catch (Exception)
                         {
                             repository = group.Key;
                         }

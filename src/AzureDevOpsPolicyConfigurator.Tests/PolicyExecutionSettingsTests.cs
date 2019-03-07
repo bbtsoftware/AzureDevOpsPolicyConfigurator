@@ -9,9 +9,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class PolicyExecutionSettingsTests
     {
         [Fact(DisplayName = "Check startings, apply to and disallow deletion", Skip = SkippingInformation.SkippingReason)]
-        private void CheckStartingAndSkippings()
+        private async void CheckStartingAndSkippings()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -37,7 +37,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.NotEmpty(result);
             Assert.NotEmpty(result[LogLevel.Debug]);
@@ -50,7 +50,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
             Assert.Contains(result[LogLevel.Debug], x => x.StartsWith("Skipping repository"));
             Assert.Contains(result[LogLevel.Debug], x => x.StartsWith("Skipping project"));
 
-            result = new PolicyTester().RunTest(new TestData(@"
+            result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  true,
               ""policies"": [
@@ -71,7 +71,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.True(result[LogLevel.Info].Count(x => x.StartsWith("Starting project")) > 1);
             Assert.True(result[LogLevel.Info].Count(x => x.StartsWith("Starting repository")) > 1);
@@ -82,9 +82,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check Ignoring Types", Skip = SkippingInformation.SkippingReason)]
-        private void CheckIgnoreTypes()
+        private async void CheckIgnoreTypes()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [ ""Status"" ],
@@ -110,11 +110,11 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("Type: Status"));
 
-            result = new PolicyTester().RunTest(new TestData(@"
+            result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""applyTo"": {
@@ -139,7 +139,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.Contains(result[LogLevel.Info], x => x.Contains("Type: Status"));
         }

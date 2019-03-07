@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Logic;
 using Spectre.Cli;
 
@@ -15,10 +16,10 @@ namespace AzureDevOpsPolicyConfigurator
         /// </summary>
         /// <param name="context">Context</param>
         /// <param name="settings">Settings</param>
-        /// <returns>int</returns>
-        public override int Execute(CommandContext context, GeneratorSettings settings)
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public override async Task<int> Execute(CommandContext context, GeneratorSettings settings)
         {
-            new StructureGenerator(new JsonFileWriter(), new ConnectionProvider()).Execute(settings);
+            await new StructureGenerator(new JsonFileWriter(), new ConnectionProvider()).Execute(settings).ConfigureAwait(false);
             return 0;
         }
     }

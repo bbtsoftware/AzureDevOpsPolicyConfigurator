@@ -8,9 +8,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class PolicyExecutionSubGroupingTests
     {
         [Fact(DisplayName = "Check project wide over for subgrouping", Skip = SkippingInformation.SkippingReason)]
-        private void CheckProjectWideOverGlobal()
+        private async void CheckProjectWideOverGlobal()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -56,16 +56,16 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("TeamCity1"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("TeamCity2"));
         }
 
         [Fact(DisplayName = "Check repository over global and project wide for subgrouping", Skip = SkippingInformation.SkippingReason)]
-        private void CheckRepoOverGlobalAndProjectWide()
+        private async void CheckRepoOverGlobalAndProjectWide()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -129,7 +129,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("TeamCity1"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("TeamCity2"));
@@ -137,9 +137,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check no interaction between grouping types", Skip = SkippingInformation.SkippingReason)]
-        private void CheckNoInteractionBeetweenGroupingTypes()
+        private async void CheckNoInteractionBeetweenGroupingTypes()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -200,7 +200,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("TeamCity1"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("TeamCity2"));

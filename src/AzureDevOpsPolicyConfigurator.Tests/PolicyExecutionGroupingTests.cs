@@ -8,9 +8,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class PolicyExecutionGroupingTests
     {
         [Fact(DisplayName = "Check project wide over", Skip = SkippingInformation.SkippingReason)]
-        private void CheckProjectWideOverGlobal()
+        private async void CheckProjectWideOverGlobal()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -52,16 +52,16 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
         }
 
         [Fact(DisplayName = "Check repository over global and project wide", Skip = SkippingInformation.SkippingReason)]
-        private void CheckRepoOverGlobalAndProjectWide()
+        private async void CheckRepoOverGlobalAndProjectWide()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -119,7 +119,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
@@ -127,9 +127,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check repository over global and project wide with branch", Skip = SkippingInformation.SkippingReason)]
-        private void CheckRepoOverGlobalAndProjectWideWithBranch()
+        private async void CheckRepoOverGlobalAndProjectWideWithBranch()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -203,7 +203,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
@@ -212,9 +212,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check repository over global and project wide with project specific branch over global branch", Skip = SkippingInformation.SkippingReason)]
-        private void CheckRepoOverGlobalAndProjectWideWithProjectSpecificBranchOverGlobalBranch()
+        private async void CheckRepoOverGlobalAndProjectWideWithProjectSpecificBranchOverGlobalBranch()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -304,7 +304,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
@@ -314,9 +314,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check repository over global and project wide with repository specific branch over global and project specific branch", Skip = SkippingInformation.SkippingReason)]
-        private void CheckRepoOverGlobalAndProjectWideWithRepoSpecificBranchOverGlobalAndProjectSpecificBranch()
+        private async void CheckRepoOverGlobalAndProjectWideWithRepoSpecificBranchOverGlobalAndProjectSpecificBranch()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -422,7 +422,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
@@ -433,9 +433,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check star translation to prefix", Skip = SkippingInformation.SkippingReason)]
-        private void CheckStarTranslationToPrefix()
+        private async void CheckStarTranslationToPrefix()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -461,7 +461,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("heads/release/*"));
@@ -469,9 +469,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check other repository not included", Skip = SkippingInformation.SkippingReason)]
-        private void CheckOtherRepositoryNotIncluded()
+        private async void CheckOtherRepositoryNotIncluded()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -513,16 +513,16 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 7"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 6"));
         }
 
         [Fact(DisplayName = "Check branch policy ignored", Skip = SkippingInformation.SkippingReason)]
-        private void CheckBranchPolicyIgnored()
+        private async void CheckBranchPolicyIgnored()
         {
-            var result = new PolicyTester().RunTest(new TestData(@"
+            var result = await new PolicyTester().RunTest(new TestData(@"
             {
               ""allowDeletion"":  false,
               ""ignoreTypes"": [],
@@ -548,7 +548,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }"));
+            }")).ConfigureAwait(false);
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("Policy branch ignored, because branch does not exist on the current repository."));
         }

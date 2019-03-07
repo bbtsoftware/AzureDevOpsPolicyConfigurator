@@ -11,23 +11,23 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class ArgumentTests
     {
         [Fact(DisplayName = "Test null arguments")]
-        private void TestRunWithNullArgument()
+        private async void TestRunWithNullArgument()
         {
-            Assert.Equal(0, new Program().Run(null, true));
+            Assert.Equal(0, await new Program().Run(null, true).ConfigureAwait(false));
         }
 
         [Fact(DisplayName = "Test without arguments")]
-        private void TestRunWithoutArgument()
+        private async void TestRunWithoutArgument()
         {
-            Assert.Equal(0, new Program().Run(Array.Empty<string>(), true));
+            Assert.Equal(0, await new Program().Run(Array.Empty<string>(), true).ConfigureAwait(false));
         }
 
         [Fact(DisplayName = "Test without collection url")]
-        private void TestNoCollectionUrl()
+        private async void TestNoCollectionUrl()
         {
             var args = new string[1] { "generate" };
 
-            var ex = Record.Exception(() => new Program().Run(args, true));
+            var ex = await Record.ExceptionAsync(() => new Program().Run(args, true)).ConfigureAwait(false);
 
             Assert.NotNull(ex);
             Assert.IsType<ArgumentValidationException>(ex);
@@ -35,11 +35,11 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Test without auth")]
-        private void TestNoAuth()
+        private async void TestNoAuth()
         {
             var args = new string[3] { "generate", "-c", "url" };
 
-            var ex = Record.Exception(() => new Program().Run(args, true));
+            var ex = await Record.ExceptionAsync(() => new Program().Run(args, true)).ConfigureAwait(false);
 
             Assert.NotNull(ex);
             Assert.IsType<ArgumentValidationException>(ex);
@@ -47,11 +47,11 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Test with basic auth but no user")]
-        private void TestBasicButNoUser()
+        private async void TestBasicButNoUser()
         {
             var args = new string[5] { "generate", "-c", "url", "-a", "basic" };
 
-            var ex = Record.Exception(() => new Program().Run(args, true));
+            var ex = await Record.ExceptionAsync(() => new Program().Run(args, true)).ConfigureAwait(false);
 
             Assert.NotNull(ex);
             Assert.IsType<ArgumentValidationException>(ex);
@@ -59,11 +59,11 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Test with OAuth auth but no user")]
-        private void TestOAuthButNoUser()
+        private async void TestOAuthButNoUser()
         {
             var args = new string[5] { "generate", "-c", "url", "-a", "oauth" };
 
-            var ex = Record.Exception(() => new Program().Run(args, true));
+            var ex = await Record.ExceptionAsync(() => new Program().Run(args, true)).ConfigureAwait(false);
 
             Assert.NotNull(ex);
             Assert.IsType<ArgumentValidationException>(ex);
@@ -71,11 +71,11 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Test with basic auth but no password")]
-        private void TestBasicButNoPassword()
+        private async void TestBasicButNoPassword()
         {
             var args = new string[7] { "generate", "-c", "url", "-a", "basic", "-u", "user" };
 
-            var ex = Record.Exception(() => new Program().Run(args, true));
+            var ex = await Record.ExceptionAsync(() => new Program().Run(args, true)).ConfigureAwait(false);
 
             Assert.NotNull(ex);
             Assert.IsType<ArgumentValidationException>(ex);
@@ -83,11 +83,11 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Test with OAuth auth but no user")]
-        private void TestOAuthButNoPassword()
+        private async void TestOAuthButNoPassword()
         {
             var args = new string[7] { "generate", "-c", "url", "-a", "oauth", "-u", "user" };
 
-            var ex = Record.Exception(() => new Program().Run(args, true));
+            var ex = await Record.ExceptionAsync(() => new Program().Run(args, true)).ConfigureAwait(false);
 
             Assert.NotNull(ex);
             Assert.IsType<ArgumentValidationException>(ex);
@@ -95,11 +95,11 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Test without input file and as whatif")]
-        private void TestWithoutInputFile()
+        private async void TestWithoutInputFile()
         {
             var args = new string[9] { "whatif", "-c", "url", "-a", "oauth", "-u", "user", "-p", "password" };
 
-            var ex = Record.Exception(() => new Program().Run(args, true));
+            var ex = await Record.ExceptionAsync(() => new Program().Run(args, true)).ConfigureAwait(false);
 
             Assert.NotNull(ex);
             Assert.IsType<ArgumentValidationException>(ex);
@@ -107,36 +107,36 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Test with input but file missing")]
-        private void TestWithNoFile()
+        private async void TestWithNoFile()
         {
             var args = new string[7] { "whatif", "-c", "url", "-a", "ntlm", "--in", ".\\file.json" };
 
-            var ex = Record.Exception(() => new Program().Run(args, true));
+            var ex = await Record.ExceptionAsync(() => new Program().Run(args, true)).ConfigureAwait(false);
 
             Assert.NotNull(ex);
             Assert.IsType<FileNotFoundException>(ex);
         }
 
         [Fact(DisplayName = "Test parameter resolving")]
-        private void TestParameterResolving()
+        private async void TestParameterResolving()
         {
             var args = new string[11] { "generate", "-c", "url", "-a", "oauth", "-u", "user", "-p", "pass", "-d", "dest" };
-            var ex = Record.Exception(() => new Program().Run(args, true));
+            var ex = await Record.ExceptionAsync(() => new Program().Run(args, true)).ConfigureAwait(false);
             Assert.NotNull(ex);
             Assert.IsType<UriFormatException>(ex);
 
             args = new string[11] { "generate", "--collectionurl", "url", "--auth", "oauth", "--user", "user", "--password", "pass", "--desctination", "dest" };
-            ex = Record.Exception(() => new Program().Run(args, true));
+            ex = await Record.ExceptionAsync(() => new Program().Run(args, true)).ConfigureAwait(false);
             Assert.NotNull(ex);
             Assert.IsType<UriFormatException>(ex);
 
             args = new string[9] { "whatif", "-c", "url", "-a", "ntlm", "-i", ".\\file.json", "-v", "info" };
-            ex = Record.Exception(() => new Program().Run(args, true));
+            ex = await Record.ExceptionAsync(() => new Program().Run(args, true)).ConfigureAwait(false);
             Assert.NotNull(ex);
             Assert.IsType<FileNotFoundException>(ex);
 
             args = new string[9] { "execute", "-c", "url", "-a", "ntlm", "--in", ".\\file.json", "--verbosity", "info" };
-            ex = Record.Exception(() => new Program().Run(args, true));
+            ex = await Record.ExceptionAsync(() => new Program().Run(args, true)).ConfigureAwait(false);
             Assert.NotNull(ex);
             Assert.IsType<FileNotFoundException>(ex);
         }
