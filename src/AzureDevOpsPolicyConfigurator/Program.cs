@@ -15,9 +15,9 @@ namespace AzureDevOpsPolicyConfigurator
         /// </summary>
         /// <param name="args">Main arguments</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public static async Task Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
-            await new Program().Run(args, false).ConfigureAwait(false);
+            return await new Program().Run(args, false).ConfigureAwait(false);
         }
 
         /// <summary>
