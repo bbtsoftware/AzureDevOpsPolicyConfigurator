@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <id>azure-devops-policy-configurator</id>
+    <title>Azure DevOps Policy Configurator</title>
+    <version>0.0.0</version>
+    <authors>BBT Software AG and contributors</authors>
+    <owners>bbtsoftware</owners>
+    <summary>Azure DevOps policy configurator</summary>
+    <description>
+Azure DevOps policy configurator allows to apply policy settings on an Azure DevOps or Azure DevOps Server / Team Foundation Server project collection based on a JSON configuration file.
+
+## Features
+
+* Support for Azure DevOps, Azure DevOps Server and Team Foundation Server
+* Export current policies to JSON files
+* Apply policies from a JSON file to a project collection
+* Support for global, project wide or repository wide policies
+    </description>
+    <licenseUrl>https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator/blob/develop/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator</projectUrl>
+    <projectSourceUrl>https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator</projectSourceUrl>
+    <docsUrl>https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator</docsUrl>
+    <packageSourceUrl>https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator</packageSourceUrl>
+    <bugTrackerUrl>https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator/issues</bugTrackerUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright © BBT Software AG and contributors</copyright>
+    <tags>bbt bbtsoftware policy devops azure</tags>
+  </metadata>
+  <files>
+    <file src="..\..\BuildArtifacts\temp\_Packages\**" target="tools" />
+    <file src="..\..\src\Chocolatey\tools\**" target="tools" />
+    <file src="..\..\BuildArtifacts\bin\**" target="tools\bin" />
+  </files>
+</package>
