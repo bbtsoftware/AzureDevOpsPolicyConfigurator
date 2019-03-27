@@ -95,7 +95,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                         var relevantPolicies = this.GetPoliciesForRepository(policyDefinition.Policies, project, repository);
                         var serverPolicy = grouppedRepositories.FirstOrDefault(x => x.Key == repository.Id.ToString());
 
-                        this.HandleChanges(policyDefinition.AllowDeletion, policyClient, project.Id, repository, branches, relevantPolicies, serverPolicy, types);
+                        await this.HandleChanges(policyDefinition.AllowDeletion, policyClient, project.Id, repository, branches, relevantPolicies, serverPolicy, types).ConfigureAwait(false);
                     }
                 }
             }
@@ -110,7 +110,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="repository">Git repository</param>
         /// <param name="currentPolicy">Branch policy</param>
         /// <param name="policy">Policy</param>
-        protected abstract void CreatePolicy(
+        /// <returns>Task</returns>
+        protected abstract Task CreatePolicy(
             PolicyHttpClient policyClient,
             IEnumerable<PolicyType> types,
             Guid projectId,
@@ -128,7 +129,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="currentPolicy">Branch policy</param>
         /// <param name="policy">Policy</param>
         /// <param name="serverPolicy">Azure DevOps policy</param>
-        protected abstract void UpdatePolicy(
+        /// <returns>Task</returns>
+        protected abstract Task UpdatePolicy(
             PolicyHttpClient policyClient,
             IEnumerable<PolicyType> types,
             Guid projectId,
@@ -145,7 +147,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="policy">Policy</param>
         protected abstract void DeletePolicy(PolicyHttpClient policyClient, Guid projectId, PolicyConfiguration policy);
 
-        private void HandleChanges(
+        private async Task HandleChanges(
             bool allowDeletion,
             PolicyHttpClient policyClient,
             Guid projectId,
@@ -155,8 +157,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             IEnumerable<PolicyConfiguration> serverPolicy,
             IEnumerable<PolicyType> types)
         {
-            List<int> handledServerPolicies = new List<int>();
-            List<Action> resultList = new List<Action>();
+            var handledServerPolicies = new List<int>();
+            var resultList = new List<Task>();
 
             foreach (var currentPolicy in relevantPolicies)
             {
@@ -175,10 +177,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
             this.RemoveNoMatchServerPolicies(allowDeletion, policyClient, projectId, serverPolicy, handledServerPolicies);
 
-            foreach (var element in resultList)
-            {
-                element.Invoke();
-            }
+            await Task.WhenAll(resultList).ConfigureAwait(false);
         }
 
         private void HandleBranchChanges(
@@ -189,7 +188,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             IEnumerable<PolicyType> types,
             List<int> handledServerPolicies,
             BranchPolicies currentPolicy,
-            List<Action> resultList)
+            List<Task> resultList)
         {
             foreach (var policy in currentPolicy.Policies)
             {
@@ -219,7 +218,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                             }
                             else
                             {
-                                resultList.Add(() => this.UpdatePolicy(policyClient, types, projectId, repository, currentPolicy, policy, serverPolicy));
+                                resultList.Add(this.UpdatePolicy(policyClient, types, projectId, repository, currentPolicy, policy, serverPolicy));
                             }
 
                             break;
@@ -229,7 +228,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                 if (!hasMatch)
                 {
-                    resultList.Add(() => this.CreatePolicy(policyClient, types, projectId, repository, currentPolicy, policy));
+                    resultList.Add(this.CreatePolicy(policyClient, types, projectId, repository, currentPolicy, policy));
                 }
             }
         }

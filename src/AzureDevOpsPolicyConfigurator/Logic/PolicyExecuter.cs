@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Data;
 using Microsoft.TeamFoundation.Policy.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
@@ -32,7 +33,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="repository">Git repository</param>
         /// <param name="currentPolicy">Branch policy</param>
         /// <param name="policy">Policy</param>
-        protected override async void CreatePolicy(
+        /// <returns>Task</returns>
+        protected override async Task CreatePolicy(
             PolicyHttpClient policyClient,
             IEnumerable<PolicyType> types,
             Guid projectId,
@@ -57,7 +59,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="currentPolicy">Branch policy</param>
         /// <param name="policy">Policy</param>
         /// <param name="serverPolicy">Azure DevOps policy</param>
-        protected override async void UpdatePolicy(
+        /// <returns>Task</returns>
+        protected override async Task UpdatePolicy(
             PolicyHttpClient policyClient,
             IEnumerable<PolicyType> types,
             Guid projectId,

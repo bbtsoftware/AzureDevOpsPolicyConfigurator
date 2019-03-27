@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Data;
 using Microsoft.TeamFoundation.Policy.WebApi;
 using Microsoft.TeamFoundation.SourceControl.WebApi;
@@ -32,7 +33,9 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="repository">Git repository</param>
         /// <param name="currentPolicy">Branch policy</param>
         /// <param name="policy">Policy</param>
-        protected override void CreatePolicy(
+        /// <returns>Task</returns>
+        #pragma warning disable 1998
+        protected override async Task CreatePolicy(
             PolicyHttpClient policyClient,
             IEnumerable<PolicyType> types,
             Guid projectId,
@@ -43,6 +46,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             this.Logger.Info($"Policy not found in Azure DevOps, would be created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
             this.Logger.Debug($"Settings is: {policy.PrepareSettingsWithScopeAndSubType(repository.Id, policy)}");
         }
+        #pragma warning restore 1998
 
         /// <summary>
         /// Logs the change.
@@ -54,7 +58,9 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="currentPolicy">Branch policy</param>
         /// <param name="policy">Policy</param>
         /// <param name="serverPolicy">Server policy</param>
-        protected override void UpdatePolicy(
+        /// <returns>Task</returns>
+        #pragma warning disable 1998
+        protected override async Task UpdatePolicy(
             PolicyHttpClient policyClient,
             IEnumerable<PolicyType> types,
             Guid projectId,
@@ -66,6 +72,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             this.Logger.Info($"Policy found, would be updated in Azure DevOps. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
             this.Logger.Debug($"Settings is: {policy.PrepareSettingsWithScopeAndSubType(repository.Id, policy)}");
         }
+        #pragma warning restore 1998
 
         /// <summary>
         /// Logs the change.
