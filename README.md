@@ -332,6 +332,42 @@ be removed, if not needed.)
 }
 ```
 
+#### For every feature branch under the "MyRepository" and "MyRepository2" repositories in the "MyProject" project
+
+```json
+{
+    "type": "Require a merge strategy",
+
+    "project": "MyProject",
+    "branch": "feature/*",
+    "repositories": ["MyRepository", "MyRepository2"],
+
+    "isBlocking": true,
+
+    "settings": {
+        "useSquashMerge":  false
+    }
+}
+```
+
+#### For the master and every feature branch under the "MyRepository" and "MyRepository2" repositories in the "MyProject" project
+
+```json
+{
+    "type": "Require a merge strategy",
+
+    "project": "MyProject",
+    "branches": [ "master", "feature/*" ],
+    "repositories": ["MyRepository", "MyRepository2"],
+
+    "isBlocking": true,
+
+    "settings": {
+        "useSquashMerge":  false
+    }
+}
+```
+
 #### Subtype definition
 
 ```json

@@ -88,18 +88,48 @@ namespace AzureDevOpsPolicyConfigurator
         /// <returns>Flattened policies</returns>
         public static IEnumerable<Policy> FlattenBranches(this IEnumerable<Policy> policies, IJsonSerializer serializer)
         {
-            var policiesToFlatten = policies.Where(x => x.Branches != null && x.Branches.Count > 0).ToList();
             var newPolicies = new List<Policy>();
 
             foreach (var policy in policies)
             {
-                if (policy.Branches != null && policy.Branches.Count > 0)
+                if (policy.Branches != null)
                 {
                     foreach (var branch in policy.Branches)
                     {
                         var newPolicy = serializer.Clone(policy);
                         newPolicy.Branch = branch;
                         newPolicy.Branches = null;
+                        newPolicies.Add(newPolicy);
+                    }
+
+                    continue;
+                }
+
+                newPolicies.Add(policy);
+            }
+
+            return newPolicies;
+        }
+
+        /// <summary>
+        /// Flattens the policies by repositories.
+        /// </summary>
+        /// <param name="policies">Policies</param>
+        /// <param name="serializer">Json serializer</param>
+        /// <returns>Flattened policies</returns>
+        public static IEnumerable<Policy> FlattenRepositories(this IEnumerable<Policy> policies, IJsonSerializer serializer)
+        {
+            var newPolicies = new List<Policy>();
+
+            foreach (var policy in policies)
+            {
+                if (policy.Repositories != null)
+                {
+                    foreach (var repository in policy.Repositories)
+                    {
+                        var newPolicy = serializer.Clone(policy);
+                        newPolicy.Repository = repository;
+                        newPolicy.Repositories = null;
                         newPolicies.Add(newPolicy);
                     }
 
