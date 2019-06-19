@@ -87,9 +87,14 @@ namespace AzureDevOpsPolicyConfigurator.Data
         public List<string> Branches { get; set; }
 
         /// <summary>
-        /// Gets or sets the policy repository name or repository id.
+        /// Gets or sets the repository name or repository id.
         /// </summary>
         public string Repository { get; set; }
+
+        /// <summary>
+        /// Gets or sets a list of repository names or repository ids.
+        /// </summary>
+        public List<string> Repositories { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether a blocking is needed.

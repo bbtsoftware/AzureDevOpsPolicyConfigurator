@@ -257,7 +257,9 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             TeamProjectReference project,
             GitRepository repository)
         {
-            return policies.FlattenBranches(this.Serializer)
+            return policies
+                .FlattenRepositories(this.Serializer)
+                .FlattenBranches(this.Serializer)
                 .Where(x =>
                         (string.IsNullOrEmpty(x.Project) || // global or branch specific
                         (x.Project.ToLower() == project.Name.ToLower() || x.Project.ToLower() == project.Id.ToString().ToLower())) && // project or project branch specific

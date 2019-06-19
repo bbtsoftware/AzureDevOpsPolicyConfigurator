@@ -8,10 +8,10 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     /// <summary>
     /// Multi branch definition test class.
     /// </summary>
-    public class MultiBranchDefinitionTests
+    public class MultiRepositoryDefinitionTests
     {
-        [Fact(DisplayName = "Check multi branch definition")]
-        private void TestMultiBranchDefinition()
+        [Fact(DisplayName = "Check multi repository definition")]
+        private void TestMultiRepositoryDefinition()
         {
             var serializer = new JsonSerializer();
 
@@ -19,24 +19,24 @@ namespace AzureDevOpsPolicyConfigurator.Tests
             {
                 new Policy()
                 {
-                    Branches = new List<string>()
+                    Repositories = new List<string>()
                     {
-                        "master", "release/my/master"
+                        "myrepo1", "myrepo2"
                     }
                 }
             };
 
-            policies = policies.FlattenBranches(serializer).ToList();
+            policies = policies.FlattenRepositories(serializer).ToList();
 
             Assert.Equal(2, policies.Count);
-            Assert.Equal("master", policies[0].Branch);
-            Assert.Null(policies[0].Branches);
-            Assert.Equal("release/my/master", policies[1].Branch);
-            Assert.Null(policies[1].Branches);
+            Assert.Equal("myrepo1", policies[0].Repository);
+            Assert.Null(policies[0].Repositories);
+            Assert.Equal("myrepo2", policies[1].Repository);
+            Assert.Null(policies[1].Repositories);
         }
 
-        [Fact(DisplayName = "Check multi branch with overriding", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckMultiBranchWithOverriding()
+        [Fact(DisplayName = "Check multi repository with overriding", Skip = SkippingInformation.SkippingReason)]
+        private async void CheckMultiRepositoryWithOverriding()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -51,8 +51,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   ""type"": ""Minimum number of reviewers"",
 
                   ""project"": ""##Project##"",
-                  ""branch"": ""master"",
-                  ""repository"": """",
+                  ""repository"": ""##Repository##"",
 
                   ""isBlocking"": true,
 
@@ -67,8 +66,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   ""type"": ""Minimum number of reviewers"",
 
                   ""project"": """",
-                  ""branches"": [""master""],
-                  ""repository"": """",
+                  ""repositories"": [ ""##Repository##"" ],
 
                   ""isBlocking"": true,
 
