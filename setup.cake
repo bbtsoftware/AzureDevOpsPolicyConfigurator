@@ -10,7 +10,7 @@ BuildParameters.SetParameters(
     repositoryOwner: "bbtsoftware",
     repositoryName: "AzureDevOpsPolicyConfigurator",
     appVeyorAccountName: "BBTSoftwareAG",
-    shouldRunCodecov: false,
+    shouldRunCodecov: true,
     shouldRunDupFinder: false);
 
 BuildParameters.PrintParameters(Context);
