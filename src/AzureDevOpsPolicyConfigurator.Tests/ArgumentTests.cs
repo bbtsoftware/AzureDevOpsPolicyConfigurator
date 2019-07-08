@@ -31,7 +31,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
 
             Assert.NotNull(ex);
             Assert.IsType<ArgumentValidationException>(ex);
-            Assert.Equal("Argument \"connectionurl\" is missing!", ex.Message);
+            Assert.Equal("Argument \"collectionurl\" is missing!", ex.Message);
         }
 
         [Fact(DisplayName = "Test without auth")]

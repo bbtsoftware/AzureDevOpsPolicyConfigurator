@@ -20,7 +20,7 @@ namespace AzureDevOpsPolicyConfigurator
         {
             if (string.IsNullOrEmpty(settings.CollectionUrl))
             {
-                throw new ArgumentValidationException("Argument \"connectionurl\" is missing!");
+                throw new ArgumentValidationException("Argument \"collectionurl\" is missing!");
             }
 
             if (settings.Auth == null)
