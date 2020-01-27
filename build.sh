@@ -17,7 +17,7 @@ CAKE_EXE=$TOOLS_DIR/Cake.$CAKE_VERSION/Cake.exe
 export CAKE_SETTINGS_SKIPVERIFICATION='true'
 
 # Define default arguments.
-SCRIPT="setup.cake"
+SCRIPT="recipe.cake"
 TARGET="Default"
 CONFIGURATION="Release"
 VERBOSITY="verbose"
