@@ -1,4 +1,4 @@
-#load nuget:?package=Cake.Recipe&version=1.0.0
+#load nuget:?package=Cake.Recipe&version=3.0.1
 
 Environment.SetVariableNames();
 
@@ -10,8 +10,7 @@ BuildParameters.SetParameters(
     repositoryOwner: "bbtsoftware",
     repositoryName: "AzureDevOpsPolicyConfigurator",
     appVeyorAccountName: "BBTSoftwareAG",
-    shouldRunCodecov: true,
-    shouldRunDupFinder: false);
+    shouldRunCodecov: true);
 
 BuildParameters.PrintParameters(Context);
 
