@@ -86,7 +86,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         {
             await policyClient.DeletePolicyConfigurationAsync(projectId, policy.Id).ConfigureAwait(false);
 
-            this.Logger.Info($"Policy removed. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranch()}, Type: {policy.Type.DisplayName})");
+            this.Logger.Info($"Policy removed. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranchFriendlyName()}, Type: {policy.Type.DisplayName})");
         }
 
         private PolicyConfiguration GetPolicyConfiguration(IEnumerable<PolicyType> types, GitRepository repository, Policy policy)
