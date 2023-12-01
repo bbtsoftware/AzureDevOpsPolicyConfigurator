@@ -80,7 +80,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 6"));

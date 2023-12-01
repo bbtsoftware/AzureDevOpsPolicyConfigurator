@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
     <id>azure-devops-policy-configurator</id>
     <title>Azure DevOps Policy Configurator</title>
     <version>0.0.0</version>
@@ -26,11 +26,11 @@ Azure DevOps policy configurator allows to apply policy settings on an Azure Dev
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <copyright>Copyright © BBT Software AG and contributors</copyright>
     <tags>bbt bbtsoftware policy devops azure</tags>
-    <releaseNotes>https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator/releases/tag/1.1.0</releaseNotes>
+    <releaseNotes>https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator/releases</releaseNotes>
   </metadata>
   <files>
-    <file src="..\..\BuildArtifacts\temp\_Packages\**" target="tools" />
-    <file src="..\..\src\Chocolatey\tools\**" target="tools" />
-    <file src="..\..\BuildArtifacts\bin\**" target="tools\bin" />
+    <file src="tools\**" target="tools" />
+    <file src="..\..\License" target="tools\License.txt" />
+    <file src="..\..\BuildArtifacts\**" target="tools\bin" />
   </files>
 </package>

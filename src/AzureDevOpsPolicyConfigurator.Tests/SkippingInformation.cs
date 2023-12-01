@@ -8,10 +8,6 @@
         /// <summary>
         /// Skipping reason
         /// </summary>
-#if DEBUG
-        public const string SkippingReason = null;
-#else
         public const string SkippingReason = "Can only be run locally";
-#endif
     }
 }

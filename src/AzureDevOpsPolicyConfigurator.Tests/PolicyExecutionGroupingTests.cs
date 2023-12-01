@@ -52,7 +52,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
@@ -119,7 +119,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
@@ -203,7 +203,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
@@ -304,7 +304,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
@@ -422,7 +422,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 4"));
@@ -461,7 +461,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 3"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("heads/release/*"));
@@ -513,7 +513,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 7"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"minimumApproverCount\": 6"));
@@ -548,7 +548,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("Policy branch ignored, because branch does not exist on the current repository."));
         }

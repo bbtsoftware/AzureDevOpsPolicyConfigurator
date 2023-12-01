@@ -1,5 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using System.Reflection;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using log4net;
 using Spectre.Cli;

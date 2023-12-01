@@ -37,7 +37,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.NotEmpty(result);
             Assert.NotEmpty(result[LogLevel.Debug]);
@@ -71,7 +71,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.True(result[LogLevel.Info].Count(x => x.StartsWith("Starting project")) > 1);
             Assert.True(result[LogLevel.Info].Count(x => x.StartsWith("Starting repository")) > 1);
@@ -110,7 +110,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("Type: Status"));
 
@@ -139,7 +139,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.Contains(result[LogLevel.Info], x => x.Contains("Type: Status"));
         }

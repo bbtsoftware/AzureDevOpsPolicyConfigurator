@@ -1,16 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureDevOpsPolicyConfigurator", "AzureDevOpsPolicyConfigurator\AzureDevOpsPolicyConfigurator.csproj", "{EF7FCFDB-8D2A-4B85-B9AE-7C1742FE13BF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BD4874CA-66A1-450A-976C-7CE05E5A80E3}"
-	ProjectSection(SolutionItems) = preProject
-		AzureDevOpsPolicyConfigurator.global.ruleset = AzureDevOpsPolicyConfigurator.global.ruleset
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureDevOpsPolicyConfigurator.Tests", "AzureDevOpsPolicyConfigurator.Tests\AzureDevOpsPolicyConfigurator.Tests.csproj", "{AC0CAA5F-CCCF-4EDB-B82E-44B438F58D18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureDevOpsPolicyConfigurator.Tests", "AzureDevOpsPolicyConfigurator.Tests\AzureDevOpsPolicyConfigurator.Tests.csproj", "{AC0CAA5F-CCCF-4EDB-B82E-44B438F58D18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
