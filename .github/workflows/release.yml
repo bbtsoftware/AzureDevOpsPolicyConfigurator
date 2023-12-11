@@ -55,4 +55,4 @@ jobs:
         run: choco pack ..\nuspec\chocolatey\AzureDevOpsPolicyConfigurator.nuspec --Version ${{ env.BUILD_VERSION }} --outputdirectory ..\package Configuration=${{ env.BUILD_CONFIG }}
 
       - name: Push Chocolatey
-        run: choco push ..\package\*.nupkg --source 'https://push.chocolatey.org/' --key ${{secrets.CHOCOLATEYORG}}
+        run: choco push ..\package\azure-devops-policy-configurator.${{ env.BUILD_VERSION }}.nupkg--source 'https://push.chocolatey.org/' --key ${{secrets.CHOCOLATEYORG}}
