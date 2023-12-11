@@ -30,7 +30,6 @@ Azure DevOps policy configurator allows to apply policy settings on an Azure Dev
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
-    <file src="..\..\License" target="tools\License.txt" />
     <file src="..\..\BuildArtifacts\**" target="tools\bin" />
   </files>
 </package>
