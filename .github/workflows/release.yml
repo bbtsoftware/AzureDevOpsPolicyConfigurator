@@ -54,5 +54,5 @@ jobs:
       - name: Package Chocolatey
         run: choco pack ..\nuspec\chocolatey\AzureDevOpsPolicyConfigurator.nuspec --Version ${{ env.BUILD_VERSION }} --outputdirectory ..\package Configuration=${{ env.BUILD_CONFIG }}
 
-      - name: Package Chocolatey
+      - name: Push Chocolatey
         run: choco push ..\package\*.nupkg --source 'https://push.chocolatey.org/' --key ${{secrets.CHOCOLATEYORG}}
