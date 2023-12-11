@@ -40,7 +40,7 @@ jobs:
         run: dotnet build --configuration ${{ env.BUILD_CONFIG }} -p:Version=${{ env.BUILD_VERSION }}
 
       - name: Test
-        run: dotnet test --verbosity normal --collect:"XPlat Code Coverage" --no-restore --no-build --results-directory .\coverage
+        run: dotnet test --configuration ${{ env.BUILD_CONFIG }} --verbosity normal --collect:"XPlat Code Coverage" --no-restore --no-build --results-directory .\coverage
 
       - name: Codecov
         uses: codecov/codecov-action@v3
