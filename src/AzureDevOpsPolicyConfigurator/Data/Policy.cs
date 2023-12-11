@@ -66,6 +66,35 @@ namespace AzureDevOpsPolicyConfigurator.Data
         }
 
         /// <summary>
+        /// Gets the ScopeBranch with 'refs/heads/' prefix.
+        /// This can be different from <see cref="Branch"/> for <see cref="MatchKind"/>.Prefix.
+        /// /* or * at the end will be truncated. Otherwise /* or * are also included in the branch name for the policy.
+        /// e.g. refs/heads/release/abc* -> refs/heads/release/abc
+        /// e.g. refs/heads/release/* -> refs/heads/release
+        /// </summary>
+        public string ScopeBranch
+        {
+            get
+            {
+                var branchName = "refs/heads/" + (this.Branch ?? string.Empty);
+
+                if (this.MatchKind == MatchKind.Prefix)
+                {
+                    if (branchName.EndsWith("/*"))
+                    {
+                        branchName = branchName.Substring(0, branchName.Length - 2);
+                    }
+                    else if (branchName.EndsWith("*"))
+                    {
+                        branchName = branchName.Substring(0, branchName.Length - 1);
+                    }
+                }
+
+                return branchName;
+            }
+        }
+
+        /// <summary>
         /// Gets the match kind of a branch.
         /// </summary>
         public MatchKind MatchKind
@@ -107,8 +136,6 @@ namespace AzureDevOpsPolicyConfigurator.Data
         public JObject Settings { get; set; }
 
         private bool IsRepositorySpecific => RepositorySpecificTypes.Contains(this.PolicyType.DisplayName);
-
-        private string ScopeBranch => "refs/heads/" + (this.Branch ?? string.Empty);
 
         /// <summary>
         /// Returns the Settings property and adds scope

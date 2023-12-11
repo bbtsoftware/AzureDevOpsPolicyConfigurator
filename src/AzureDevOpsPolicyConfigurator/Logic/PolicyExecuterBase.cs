@@ -207,7 +207,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                     {
                         if (policy.PolicyType.Id == serverPolicy.Type.Id && serverPolicy.DoesSubTypeMatch(policy) &&
                                 ((serverPolicy.GetBranch() == null) || // Repository specific
-                                (serverPolicy.GetBranch() == policy.Branch && serverPolicy.GetMatchKind() == policy.MatchKind)))
+                                (serverPolicy.GetBranch() == policy.ScopeBranch && serverPolicy.GetMatchKind() == policy.MatchKind)))
                         {
                             hasMatch = true;
                             handledServerPolicies.Add(serverPolicy.Id);
@@ -243,7 +243,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                 {
                     if (!allowDeletion)
                     {
-                        this.Logger.Info($"Existing policy not defined. Skipping removal due to allowDeletion Flag. (Repository: {removeable.GetRepositoryId()}, Branch: {removeable.GetBranch()}, Type: {removeable.Type.DisplayName})");
+                        this.Logger.Info($"Existing policy not defined. Skipping removal due to allowDeletion Flag. (Repository: {removeable.GetRepositoryId()}, Branch: {removeable.GetBranchFriendlyName()}, Type: {removeable.Type.DisplayName})");
                         continue;
                     }
 
