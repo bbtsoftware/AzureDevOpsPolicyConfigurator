@@ -13,15 +13,15 @@ This tool gets the current policies for projects, repositories and branches, or 
 
 ## Build Status
 
-|Develop|Master|
-|:--:|:--:|
-|[![Build status](https://ci.appveyor.com/api/projects/status/koamlur75cwr4h6y/branch/develop?svg=true)](https://ci.appveyor.com/project/BBTSoftwareAG/azuredevopspolicyconfigurator/branch/develop)|[![Build status](https://ci.appveyor.com/api/projects/status/koamlur75cwr4h6y/branch/master?svg=true)](https://ci.appveyor.com/project/BBTSoftwareAG/azuredevopspolicyconfigurator/branch/master)|
+[![Build status](https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator/actions/workflows/dotnet.yml/badge.svg?branch=develop)](https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator/actions/workflows/dotnet.yml)
+[![Build status](https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator/actions/workflows/release.yml/badge.svg)](https://github.com/bbtsoftware/AzureDevOpsPolicyConfigurator/actions/workflows/release.yml)
+[![Coverage Status](https://codecov.io/gh/bbtsoftware/AzureDevOpsPolicyConfigurator/branch/develop/graph/badge.svg?token=0VLbB8a8EF)](https://codecov.io/gh/bbtsoftware/AzureDevOpsPolicyConfigurator)
 
 ## Documentation
 
 ### General
 
-The tool is targeted to .Net Core 2.0 / .Net Standard 2.0, meaning, it can be used besides windows
+The tool is targeted to .Net 7.0 / meaning, it can be used besides windows
 machines also on linux, macs, etc. The tool is wrapped in a Chocolatey package, so it can be easily
 installed onto a windows 10 machine, where the package builds an executable itself, and installs
 it to the client machine. Nevertheless, the tool can be targeted onto any runtime.

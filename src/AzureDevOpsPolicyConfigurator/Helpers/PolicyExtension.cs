@@ -55,13 +55,23 @@ namespace AzureDevOpsPolicyConfigurator
         }
 
         /// <summary>
-        /// Returns the repository id from the settings.
+        /// Returns the branch name id from the settings.
         /// </summary>
         /// <param name="configuration">Policy configuration</param>
-        /// <returns>repository id</returns>
+        /// <returns>Branch name</returns>
         public static string GetBranch(this PolicyConfiguration configuration)
         {
-            return GetValueFromScopeElement(configuration, "refName")?.Replace("refs/heads/", string.Empty);
+            return GetValueFromScopeElement(configuration, "refName");
+        }
+
+        /// <summary>
+        /// Returns the friendly branch name from the settings.
+        /// </summary>
+        /// <param name="configuration">Policy configuration</param>
+        /// <returns>Friendly branch name</returns>
+        public static string GetBranchFriendlyName(this PolicyConfiguration configuration)
+        {
+            return GetBranch(configuration)?.Replace("refs/heads/", string.Empty);
         }
 
         /// <summary>

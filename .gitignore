@@ -7,10 +7,6 @@ src/AzureDevOpsPolicyConfigurator.Tests/test.json
 # Created by https://www.gitignore.io/api/cake,windows,visualstudio,visualstudiocode
 # Edit at https://www.gitignore.io/?templates=cake,windows,visualstudio,visualstudiocode
 
-### Cake ###
-tools/*
-!tools/packages.config
-
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -385,6 +381,6 @@ ASALocalRun/
 
 # End of https://www.gitignore.io/api/cake,windows,visualstudio,visualstudiocode
 
-# Project specific 
-
-BuildArtifacts/
+# Project specific
+BuildArtifacts
+package

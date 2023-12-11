@@ -82,7 +82,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="policy">Policy</param>
         protected override void DeletePolicy(PolicyHttpClient policyClient, Guid projectId, PolicyConfiguration policy)
         {
-            this.Logger.Info($"Policy not in the definition, would be removed from Azure DevOps. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranch()}, Type: {policy.Type.DisplayName})");
+            this.Logger.Info($"Policy not in the definition, would be removed from Azure DevOps. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranchFriendlyName()}, Type: {policy.Type.DisplayName})");
         }
     }
 }

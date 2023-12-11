@@ -17,7 +17,7 @@ namespace AzureDevOpsPolicyConfigurator
         /// <param name="context">Context</param>
         /// <param name="settings">Settings</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public override async Task<int> Execute(CommandContext context, GeneratorSettings settings)
+        public override async Task<int> ExecuteAsync(CommandContext context, GeneratorSettings settings)
         {
             await new StructureGenerator(new JsonFileWriter(), new ConnectionProvider()).Execute(settings).ConfigureAwait(false);
             return 0;
