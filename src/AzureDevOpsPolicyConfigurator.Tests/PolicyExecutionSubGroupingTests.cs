@@ -56,7 +56,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("TeamCity1"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("TeamCity2"));
@@ -129,7 +129,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("TeamCity1"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("TeamCity2"));
@@ -200,7 +200,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("TeamCity1"));
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("TeamCity2"));

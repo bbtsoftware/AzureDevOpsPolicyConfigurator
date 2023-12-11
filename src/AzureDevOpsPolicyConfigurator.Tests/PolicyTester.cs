@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Logic;
-using Moq;
+using FakeItEasy;
 
 namespace AzureDevOpsPolicyConfigurator.Tests
 {
@@ -25,12 +25,12 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                 { LogLevel.Error, new List<string>() }
             };
 
-            var loggerMock = new Mock<ILogger>();
-            var fileReaderMock = new Mock<IFileReader>();
+            var loggerMock = A.Fake<ILogger>();
+            var fileReaderMock = A.Fake<IFileReader>();
 
-            loggerMock.Setup(x => x.Debug(It.IsAny<string>())).Callback((string x) => result[LogLevel.Debug].Add(x));
-            loggerMock.Setup(x => x.Info(It.IsAny<string>())).Callback((string x) => result[LogLevel.Info].Add(x));
-            loggerMock.Setup(x => x.Warn(It.IsAny<string>())).Callback((string x) => result[LogLevel.Warn].Add(x));
+            A.CallTo(() => loggerMock.Debug(A<string>._)).Invokes((string x) => result[LogLevel.Debug].Add(x));
+            A.CallTo(() => loggerMock.Info(A<string>._)).Invokes((string x) => result[LogLevel.Info].Add(x));
+            A.CallTo(() => loggerMock.Warn(A<string>._)).Invokes((string x) => result[LogLevel.Warn].Add(x));
 
             var testConfiguration = TestConfiguration.CurrentConfiguration;
 
@@ -39,9 +39,9 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                 .Replace("##Project##", testConfiguration.Project)
                 .Replace("##Repository##", testConfiguration.Repository);
 
-            fileReaderMock.Setup(x => x.GetFileContent("input.json")).Returns(fileContent);
+            A.CallTo(() => fileReaderMock.GetFileContent("input.json")).Returns(fileContent);
 
-            var whatIfExecuter = new WhatIfExecuter(new JsonSerializer(), fileReaderMock.Object, new ConnectionProvider(), loggerMock.Object);
+            var whatIfExecuter = new WhatIfExecuter(new JsonSerializer(), fileReaderMock, new ConnectionProvider(), loggerMock);
 
             await whatIfExecuter.Execute(new ExecuterSettings()
             {
@@ -49,7 +49,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                 CollectionUrl = testConfiguration.CollectionUrl,
                 Input = "input.json",
                 Verbosity = LogLevel.Debug
-            }).ConfigureAwait(false);
+            }).ConfigureAwait(true);
 
             return result;
         }

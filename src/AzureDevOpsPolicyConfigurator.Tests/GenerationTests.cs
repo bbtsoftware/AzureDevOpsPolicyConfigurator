@@ -17,7 +17,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                 CollectionUrl = TestConfiguration.CurrentConfiguration.CollectionUrl,
                 Auth = AuthMethod.Ntlm,
                 Destination = "Project"
-            }).ConfigureAwait(false);
+            }).ConfigureAwait(true);
 
             Assert.True(Directory.Exists("Project"));
             Assert.True(File.Exists("Project\\projects.json"));

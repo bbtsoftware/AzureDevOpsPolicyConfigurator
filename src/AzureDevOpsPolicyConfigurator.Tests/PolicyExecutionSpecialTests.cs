@@ -36,7 +36,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("\"scope\": ["));
         }
@@ -76,7 +76,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("create-new"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("myrefname"));
@@ -119,7 +119,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.Contains(result[LogLevel.Debug], x => x.Contains("scope"));
             Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("refName"));

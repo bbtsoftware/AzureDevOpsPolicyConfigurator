@@ -36,7 +36,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("update"));
             Assert.Contains(result[LogLevel.Info], x => x.Contains("create"));
@@ -72,7 +72,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
             Assert.Contains(result[LogLevel.Info], x => x.Contains("update"));
@@ -105,7 +105,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.Contains(result[LogLevel.Info], x => x.Contains("create"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("update"));
@@ -138,7 +138,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
             Assert.Contains(result[LogLevel.Info], x => x.Contains("update"));
@@ -178,7 +178,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("update"));
@@ -229,7 +229,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                   }
                 }
               ]
-            }")).ConfigureAwait(false);
+            }")).ConfigureAwait(true);
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("update"));

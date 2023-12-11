@@ -1,0 +1,58 @@
+# This workflow will release AzureDevOpsPolicyConfigurator
+
+name: Release
+
+on:
+  release:
+    types: [published]
+
+defaults:
+  run:
+    working-directory: src
+
+jobs:
+  build:
+    env:
+      BUILD_CONFIG: "Release"
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get Build Version
+        run: |
+          Import-Module ..\build\GetBuildVersion.psm1
+          Write-Host $Env:GITHUB_REF
+          $version = GetBuildVersion -VersionString $Env:GITHUB_REF
+          echo "BUILD_VERSION=$version" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf-8 -Append
+        shell: pwsh
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Build
+        run: dotnet build --configuration ${{ env.BUILD_CONFIG }} -p:Version=${{ env.BUILD_VERSION }}
+
+      - name: Test
+        run: dotnet test --verbosity normal --collect:"XPlat Code Coverage" --no-restore --no-build --results-directory .\coverage
+
+      - name: Codecov
+        uses: codecov/codecov-action@v3
+
+      - name: Publish
+        run: dotnet publish .\AzureDevOpsPolicyConfigurator\AzureDevOpsPolicyConfigurator.csproj --configuration ${{ env.BUILD_CONFIG }}--self-contained --runtime win10-x64 --output ..\BuildArtifacts -p:Version=${{ env.BUILD_VERSION }}
+
+      - name: Create Package Directory
+        run: mkdir ..\package
+
+      - name: Package Chocolatey
+        run: choco pack ..\nuspec\chocolatey\AzureDevOpsPolicyConfigurator.nuspec --Version ${{ env.BUILD_VERSION }} --outputdirectory ..\package Configuration=${{ env.BUILD_CONFIG }}
+
+      - name: Package Chocolatey
+        run: choco push ..\package\*.nupkg --source 'https://push.chocolatey.org/' --key ${{secrets.CHOCOLATEYORG}}
