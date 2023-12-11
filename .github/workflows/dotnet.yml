@@ -57,5 +57,8 @@ jobs:
       - name: Create Package Directory
         run: mkdir ..\package
 
+      - name: Copy license file
+        run: copy ..\License ..\nuspec\chocolatey\
+
       - name: Package Chocolatey
         run: choco pack ..\nuspec\chocolatey\AzureDevOpsPolicyConfigurator.nuspec --Version ${{ env.BUILD_VERSION }} --outputdirectory ..\package Configuration=${{ env.BUILD_CONFIG }}
