@@ -91,7 +91,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                                         x.IsBlocking,
                                         x.Settings
                                     }),
-                                    $@"{currentRepositoryFolder}\policies.json");
+                            $@"{currentRepositoryFolder}\policies.json");
                     }
                 }
             }

@@ -249,12 +249,14 @@ dotnet_diagnostic.CA2241.severity = none
 dotnet_diagnostic.CA2242.severity = none
 dotnet_diagnostic.CA2243.severity = none
 dotnet_diagnostic.CA5122.severity = none
+dotnet_diagnostic.SA1101.severity = none
 dotnet_diagnostic.SA1200.severity = none
 dotnet_diagnostic.SA1633.severity = none
 dotnet_diagnostic.IDE0007.severity = none
 dotnet_diagnostic.IDE0008.severity = none
 dotnet_diagnostic.SA1200.severity = none
 dotnet_diagnostic.SA1413.severity = none
+dotnet_diagnostic.SA1518.severity = none
 dotnet_diagnostic.SA1629.severity = none
 dotnet_diagnostic.SA1633.severity = none
 
