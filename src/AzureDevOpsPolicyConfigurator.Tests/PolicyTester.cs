@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Logic;
-using FakeItEasy;
+using NSubstitute;
 
 namespace AzureDevOpsPolicyConfigurator.Tests
 {
@@ -17,7 +17,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         /// <returns>A dictionary of logs grouped by LogLevel.</returns>
         public async Task<Dictionary<LogLevel, List<string>>> RunTest(TestData testData)
         {
-            Dictionary<LogLevel, List<string>> result = new Dictionary<LogLevel, List<string>>()
+            Dictionary<LogLevel, List<string>> result = new()
             {
                 { LogLevel.Debug, new List<string>() },
                 { LogLevel.Info, new List<string>() },
@@ -25,12 +25,12 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                 { LogLevel.Error, new List<string>() }
             };
 
-            var loggerMock = A.Fake<ILogger>();
-            var fileReaderMock = A.Fake<IFileReader>();
+            var loggerMock = Substitute.For<ILogger>();
+            var fileReaderMock = Substitute.For<IFileReader>();
 
-            A.CallTo(() => loggerMock.Debug(A<string>._)).Invokes((string x) => result[LogLevel.Debug].Add(x));
-            A.CallTo(() => loggerMock.Info(A<string>._)).Invokes((string x) => result[LogLevel.Info].Add(x));
-            A.CallTo(() => loggerMock.Warn(A<string>._)).Invokes((string x) => result[LogLevel.Warn].Add(x));
+            loggerMock.When(x => x.Debug(Arg.Any<string>())).Do(x => result[LogLevel.Debug].Add(x.Arg<string>()));
+            loggerMock.When(x => x.Info(Arg.Any<string>())).Do(x => result[LogLevel.Info].Add(x.Arg<string>()));
+            loggerMock.When(x => x.Warn(Arg.Any<string>())).Do(x => result[LogLevel.Warn].Add(x.Arg<string>()));
 
             var testConfiguration = TestConfiguration.CurrentConfiguration;
 
@@ -39,7 +39,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                 .Replace("##Project##", testConfiguration.Project)
                 .Replace("##Repository##", testConfiguration.Repository);
 
-            A.CallTo(() => fileReaderMock.GetFileContent("input.json")).Returns(fileContent);
+            fileReaderMock.GetFileContent("input.json").Returns(fileContent);
 
             var whatIfExecuter = new WhatIfExecuter(new JsonSerializer(), fileReaderMock, new ConnectionProvider(), loggerMock);
 

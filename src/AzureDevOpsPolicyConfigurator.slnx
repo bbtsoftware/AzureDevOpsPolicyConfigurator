@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="AzureDevOpsPolicyConfigurator.Tests/AzureDevOpsPolicyConfigurator.Tests.csproj" />
+  <Project Path="AzureDevOpsPolicyConfigurator/AzureDevOpsPolicyConfigurator.csproj" />
+</Solution>

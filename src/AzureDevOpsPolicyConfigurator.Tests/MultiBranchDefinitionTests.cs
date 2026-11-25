@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Data;
 using Xunit;
 
@@ -17,7 +18,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
 
             var policies = new List<Policy>()
             {
-                new Policy()
+                new()
                 {
                     Branches = new List<string>()
                     {
@@ -26,7 +27,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                 }
             };
 
-            policies = policies.FlattenBranches(serializer).ToList();
+            policies = [.. policies.FlattenBranches(serializer)];
 
             Assert.Equal(2, policies.Count);
             Assert.Equal("master", policies[0].Branch);
@@ -36,7 +37,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check multi branch with overriding", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckMultiBranchWithOverriding()
+        private async Task CheckMultiBranchWithOverriding()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {

@@ -1,4 +1,4 @@
-﻿namespace AzureDevOpsPolicyConfigurator.Tests
+namespace AzureDevOpsPolicyConfigurator.Tests
 {
     /// <summary>
     /// Test file representation.
@@ -14,10 +14,7 @@
         {
             get
             {
-                if (currentConfiguration == null)
-                {
-                    currentConfiguration = new JsonSerializer().Deserialize<TestConfiguration>(new FileReader().GetFileContent(".\\test.json"));
-                }
+                currentConfiguration ??= new JsonSerializer().Deserialize<TestConfiguration>(new FileReader().GetFileContent(".\\test.json"));
 
                 return currentConfiguration;
             }

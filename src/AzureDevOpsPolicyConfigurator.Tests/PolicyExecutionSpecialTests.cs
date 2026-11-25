@@ -1,4 +1,5 @@
-﻿using Xunit;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace AzureDevOpsPolicyConfigurator.Tests
 {
@@ -8,7 +9,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class PolicyExecutionSpecialTests
     {
         [Fact(DisplayName = "Check scope and subtype property creation", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckScopeAndSubTypePropertyCreation()
+        private async Task CheckScopeAndSubTypePropertyCreation()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -42,7 +43,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check scope and subtype property removal", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckScopeAndSubTypePropertyRemoval()
+        private async Task CheckScopeAndSubTypePropertyRemoval()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -84,7 +85,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check repository specific scope creation", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckRepositorySpecificScopeCreation()
+        private async Task CheckRepositorySpecificScopeCreation()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {

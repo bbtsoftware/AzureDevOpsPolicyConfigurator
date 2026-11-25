@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.TeamFoundation.Core.WebApi;
@@ -40,12 +40,12 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// <returns>boolean</returns>
         public bool IgnoreType(Guid guid, List<PolicyType> policyTypes)
         {
-            if (this.IgnoreTypes == null || this.IgnoreTypes.Count == 0)
+            if (IgnoreTypes == null || IgnoreTypes.Count == 0)
             {
                 return false;
             }
 
-            return this.IgnoreTypes.Any(t => guid == t.GetPolicyType(policyTypes).Id);
+            return IgnoreTypes.Any(t => guid == t.GetPolicyType(policyTypes).Id);
         }
 
         /// <summary>
@@ -55,12 +55,12 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// <returns>boolean</returns>
         public bool IsRepositoryAllowed(GitRepository repostiroty)
         {
-            if (this.ApplyTo == null || this.ApplyTo.Repositories == null || this.ApplyTo.Repositories.Count == 0)
+            if (ApplyTo == null || ApplyTo.Repositories == null || ApplyTo.Repositories.Count == 0)
             {
                 return true;
             }
 
-            return this.ApplyTo.Repositories.Any(x => x == repostiroty.Name || (Guid.TryParse(x, out var guid) && guid == repostiroty.Id));
+            return ApplyTo.Repositories.Any(x => x == repostiroty.Name || (Guid.TryParse(x, out var guid) && guid == repostiroty.Id));
         }
 
         /// <summary>
@@ -70,12 +70,12 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// <returns>boolean</returns>
         public bool IsProjectAllowed(TeamProjectReference project)
         {
-            if (this.ApplyTo == null || this.ApplyTo.Projects == null || this.ApplyTo.Projects.Count == 0)
+            if (ApplyTo == null || ApplyTo.Projects == null || ApplyTo.Projects.Count == 0)
             {
                 return true;
             }
 
-            return this.ApplyTo.Projects.Any(x => x == project.Name || (Guid.TryParse(x, out var guid) && guid == project.Id));
+            return ApplyTo.Projects.Any(x => x == project.Name || (Guid.TryParse(x, out var guid) && guid == project.Id));
         }
     }
 }

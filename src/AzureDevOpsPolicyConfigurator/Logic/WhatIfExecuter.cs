@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Data;
@@ -43,8 +43,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             BranchPolicies currentPolicy,
             Policy policy)
         {
-            this.Logger.Info($"Policy not found in Azure DevOps, would be created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
-            this.Logger.Debug($"Settings is: {policy.PrepareSettingsWithScopeAndSubType(repository.Id, policy)}");
+            Logger.Info($"Policy not found in Azure DevOps, would be created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
+            Logger.Debug($"Settings is: {policy.PrepareSettingsWithScopeAndSubType(repository.Id, policy)}");
         }
         #pragma warning restore 1998
 
@@ -69,8 +69,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             Policy policy,
             PolicyConfiguration serverPolicy)
         {
-            this.Logger.Info($"Policy found, would be updated in Azure DevOps. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
-            this.Logger.Debug($"Settings is: {policy.PrepareSettingsWithScopeAndSubType(repository.Id, policy)}");
+            Logger.Info($"Policy found, would be updated in Azure DevOps. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
+            Logger.Debug($"Settings is: {policy.PrepareSettingsWithScopeAndSubType(repository.Id, policy)}");
         }
         #pragma warning restore 1998
 
@@ -82,7 +82,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="policy">Policy</param>
         protected override void DeletePolicy(PolicyHttpClient policyClient, Guid projectId, PolicyConfiguration policy)
         {
-            this.Logger.Info($"Policy not in the definition, would be removed from Azure DevOps. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranchFriendlyName()}, Type: {policy.Type.DisplayName})");
+            Logger.Info($"Policy not in the definition, would be removed from Azure DevOps. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranchFriendlyName()}, Type: {policy.Type.DisplayName})");
         }
     }
 }

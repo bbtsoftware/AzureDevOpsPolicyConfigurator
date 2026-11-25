@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Reflection;
 using log4net;
 using log4net.Config;
@@ -26,7 +26,7 @@ namespace AzureDevOpsPolicyConfigurator
 
             XmlConfigurator.ConfigureAndWatch(logRepository, new FileInfo(fileInfo));
 
-            this.SetVerbosityLevel(settings, logRepository);
+            SetVerbosityLevel(settings, logRepository);
 
             return base.Validate(context, settings);
         }

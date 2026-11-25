@@ -1,4 +1,5 @@
-﻿using Xunit;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace AzureDevOpsPolicyConfigurator.Tests
 {
@@ -8,7 +9,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class PolicyExecutionSubGroupingTests
     {
         [Fact(DisplayName = "Check project wide over for subgrouping", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckProjectWideOverGlobal()
+        private async Task CheckProjectWideOverGlobal()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -63,7 +64,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check repository over global and project wide for subgrouping", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckRepoOverGlobalAndProjectWide()
+        private async Task CheckRepoOverGlobalAndProjectWide()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -137,7 +138,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check no interaction between grouping types", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckNoInteractionBeetweenGroupingTypes()
+        private async Task CheckNoInteractionBeetweenGroupingTypes()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {

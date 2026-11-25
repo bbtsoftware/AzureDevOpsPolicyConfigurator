@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,7 +35,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         {
             var mainFolder = arguments.Destination;
 
-            using (var connection = this.connectionProvider.GetConnection(arguments))
+            using (var connection = connectionProvider.GetConnection(arguments))
             using (var projectClient = connection.GetClient<ProjectHttpClient>())
             using (var policyClient = connection.GetClient<PolicyHttpClient>())
             using (var gitRepositoryClient = connection.GetClient<Microsoft.TeamFoundation.SourceControl.WebApi.GitHttpClient>())
@@ -49,7 +49,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                 var projects = await projectClient.GetProjects().ConfigureAwait(false);
 
-                this.jsonFileWriter.SerializeAndWrite(projects, $@"{mainFolder}\projects.json");
+                jsonFileWriter.SerializeAndWrite(projects, $@"{mainFolder}\projects.json");
 
                 foreach (var project in projects)
                 {
@@ -59,7 +59,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                     string currentProjectFolder = $@"{mainFolder}\{project.Name}";
                     Directory.CreateDirectory(currentProjectFolder);
 
-                    this.jsonFileWriter.SerializeAndWrite(types, $@"{mainFolder}\{project.Name}\types.json");
+                    jsonFileWriter.SerializeAndWrite(types, $@"{mainFolder}\{project.Name}\types.json");
 
                     var grouppedRepositories = policyConfigurations.GroupBy(
                         x => x.Settings["scope"].First.Value<string>("repositoryId"));
@@ -80,7 +80,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                         string currentRepositoryFolder = $@"{currentProjectFolder}\{repository}";
                         Directory.CreateDirectory(currentRepositoryFolder);
 
-                        this.jsonFileWriter.SerializeAndWrite(
+                        jsonFileWriter.SerializeAndWrite(
                             group.Select(
                                     x => new
                                     {

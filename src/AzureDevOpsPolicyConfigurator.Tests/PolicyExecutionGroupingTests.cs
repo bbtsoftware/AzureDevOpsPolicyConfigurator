@@ -1,4 +1,5 @@
-﻿using Xunit;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace AzureDevOpsPolicyConfigurator.Tests
 {
@@ -8,7 +9,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class PolicyExecutionGroupingTests
     {
         [Fact(DisplayName = "Check project wide over", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckProjectWideOverGlobal()
+        private async Task CheckProjectWideOverGlobal()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -59,7 +60,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check repository over global and project wide", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckRepoOverGlobalAndProjectWide()
+        private async Task CheckRepoOverGlobalAndProjectWide()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -127,7 +128,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check repository over global and project wide with branch", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckRepoOverGlobalAndProjectWideWithBranch()
+        private async Task CheckRepoOverGlobalAndProjectWideWithBranch()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -212,7 +213,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check repository over global and project wide with project specific branch over global branch", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckRepoOverGlobalAndProjectWideWithProjectSpecificBranchOverGlobalBranch()
+        private async Task CheckRepoOverGlobalAndProjectWideWithProjectSpecificBranchOverGlobalBranch()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -314,7 +315,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check repository over global and project wide with repository specific branch over global and project specific branch", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckRepoOverGlobalAndProjectWideWithRepoSpecificBranchOverGlobalAndProjectSpecificBranch()
+        private async Task CheckRepoOverGlobalAndProjectWideWithRepoSpecificBranchOverGlobalAndProjectSpecificBranch()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -433,7 +434,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check star translation to prefix", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckStarTranslationToPrefix()
+        private async Task CheckStarTranslationToPrefix()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -469,7 +470,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check other repository not included", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckOtherRepositoryNotIncluded()
+        private async Task CheckOtherRepositoryNotIncluded()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -520,7 +521,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check branch policy ignored", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckBranchPolicyIgnored()
+        private async Task CheckBranchPolicyIgnored()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {

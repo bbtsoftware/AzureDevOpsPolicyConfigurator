@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.TeamFoundation.Policy.WebApi;
 using Newtonsoft.Json.Linq;
@@ -10,7 +10,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
     /// </summary>
     internal class Policy
     {
-        private static readonly List<string> RepositorySpecificTypes = new List<string>() { "Git repository settings", "File size restriction" };
+        private static readonly List<string> RepositorySpecificTypes = ["Git repository settings", "File size restriction"];
         private string branch;
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// <summary>
         /// Gets a value indicating whether the policy has SubType defined.
         /// </summary>
-        public bool HasSubType => !string.IsNullOrEmpty(this.SubTypePropertyName);
+        public bool HasSubType => !string.IsNullOrEmpty(SubTypePropertyName);
 
         /// <summary>
         /// Gets or sets the policy subtype property name.
@@ -41,12 +41,12 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// <summary>
         /// Gets the UniquenessDefinition for the policy.
         /// </summary>
-        public string UniquenessDefinition => $"{this.Type}{(this.SubTypePropertyValue != null ? "_" + this.SubTypePropertyValue : string.Empty)}";
+        public string UniquenessDefinition => $"{Type}{(SubTypePropertyValue != null ? "_" + SubTypePropertyValue : string.Empty)}";
 
         /// <summary>
         /// Gets the TypeString for the policy.
         /// </summary>
-        public string TypeString => $"{this.PolicyType?.DisplayName ?? this.Type}{(this.SubTypePropertyValue != null ? "_" + this.SubTypePropertyValue : string.Empty)}";
+        public string TypeString => $"{PolicyType?.DisplayName ?? Type}{(SubTypePropertyValue != null ? "_" + SubTypePropertyValue : string.Empty)}";
 
         /// <summary>
         /// Gets or sets the policy project name or project id.
@@ -58,11 +58,8 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// </summary>
         public string Branch
         {
-            get
-            {
-                return this.branch ?? string.Empty;
-            }
-            set => this.branch = value;
+            get => branch ?? string.Empty;
+            set => branch = value;
         }
 
         /// <summary>
@@ -76,17 +73,17 @@ namespace AzureDevOpsPolicyConfigurator.Data
         {
             get
             {
-                var branchName = "refs/heads/" + (this.Branch ?? string.Empty);
+                var branchName = "refs/heads/" + (Branch ?? string.Empty);
 
-                if (this.MatchKind == MatchKind.Prefix)
+                if (MatchKind == MatchKind.Prefix)
                 {
-                    if (branchName.EndsWith("/*"))
+                    if (branchName.EndsWith("/*", StringComparison.Ordinal))
                     {
-                        branchName = branchName.Substring(0, branchName.Length - 2);
+                        branchName = branchName[..^2];
                     }
-                    else if (branchName.EndsWith("*"))
+                    else if (branchName.EndsWith('*'))
                     {
-                        branchName = branchName.Substring(0, branchName.Length - 1);
+                        branchName = branchName[..^1];
                     }
                 }
 
@@ -97,18 +94,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// <summary>
         /// Gets the match kind of a branch.
         /// </summary>
-        public MatchKind MatchKind
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(this.Branch) || this.Branch.EndsWith("*"))
-                {
-                    return MatchKind.Prefix;
-                }
-
-                return MatchKind.Exact;
-            }
-        }
+        public MatchKind MatchKind => string.IsNullOrEmpty(Branch) || Branch.EndsWith('*') ? MatchKind.Prefix : MatchKind.Exact;
 
         /// <summary>
         /// Gets or sets the branches.
@@ -135,7 +121,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// </summary>
         public JObject Settings { get; set; }
 
-        private bool IsRepositorySpecific => RepositorySpecificTypes.Contains(this.PolicyType.DisplayName);
+        private bool IsRepositorySpecific => RepositorySpecificTypes.Contains(PolicyType.DisplayName);
 
         /// <summary>
         /// Returns the Settings property and adds scope
@@ -145,9 +131,9 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// <returns>Settings JObject</returns>
         public JObject PrepareSettingsWithScopeAndSubType(Guid repositoryId, Policy policy)
         {
-            var settings = (JObject)this.Settings.DeepClone();
+            var settings = (JObject)Settings.DeepClone();
             settings.Remove("scope");
-            settings.Add(this.IsRepositorySpecific ? this.CreateRepositorySpecificScope(repositoryId) : this.CreateScope(repositoryId));
+            settings.Add(IsRepositorySpecific ? CreateRepositorySpecificScope(repositoryId) : CreateScope(repositoryId));
 
             if (policy.HasSubType)
             {
@@ -168,12 +154,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// <returns>boolean</returns>
         public bool PolicyEquals(PolicyConfiguration serverConfiguration)
         {
-            if (!serverConfiguration.IsEnabled || serverConfiguration.IsDeleted || serverConfiguration.IsBlocking != this.IsBlocking)
-            {
-                return false;
-            }
-
-            return this.JsonEquals(serverConfiguration.Settings);
+            return serverConfiguration.IsEnabled && !serverConfiguration.IsDeleted && serverConfiguration.IsBlocking == IsBlocking && JsonEquals(serverConfiguration.Settings);
         }
 
         /// <summary>
@@ -182,7 +163,7 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// <param name="types">Types</param>
         public void PreparePolicyType(IEnumerable<PolicyType> types)
         {
-            this.PolicyType = this.Type.GetPolicyType(types);
+            PolicyType = Type.GetPolicyType(types);
         }
 
         private JProperty CreateRepositorySpecificScope(Guid repositoryId)
@@ -200,9 +181,9 @@ namespace AzureDevOpsPolicyConfigurator.Data
         private JProperty CreateScope(Guid repositoryId)
         {
             var scopeObject = new JObject(
-                    new JProperty("refName", this.ScopeBranch),
+                    new JProperty("refName", ScopeBranch),
                     new JProperty("repositoryId", repositoryId),
-                    new JProperty("matchKind", this.MatchKind.ToString()));
+                    new JProperty("matchKind", MatchKind.ToString()));
 
             var scope = new JArray
             {
@@ -219,16 +200,16 @@ namespace AzureDevOpsPolicyConfigurator.Data
         /// <returns>Boolean</returns>
         private bool JsonEquals(JObject serverSettings)
         {
-            var clonedA = this.Settings.DeepClone();
+            var clonedA = Settings.DeepClone();
             var clonedB = serverSettings.DeepClone();
 
             clonedA["scope"]?.Parent.Remove();
             clonedB["scope"]?.Parent.Remove();
 
-            if (this.HasSubType)
+            if (HasSubType)
             {
-                clonedA[this.SubTypePropertyName]?.Parent.Remove();
-                clonedB[this.SubTypePropertyName]?.Parent.Remove();
+                clonedA[SubTypePropertyName]?.Parent.Remove();
+                clonedB[SubTypePropertyName]?.Parent.Remove();
             }
 
             return JToken.DeepEquals(clonedA, clonedB);

@@ -1,4 +1,4 @@
-﻿namespace AzureDevOpsPolicyConfigurator.Tests
+namespace AzureDevOpsPolicyConfigurator.Tests
 {
     /// <summary>
     /// Test Data class.
@@ -11,7 +11,7 @@
         /// <param name="fileContent">File content to return.</param>
         public TestData(string fileContent)
         {
-            this.FileContent = fileContent;
+            FileContent = fileContent;
         }
 
         /// <summary>
