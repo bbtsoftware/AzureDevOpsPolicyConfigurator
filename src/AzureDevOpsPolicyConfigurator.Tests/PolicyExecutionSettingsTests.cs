@@ -1,4 +1,6 @@
-﻿using System.Linq;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AzureDevOpsPolicyConfigurator.Tests
@@ -9,7 +11,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class PolicyExecutionSettingsTests
     {
         [Fact(DisplayName = "Check startings, apply to and disallow deletion", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckStartingAndSkippings()
+        private async Task CheckStartingAndSkippings()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -45,10 +47,10 @@ namespace AzureDevOpsPolicyConfigurator.Tests
 
             Assert.Contains(result[LogLevel.Info], x => x == "Starting project: Framework");
             Assert.Contains(result[LogLevel.Info], x => x == "Starting repository: doc.framework");
-            Assert.Contains(result[LogLevel.Info], x => x.StartsWith("Existing policy not defined. Skipping removal due to allowDeletion Flag."));
+            Assert.Contains(result[LogLevel.Info], x => x.StartsWith("Existing policy not defined. Skipping removal due to allowDeletion Flag.", StringComparison.OrdinalIgnoreCase));
 
-            Assert.Contains(result[LogLevel.Debug], x => x.StartsWith("Skipping repository"));
-            Assert.Contains(result[LogLevel.Debug], x => x.StartsWith("Skipping project"));
+            Assert.Contains(result[LogLevel.Debug], x => x.StartsWith("Skipping repository", StringComparison.OrdinalIgnoreCase));
+            Assert.Contains(result[LogLevel.Debug], x => x.StartsWith("Skipping project", StringComparison.OrdinalIgnoreCase));
 
             result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -73,16 +75,16 @@ namespace AzureDevOpsPolicyConfigurator.Tests
               ]
             }")).ConfigureAwait(true);
 
-            Assert.True(result[LogLevel.Info].Count(x => x.StartsWith("Starting project")) > 1);
-            Assert.True(result[LogLevel.Info].Count(x => x.StartsWith("Starting repository")) > 1);
-            Assert.DoesNotContain(result[LogLevel.Info], x => x.StartsWith("Existing policy not defined. Skipping removal due to allowDeletion Flag."));
+            Assert.True(result[LogLevel.Info].Count(x => x.StartsWith("Starting project", StringComparison.OrdinalIgnoreCase)) > 1);
+            Assert.True(result[LogLevel.Info].Count(x => x.StartsWith("Starting repository", StringComparison.OrdinalIgnoreCase)) > 1);
+            Assert.DoesNotContain(result[LogLevel.Info], x => x.StartsWith("Existing policy not defined. Skipping removal due to allowDeletion Flag.", StringComparison.OrdinalIgnoreCase));
 
-            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("Skipping repository"));
-            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("Skipping project"));
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("Skipping repository", StringComparison.OrdinalIgnoreCase));
+            Assert.DoesNotContain(result[LogLevel.Debug], x => x.Contains("Skipping project", StringComparison.OrdinalIgnoreCase));
         }
 
         [Fact(DisplayName = "Check Ignoring Types", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckIgnoreTypes()
+        private async Task CheckIgnoreTypes()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -141,7 +143,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
               ]
             }")).ConfigureAwait(true);
 
-            Assert.Contains(result[LogLevel.Info], x => x.Contains("Type: Status"));
+            Assert.Contains(result[LogLevel.Info], x => x.Contains("Type: Status", StringComparison.OrdinalIgnoreCase));
         }
     }
 }

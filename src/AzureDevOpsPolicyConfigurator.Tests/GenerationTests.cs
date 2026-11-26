@@ -1,4 +1,5 @@
-﻿using System.IO;
+using System.IO;
+using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Logic;
 using Xunit;
 
@@ -10,7 +11,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class GenerationTests
     {
         [Fact(DisplayName = "Generating structure and checking", Skip = SkippingInformation.SkippingReason)]
-        private async void GenerateStructureAndTestFileExistence()
+        private async Task GenerateStructureAndTestFileExistence()
         {
             await new StructureGenerator(new JsonFileWriter(), new ConnectionProvider()).Execute(new GeneratorSettings()
             {

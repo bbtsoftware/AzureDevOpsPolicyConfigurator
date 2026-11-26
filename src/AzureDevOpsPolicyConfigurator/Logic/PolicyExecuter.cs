@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Data;
@@ -42,11 +42,11 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             BranchPolicies currentPolicy,
             Policy policy)
         {
-            var policyConfiguration = this.GetPolicyConfiguration(types, repository, policy);
+            var policyConfiguration = GetPolicyConfiguration(types, repository, policy);
             var result = await policyClient.CreatePolicyConfigurationAsync(policyConfiguration, projectId).ConfigureAwait(false);
 
-            this.Logger.Debug(this.Serializer.Serialize(result));
-            this.Logger.Info($"Policy created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
+            Logger.Debug(Serializer.Serialize(result));
+            Logger.Info($"Policy created. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
         }
 
         /// <summary>
@@ -69,11 +69,11 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             Policy policy,
             PolicyConfiguration serverPolicy)
         {
-            var policyConfiguration = this.GetPolicyConfiguration(types, repository, policy);
+            var policyConfiguration = GetPolicyConfiguration(types, repository, policy);
             var update = await policyClient.UpdatePolicyConfigurationAsync(policyConfiguration, projectId, serverPolicy.Id).ConfigureAwait(false);
 
-            this.Logger.Debug(this.Serializer.Serialize(update));
-            this.Logger.Info($"Policy updated. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
+            Logger.Debug(Serializer.Serialize(update));
+            Logger.Info($"Policy updated. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         {
             await policyClient.DeletePolicyConfigurationAsync(projectId, policy.Id).ConfigureAwait(false);
 
-            this.Logger.Info($"Policy removed. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranchFriendlyName()}, Type: {policy.Type.DisplayName})");
+            Logger.Info($"Policy removed. (Repository: {policy.GetRepositoryId()}, Branch: {policy.GetBranchFriendlyName()}, Type: {policy.Type.DisplayName})");
         }
 
         private PolicyConfiguration GetPolicyConfiguration(IEnumerable<PolicyType> types, GitRepository repository, Policy policy)

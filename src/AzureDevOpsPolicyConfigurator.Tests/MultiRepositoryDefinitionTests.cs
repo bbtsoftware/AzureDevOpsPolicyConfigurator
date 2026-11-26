@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AzureDevOpsPolicyConfigurator.Data;
 using Xunit;
 
@@ -17,7 +18,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
 
             var policies = new List<Policy>()
             {
-                new Policy()
+                new()
                 {
                     Repositories = new List<string>()
                     {
@@ -26,7 +27,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
                 }
             };
 
-            policies = policies.FlattenRepositories(serializer).ToList();
+            policies = [.. policies.FlattenRepositories(serializer)];
 
             Assert.Equal(2, policies.Count);
             Assert.Equal("myrepo1", policies[0].Repository);
@@ -36,7 +37,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check multi repository with overriding", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckMultiRepositoryWithOverriding()
+        private async Task CheckMultiRepositoryWithOverriding()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {

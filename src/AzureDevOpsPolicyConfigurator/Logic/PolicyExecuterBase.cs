@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,10 +26,10 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="logger">Logger</param>
         public PolicyExecuterBase(IJsonSerializer serializer, IFileReader reader, IConnectionProvider connectionProvider, ILogger logger)
         {
-            this.Serializer = serializer;
+            Serializer = serializer;
             this.reader = reader;
             this.connectionProvider = connectionProvider;
-            this.Logger = logger;
+            Logger = logger;
         }
 
         /// <summary>
@@ -49,11 +49,11 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task Execute(ExecuterSettings arguments)
         {
-            var contents = arguments.Input.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(x => this.reader.GetFileContent(x.Trim()));
+            var contents = arguments.Input.Split(";", StringSplitOptions.RemoveEmptyEntries).Select(x => reader.GetFileContent(x.Trim()));
 
-            var policyDefinition = this.Serializer.Deserialize<PolicyDefinition>(contents);
+            var policyDefinition = Serializer.Deserialize<PolicyDefinition>(contents);
 
-            using (var connection = this.connectionProvider.GetConnection(arguments))
+            using (var connection = connectionProvider.GetConnection(arguments))
             using (var projectClient = connection.GetClient<ProjectHttpClient>())
             using (var policyClient = connection.GetClient<PolicyHttpClient>())
             using (var gitRepositoryClient = connection.GetClient<GitHttpClient>())
@@ -68,11 +68,11 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                     if (!policyDefinition.IsProjectAllowed(project))
                     {
-                        this.Logger.Debug($"Skipping project \"{project.Name}\", because it's not listed in the allowed projects list");
+                        Logger.Debug($"Skipping project \"{project.Name}\", because it's not listed in the allowed projects list");
                         continue;
                     }
 
-                    this.Logger.Info($"Starting project: {project.Name}");
+                    Logger.Info($"Starting project: {project.Name}");
 
                     var types = await getPolicyTypesTask.ConfigureAwait(false);
                     var grouppedRepositories =
@@ -86,16 +86,16 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                         if (!policyDefinition.IsRepositoryAllowed(repository))
                         {
-                            this.Logger.Debug($"Skipping repository \"{repository.Name}\", because it's not listed in the allowed repositories list");
+                            Logger.Debug($"Skipping repository \"{repository.Name}\", because it's not listed in the allowed repositories list");
                             continue;
                         }
 
-                        this.Logger.Info($"Starting repository: {repository.Name}");
+                        Logger.Info($"Starting repository: {repository.Name}");
 
-                        var relevantPolicies = this.GetPoliciesForRepository(policyDefinition.Policies, project, repository);
+                        var relevantPolicies = GetPoliciesForRepository(policyDefinition.Policies, project, repository);
                         var serverPolicy = grouppedRepositories.FirstOrDefault(x => x.Key == repository.Id.ToString());
 
-                        await this.HandleChanges(policyDefinition.AllowDeletion, policyClient, project.Id, repository, branches, relevantPolicies, serverPolicy, types).ConfigureAwait(false);
+                        await HandleChanges(policyDefinition.AllowDeletion, policyClient, project.Id, repository, branches, relevantPolicies, serverPolicy, types).ConfigureAwait(false);
                     }
                 }
             }
@@ -164,18 +164,18 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             {
                 // Ignore exact branches not found on the repository
                 if (string.IsNullOrEmpty(currentPolicy.Branch) ||
-                    currentPolicy.Branch.Contains("*") ||
-                    branches.Any(x => x.Name == currentPolicy.Branch))
+                    currentPolicy.Branch.Contains('*') ||
+                    branches.Any(x => x.Name.Equals(currentPolicy.Branch, StringComparison.OrdinalIgnoreCase)))
                 {
-                    this.HandleBranchChanges(policyClient, projectId, repository, serverPolicy, types, handledServerPolicies, currentPolicy, resultList);
+                    HandleBranchChanges(policyClient, projectId, repository, serverPolicy, types, handledServerPolicies, currentPolicy, resultList);
                 }
                 else
                 {
-                    this.Logger.Debug($"Policy branch ignored, because branch does not exist on the current repository. (Repository: {repository.Name}, Branch: {currentPolicy.Branch})");
+                    Logger.Debug($"Policy branch ignored, because branch does not exist on the current repository. (Repository: {repository.Name}, Branch: {currentPolicy.Branch})");
                 }
             }
 
-            this.RemoveNoMatchServerPolicies(allowDeletion, policyClient, projectId, serverPolicy, handledServerPolicies);
+            RemoveNoMatchServerPolicies(allowDeletion, policyClient, projectId, serverPolicy, handledServerPolicies);
 
             await Task.WhenAll(resultList).ConfigureAwait(false);
         }
@@ -198,7 +198,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                 if (policy.PolicyType == null)
                 {
-                    this.Logger.Warn($"Type not found. (Branch: {currentPolicy.Branch}, Type: {policy.Type})");
+                    Logger.Warn($"Type not found. (Branch: {currentPolicy.Branch}, Type: {policy.Type})");
                 }
 
                 if (serverPolicies != null)
@@ -214,11 +214,11 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                             if (policy.PolicyEquals(serverPolicy))
                             {
-                                this.Logger.Info($"Policy is up to date. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
+                                Logger.Info($"Policy is up to date. (Repository: {repository.Name}, Branch: {currentPolicy.Branch}, Type: {policy.TypeString})");
                             }
                             else
                             {
-                                resultList.Add(this.UpdatePolicy(policyClient, types, projectId, repository, currentPolicy, policy, serverPolicy));
+                                resultList.Add(UpdatePolicy(policyClient, types, projectId, repository, currentPolicy, policy, serverPolicy));
                             }
 
                             break;
@@ -228,7 +228,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
 
                 if (!hasMatch)
                 {
-                    resultList.Add(this.CreatePolicy(policyClient, types, projectId, repository, currentPolicy, policy));
+                    resultList.Add(CreatePolicy(policyClient, types, projectId, repository, currentPolicy, policy));
                 }
             }
         }
@@ -243,11 +243,11 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                 {
                     if (!allowDeletion)
                     {
-                        this.Logger.Info($"Existing policy not defined. Skipping removal due to allowDeletion Flag. (Repository: {removeable.GetRepositoryId()}, Branch: {removeable.GetBranchFriendlyName()}, Type: {removeable.Type.DisplayName})");
+                        Logger.Info($"Existing policy not defined. Skipping removal due to allowDeletion Flag. (Repository: {removeable.GetRepositoryId()}, Branch: {removeable.GetBranchFriendlyName()}, Type: {removeable.Type.DisplayName})");
                         continue;
                     }
 
-                    this.DeletePolicy(policyClient, projectId, removeable);
+                    DeletePolicy(policyClient, projectId, removeable);
                 }
             }
         }
@@ -258,12 +258,12 @@ namespace AzureDevOpsPolicyConfigurator.Logic
             GitRepository repository)
         {
             return policies
-                .FlattenRepositories(this.Serializer)
-                .FlattenBranches(this.Serializer)
+                .FlattenRepositories(Serializer)
+                .FlattenBranches(Serializer)
                 .Where(x =>
                         (string.IsNullOrEmpty(x.Project) || // global or branch specific
-                        (x.Project.ToLower() == project.Name.ToLower() || x.Project.ToLower() == project.Id.ToString().ToLower())) && // project or project branch specific
-                        (string.IsNullOrEmpty(x.Repository) || x.Repository.ToLower() == repository.Name.ToLower() || x.Repository.ToLower() == repository.Id.ToString().ToLower())) // repository
+                        string.Equals(x.Project, project.Name, StringComparison.OrdinalIgnoreCase) || string.Equals(x.Project, project.Id.ToString(), StringComparison.OrdinalIgnoreCase)) && // project or project branch specific
+                        (string.IsNullOrEmpty(x.Repository) || string.Equals(x.Repository, repository.Name, StringComparison.OrdinalIgnoreCase) || string.Equals(x.Repository, repository.Id.ToString(), StringComparison.OrdinalIgnoreCase))) // repository
                 .GroupBy(
                     x => x.Branch,
                     (e, ee) => new BranchPolicies(e, ee.GroupBy(x => x.UniquenessDefinition, (te, tee) => tee.OrderBy(x => x, new PolicyPriorityComparer()).First())));
@@ -295,12 +295,7 @@ namespace AzureDevOpsPolicyConfigurator.Logic
                 }
 
                 // Global project
-                if (y.Project != null)
-                {
-                    return 1;
-                }
-
-                return -1;
+                return y.Project != null ? 1 : -1;
             }
         }
     }

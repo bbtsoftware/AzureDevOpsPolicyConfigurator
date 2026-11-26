@@ -46,7 +46,7 @@ jobs:
         uses: codecov/codecov-action@v3
 
       - name: Publish
-        run: dotnet publish .\AzureDevOpsPolicyConfigurator\AzureDevOpsPolicyConfigurator.csproj --configuration ${{ env.BUILD_CONFIG }}--self-contained --runtime win10-x64 --output ..\BuildArtifacts -p:Version=${{ env.BUILD_VERSION }}
+        run: dotnet publish .\AzureDevOpsPolicyConfigurator\AzureDevOpsPolicyConfigurator.csproj --configuration ${{ env.BUILD_CONFIG }} --self-contained --runtime win-x64 --output ..\BuildArtifacts -p:Version=${{ env.BUILD_VERSION }}
 
       - name: Create Package Directory
         run: mkdir ..\package

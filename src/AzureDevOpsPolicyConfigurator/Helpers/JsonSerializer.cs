@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -20,7 +20,7 @@ namespace AzureDevOpsPolicyConfigurator
                 mergedContent.Merge(JObject.Parse(content), new JsonMergeSettings() { MergeArrayHandling = MergeArrayHandling.Union });
             }
 
-            return this.Deserialize<T>(mergedContent.ToString());
+            return Deserialize<T>(mergedContent.ToString());
         }
 
         /// <inheritdoc/>
@@ -48,7 +48,7 @@ namespace AzureDevOpsPolicyConfigurator
         /// <inheritdoc/>
         public T Clone<T>(T obj)
         {
-            return this.Deserialize<T>(this.Serialize(obj));
+            return Deserialize<T>(Serialize(obj));
         }
     }
 }

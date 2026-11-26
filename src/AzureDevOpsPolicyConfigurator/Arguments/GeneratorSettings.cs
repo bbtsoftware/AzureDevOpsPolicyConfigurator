@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using Spectre.Cli;
 
 namespace AzureDevOpsPolicyConfigurator
@@ -13,7 +13,7 @@ namespace AzureDevOpsPolicyConfigurator
         /// </summary>
         public GeneratorSettings()
         {
-            this.Destination = @".\Project";
+            Destination = @".\Project";
         }
 
         /// <summary>

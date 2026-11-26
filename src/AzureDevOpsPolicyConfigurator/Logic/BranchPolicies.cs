@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using AzureDevOpsPolicyConfigurator.Data;
 
 namespace AzureDevOpsPolicyConfigurator.Logic
@@ -15,8 +15,8 @@ namespace AzureDevOpsPolicyConfigurator.Logic
         /// <param name="policies">policies</param>
         public BranchPolicies(string branch, IEnumerable<Policy> policies)
         {
-            this.Branch = branch;
-            this.Policies = policies;
+            Branch = branch;
+            Policies = policies;
         }
 
         /// <summary>

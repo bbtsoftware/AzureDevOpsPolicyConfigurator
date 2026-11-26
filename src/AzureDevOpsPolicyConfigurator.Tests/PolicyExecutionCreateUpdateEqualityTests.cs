@@ -1,4 +1,6 @@
-﻿using Xunit;
+using System;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace AzureDevOpsPolicyConfigurator.Tests
 {
@@ -8,7 +10,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
     public class PolicyExecutionCreateUpdateEqualityTests
     {
         [Fact(DisplayName = "Check create", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckCreate()
+        private async Task CheckCreate()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -40,11 +42,11 @@ namespace AzureDevOpsPolicyConfigurator.Tests
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("update"));
             Assert.Contains(result[LogLevel.Info], x => x.Contains("create"));
-            Assert.DoesNotContain(result[LogLevel.Info], x => x.StartsWith("Policy is up to date"));
+            Assert.DoesNotContain(result[LogLevel.Info], x => x.StartsWith("Policy is up to date", StringComparison.OrdinalIgnoreCase));
         }
 
         [Fact(DisplayName = "Check update", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckUpdate()
+        private async Task CheckUpdate()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -76,11 +78,11 @@ namespace AzureDevOpsPolicyConfigurator.Tests
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
             Assert.Contains(result[LogLevel.Info], x => x.Contains("update"));
-            Assert.DoesNotContain(result[LogLevel.Info], x => x.StartsWith("Policy is up to date"));
+            Assert.DoesNotContain(result[LogLevel.Info], x => x.StartsWith("Policy is up to date", StringComparison.OrdinalIgnoreCase));
         }
 
         [Fact(DisplayName = "Check equals", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckIsEqual()
+        private async Task CheckIsEqual()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -112,7 +114,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
         }
 
         [Fact(DisplayName = "Check is not equal with different IsBlocking", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckIsNotEqualWithDifferentIsBlocking()
+        private async Task CheckIsNotEqualWithDifferentIsBlocking()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -142,11 +144,11 @@ namespace AzureDevOpsPolicyConfigurator.Tests
 
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("create"));
             Assert.Contains(result[LogLevel.Info], x => x.Contains("update"));
-            Assert.DoesNotContain(result[LogLevel.Info], x => x.StartsWith("Policy is up to date"));
+            Assert.DoesNotContain(result[LogLevel.Info], x => x.StartsWith("Policy is up to date", StringComparison.OrdinalIgnoreCase));
         }
 
         [Fact(DisplayName = "Check equals and ignore scope", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckIsEqualAndIgnoreScope()
+        private async Task CheckIsEqualAndIgnoreScope()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -185,11 +187,11 @@ namespace AzureDevOpsPolicyConfigurator.Tests
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("wrong"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("NotExact"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("notguid"));
-            Assert.Contains(result[LogLevel.Info], x => x.StartsWith("Policy is up to date"));
+            Assert.Contains(result[LogLevel.Info], x => x.StartsWith("Policy is up to date", StringComparison.OrdinalIgnoreCase));
         }
 
         [Fact(DisplayName = "Check equals and ignore scope and sub type", Skip = SkippingInformation.SkippingReason)]
-        private async void CheckIsEqualAndIgnoreScopeAndSubType()
+        private async Task CheckIsEqualAndIgnoreScopeAndSubType()
         {
             var result = await new PolicyTester().RunTest(new TestData(@"
             {
@@ -237,7 +239,7 @@ namespace AzureDevOpsPolicyConfigurator.Tests
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("NotExact"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("notguid"));
             Assert.DoesNotContain(result[LogLevel.Info], x => x.Contains("not-Framework_docframework_CI_RunBuildChain"));
-            Assert.Contains(result[LogLevel.Info], x => x.StartsWith("Policy is up to date"));
+            Assert.Contains(result[LogLevel.Info], x => x.StartsWith("Policy is up to date", StringComparison.OrdinalIgnoreCase));
         }
     }
 }
